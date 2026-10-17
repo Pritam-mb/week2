@@ -1,0 +1,10 @@
+{
+  "id": "p_university",
+  "name": "Riverbend State University",
+  "org_type": "university",
+  "us_based": true,
+  "state": "OH",
+  "size_band": "large",
+  "focus_keywords": ["research", "higher education", "fellowship"],
+  "notes": "Constructed profile: public state university in Ohio."
+}

@@ -1,0 +1,32 @@
+{
+  "id": "MOCK-008",
+  "oppNumber": "MOCK-008",
+  "oppTitle": "Nonprofit Capacity Building Fund",
+  "agencyName": "Federal Emergency Management Agency",
+  "oppStatus": "posted",
+  "openDate": "2026-02-20",
+  "closeDate": "2026-06-20",
+  "awardFloor": 20000,
+  "awardCeiling": 200000,
+  "awardEstimate": 75000,
+  "costSharing": false,
+  "applicantTypes": [
+    {
+      "code": "12",
+      "label": "Nonprofits with 501(c)(3) status"
+    },
+    {
+      "code": "13",
+      "label": "Nonprofits without 501(c)(3) status"
+    },
+    {
+      "code": "25",
+      "label": "Others"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Strengthens organizational capacity of community nonprofits.",
+    "eligibilityCriteria": "Open to 501(c)(3) and other nonprofits, including Others. Government agencies are not eligible."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-008"
+}

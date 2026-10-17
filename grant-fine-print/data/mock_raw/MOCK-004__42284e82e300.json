@@ -1,0 +1,28 @@
+{
+  "id": "MOCK-004",
+  "oppNumber": "MOCK-004",
+  "oppTitle": "Small Business Innovation Research",
+  "agencyName": "National Science Foundation",
+  "oppStatus": "posted",
+  "openDate": "2026-01-20",
+  "closeDate": "2026-03-20",
+  "awardFloor": 150000,
+  "awardCeiling": 750000,
+  "awardEstimate": 300000,
+  "costSharing": false,
+  "applicantTypes": [
+    {
+      "code": "23",
+      "label": "Small businesses"
+    },
+    {
+      "code": "22",
+      "label": "For-profit organizations"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Seeds early-stage technology development by small firms.",
+    "eligibilityCriteria": "Open to small businesses and for-profit organizations. Universities may not be the prime applicant."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-004"
+}

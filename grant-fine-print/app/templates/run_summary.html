@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Run summary — Grant Fine Print{% endblock %}
+{% block meta_description %}View the results of a Grant Fine Print screening run and open the generated profile cards.{% endblock %}
+{% block content %}
+<h2>Run summary</h2>
+{% if offline %}
+<p class="warn"><strong>Offline fallback:</strong> this run used the deterministic
+<strong>{{ backend_used }}</strong> backend because no remote model provider is
+configured. Verdicts are mock output for demonstration only.</p>
+{% endif %}
+<div class="table-wrap"><table>
+  <tr><th>Backend used</th><td data-label="Backend used"><strong>{{ backend_used }}</strong> (requested: {{ requested_backend }})</td></tr>
+  <tr><th>Opportunities</th><td data-label="Opportunities">{{ n_opportunities }}</td></tr>
+  <tr><th>Profiles</th><td data-label="Profiles">{{ n_profiles }}</td></tr>
+</table></div>
+
+<h3>Verdicts</h3>
+{% if verdict_counts %}
+<div class="table-wrap"><table>
+  <tr><th>Verdict</th><th>Count</th></tr>
+  {% for verdict, count in verdict_counts %}
+  <tr><td data-label="Verdict">{{ verdict }}</td><td data-label="Count">{{ count }}</td></tr>
+  {% endfor %}
+</table>
+</div>
+{% else %}
+<p class="muted">No verdict rows.</p>
+{% endif %}
+
+<h3>Cards written</h3>
+{% if cards %}
+<ul>
+  {% for c in cards %}
+  <li><a href="{{ c.url }}">{{ c.profile_id }}</a> <span class="muted">{{ c.path }}</span></li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="muted">No cards written.</p>
+{% endif %}
+<p><a href="{{ url_for('main.dashboard') }}">Back to dashboard</a></p>
+{% endblock %}

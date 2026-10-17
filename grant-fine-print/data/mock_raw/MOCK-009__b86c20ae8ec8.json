@@ -1,0 +1,32 @@
+{
+  "id": "MOCK-009",
+  "oppNumber": "MOCK-009",
+  "oppTitle": "Municipal Climate Resilience Planning",
+  "agencyName": "Environmental Protection Agency",
+  "oppStatus": "posted",
+  "openDate": "2026-03-15",
+  "closeDate": "2026-09-15",
+  "awardFloor": 30000,
+  "awardCeiling": 350000,
+  "awardEstimate": 140000,
+  "costSharing": false,
+  "applicantTypes": [
+    {
+      "code": "02",
+      "label": "City or township governments"
+    },
+    {
+      "code": "04",
+      "label": "Special district governments"
+    },
+    {
+      "code": "25",
+      "label": "Others"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Helps municipalities plan for climate hazards.",
+    "eligibilityCriteria": "Cities, townships and special districts may apply; Other applicants are welcome to submit proposals."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-009"
+}

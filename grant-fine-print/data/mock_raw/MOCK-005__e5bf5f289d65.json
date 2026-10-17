@@ -1,0 +1,28 @@
+{
+  "id": "MOCK-005",
+  "oppNumber": "MOCK-005",
+  "oppTitle": "Public University Research Fellowship",
+  "agencyName": "Department of Energy",
+  "oppStatus": "posted",
+  "openDate": "2026-02-10",
+  "closeDate": "2026-07-10",
+  "awardFloor": 40000,
+  "awardCeiling": 250000,
+  "awardEstimate": 90000,
+  "costSharing": false,
+  "applicantTypes": [
+    {
+      "code": "06",
+      "label": "Public/state controlled institutions of higher education"
+    },
+    {
+      "code": "20",
+      "label": "Private institutions of higher education"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Funds fellowships for energy-related research.",
+    "eligibilityCriteria": "Eligible applicants are public and private institutions of higher education."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-005"
+}

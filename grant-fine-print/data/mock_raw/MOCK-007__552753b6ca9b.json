@@ -1,0 +1,32 @@
+{
+  "id": "MOCK-007",
+  "oppNumber": "MOCK-007",
+  "oppTitle": "Statewide Workforce Development",
+  "agencyName": "Department of Labor",
+  "oppStatus": "posted",
+  "openDate": "2026-01-25",
+  "closeDate": "2026-05-25",
+  "awardFloor": 100000,
+  "awardCeiling": 2000000,
+  "awardEstimate": 800000,
+  "costSharing": true,
+  "applicantTypes": [
+    {
+      "code": "00",
+      "label": "State governments"
+    },
+    {
+      "code": "04",
+      "label": "Special district governments"
+    },
+    {
+      "code": "25",
+      "label": "Others"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Builds statewide job-training capacity.",
+    "eligibilityCriteria": "State governments and special district governments are eligible; Other applicants may apply where permitted."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-007"
+}

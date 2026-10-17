@@ -1,0 +1,32 @@
+{
+  "id": "MOCK-002",
+  "oppNumber": "MOCK-002",
+  "oppTitle": "Rural Broadband Expansion Grant",
+  "agencyName": "Department of Agriculture",
+  "oppStatus": "posted",
+  "openDate": "2026-01-15",
+  "closeDate": "2026-05-01",
+  "awardFloor": 50000,
+  "awardCeiling": 1000000,
+  "awardEstimate": 400000,
+  "costSharing": true,
+  "applicantTypes": [
+    {
+      "code": "00",
+      "label": "State governments"
+    },
+    {
+      "code": "01",
+      "label": "County governments"
+    },
+    {
+      "code": "02",
+      "label": "City or township governments"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Expands high-speed internet access in rural communities.",
+    "eligibilityCriteria": "Only state, county and municipal governments may apply. For-profit entities are ineligible."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-002"
+}

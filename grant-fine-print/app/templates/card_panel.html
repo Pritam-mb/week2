@@ -1,0 +1,108 @@
+<style>
+.app-only { max-width: 920px; margin: 32px auto 0; color: #1a1a1a; }
+.app-only h2 { font-size: 16px; border-bottom: 1px solid #d0d0d0; padding-bottom: 4px; }
+.app-only table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+.app-only th, .app-only td { border: 1px solid #d0d0d0; padding: 5px 8px; font-size: 13px; text-align: left; }
+.app-only th { background: #f4f4f4; }
+.app-only .flash { padding: 8px 12px; border: 1px solid #b8cdea; background: #eef4fb; border-radius: 4px; margin: 8px 0; }
+.app-only .flash.error { background: #fdf3f3; border-color: #d8a0a0; color: #8a1f1f; }
+.app-only label { display: block; margin: 6px 0; font-size: 13px; }
+.app-only input[type="text"], .app-only select, .app-only textarea { width: 100%; padding: 5px; font-family: inherit; font-size: 13px; }
+.app-only button { padding: 6px 14px; font-family: inherit; cursor: pointer; }
+.app-only .muted { color: #666; font-size: 12px; }
+.app-only a { color: #1d4f91; }
+.app-only { overflow-wrap: anywhere; }
+@media print { .app-only { display: none !important; } }
+@media (max-width: 640px) {
+  .app-only { margin-top: 20px; }
+  .app-only .table-wrap table, .app-only .table-wrap tbody, .app-only .table-wrap tr, .app-only .table-wrap td { display: block; width: 100%; }
+  .app-only .table-wrap thead { display: none; }
+  .app-only .table-wrap tr { border: 1px solid #d0d0d0; margin: 8px 0; }
+  .app-only .table-wrap td { display: flex; justify-content: space-between; gap: 12px; border: 0; border-bottom: 1px solid #d0d0d0; }
+  .app-only .table-wrap td:last-child { border-bottom: 0; }
+  .app-only .table-wrap td::before { content: attr(data-label); color: #666; font-weight: bold; flex: 0 0 36%; }
+}
+</style>
+<div class="app-only">
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="flash {{ category }}">{{ message }}</div>
+  {% endfor %}
+{% endwith %}
+<p><a href="{{ url_for('main.dashboard') }}">&larr; Back to dashboard</a></p>
+
+<h2>Find and prioritize</h2>
+<form method="get" action="{{ url_for('main.card', profile_id=profile.id) }}">
+  <label>Search title, agency, or source text
+    <input type="text" name="q" value="{{ filter_state.q }}">
+  </label>
+  <label>Verdict
+    <select name="verdict">
+      <option value="" {% if not filter_state.verdict %}selected{% endif %}>All verdicts</option>
+      <option value="ELIGIBLE" {% if filter_state.verdict == "ELIGIBLE" %}selected{% endif %}>Likely eligible</option>
+      <option value="NOT_ELIGIBLE" {% if filter_state.verdict == "NOT_ELIGIBLE" %}selected{% endif %}>Not eligible</option>
+      <option value="CHECK" {% if filter_state.verdict == "CHECK" %}selected{% endif %}>Check</option>
+    </select>
+  </label>
+  <label>Sort
+    <select name="sort">
+      <option value="relevance" {% if filter_state.sort == "relevance" %}selected{% endif %}>Focus relevance, then closing date</option>
+      <option value="close" {% if filter_state.sort == "close" %}selected{% endif %}>Closing date</option>
+      <option value="award" {% if filter_state.sort == "award" %}selected{% endif %}>Largest award</option>
+      <option value="title" {% if filter_state.sort == "title" %}selected{% endif %}>Title</option>
+    </select>
+  </label>
+  <button type="submit">Apply</button>
+  {% if filter_state.q or filter_state.verdict or filter_state.sort != "relevance" %}
+  <a href="{{ url_for('main.card', profile_id=profile.id) }}">Clear</a>
+  {% endif %}
+</form>
+<p class="muted">Showing {{ n_visible }} of {{ n_total }} opportunities{% if focus_keywords %}. Focus: {{ focus_keywords|join(", ") }}{% endif %}.</p>
+
+<h2>Corrections for this profile ({{ corrections|length }})</h2>
+{% if summary %}
+<p class="muted">
+  Summary:
+  {% for verdict, count in summary.items() %}
+    {{ verdict if verdict else "unspecified" }}: {{ count }}{% if not loop.last %}, {% endif %}
+  {% endfor %}
+</p>
+{% endif %}
+{% if corrections %}
+<div class="table-wrap">
+<table>
+  <tr><th>Opportunity</th><th>Verdict</th><th>Note</th><th>Saved</th></tr>
+  {% for c in corrections %}
+  <tr>
+    <td data-label="Opportunity">{{ c.opportunity_id }}</td>
+    <td data-label="Verdict">{{ c.verdict }}</td>
+    <td data-label="Note">{{ c.note }}</td>
+    <td data-label="Saved">{{ c.created_at }}</td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+{% else %}
+<p class="muted">No corrections recorded yet.</p>
+{% endif %}
+
+<h2>Record a correction</h2>
+<form method="post" action="{{ url_for('main.correct') }}">
+  <input type="hidden" name="profile_id" value="{{ profile.id }}">
+  <label>Opportunity ID
+    <input type="text" name="opportunity_id" list="opp-ids" required>
+  </label>
+  <datalist id="opp-ids">
+    {% for oid in opportunity_ids %}<option value="{{ oid }}"></option>{% endfor %}
+  </datalist>
+  <label>Verdict
+    <select name="verdict">
+      <option value="ELIGIBLE">ELIGIBLE</option>
+      <option value="NOT_ELIGIBLE">NOT_ELIGIBLE</option>
+      <option value="CHECK" selected>CHECK</option>
+    </select>
+  </label>
+  <label>Note <textarea name="note" rows="2"></textarea></label>
+  <button type="submit">Save correction</button>
+</form>
+</div>

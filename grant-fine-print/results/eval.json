@@ -1,0 +1,211 @@
+{
+  "systems": {
+    "code_only": {
+      "n_pairs": 125,
+      "n_labels": 125,
+      "missing_pairs": [],
+      "missed_grant_rate": {
+        "k": 0,
+        "n": 33,
+        "rate": 0.0
+      },
+      "soft_miss": {
+        "k": 5,
+        "n": 27,
+        "rate": 0.18518518518518517
+      },
+      "human_read_share": {
+        "k": 48,
+        "n": 125,
+        "rate": 0.384
+      },
+      "accuracy": {
+        "k": 70,
+        "n": 125,
+        "rate": 0.56
+      },
+      "confusion_matrix": {
+        "ELIGIBLE": {
+          "ELIGIBLE": 25,
+          "NOT_ELIGIBLE": 0,
+          "CHECK": 8
+        },
+        "NOT_ELIGIBLE": {
+          "ELIGIBLE": 14,
+          "NOT_ELIGIBLE": 28,
+          "CHECK": 23
+        },
+        "CHECK": {
+          "ELIGIBLE": 5,
+          "NOT_ELIGIBLE": 5,
+          "CHECK": 17
+        }
+      },
+      "quote_validity": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "quote_correctness": {
+        "k": 0,
+        "n": 33,
+        "rate": 0.0
+      },
+      "latency_ms": {
+        "median_ms": null,
+        "p95_ms": null,
+        "note": "latency_ms absent from predictions; latency not computed"
+      },
+      "cost": {
+        "cost_per_1000_opportunities": null,
+        "note": "no list price in config; cost not computed"
+      }
+    },
+    "fine_tuned": {
+      "n_pairs": 125,
+      "n_labels": 125,
+      "missing_pairs": [],
+      "missed_grant_rate": {
+        "k": 11,
+        "n": 33,
+        "rate": 0.3333333333333333
+      },
+      "soft_miss": {
+        "k": 9,
+        "n": 27,
+        "rate": 0.3333333333333333
+      },
+      "human_read_share": {
+        "k": 57,
+        "n": 125,
+        "rate": 0.456
+      },
+      "accuracy": {
+        "k": 66,
+        "n": 125,
+        "rate": 0.528
+      },
+      "confusion_matrix": {
+        "ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 11,
+          "CHECK": 22
+        },
+        "NOT_ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 48,
+          "CHECK": 17
+        },
+        "CHECK": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 9,
+          "CHECK": 18
+        }
+      },
+      "quote_validity": {
+        "k": 158,
+        "n": 158,
+        "rate": 1.0
+      },
+      "quote_correctness": {
+        "k": 8,
+        "n": 68,
+        "rate": 0.11764705882352941
+      },
+      "latency_ms": {
+        "median_ms": 0.962,
+        "p95_ms": 2.179,
+        "n": 125
+      },
+      "cost": {
+        "cost_per_1000_opportunities": null,
+        "note": "no list price in config; cost not computed"
+      }
+    },
+    "prompted": {
+      "n_pairs": 125,
+      "n_labels": 125,
+      "missing_pairs": [],
+      "missed_grant_rate": {
+        "k": 11,
+        "n": 33,
+        "rate": 0.3333333333333333
+      },
+      "soft_miss": {
+        "k": 9,
+        "n": 27,
+        "rate": 0.3333333333333333
+      },
+      "human_read_share": {
+        "k": 57,
+        "n": 125,
+        "rate": 0.456
+      },
+      "accuracy": {
+        "k": 66,
+        "n": 125,
+        "rate": 0.528
+      },
+      "confusion_matrix": {
+        "ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 11,
+          "CHECK": 22
+        },
+        "NOT_ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 48,
+          "CHECK": 17
+        },
+        "CHECK": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 9,
+          "CHECK": 18
+        }
+      },
+      "quote_validity": {
+        "k": 158,
+        "n": 158,
+        "rate": 1.0
+      },
+      "quote_correctness": {
+        "k": 8,
+        "n": 68,
+        "rate": 0.11764705882352941
+      },
+      "latency_ms": {
+        "median_ms": 1.149,
+        "p95_ms": 2.266,
+        "n": 125
+      },
+      "cost": {
+        "cost_per_1000_opportunities": null,
+        "note": "no list price in config; cost not computed"
+      }
+    }
+  },
+  "comparison": {
+    "best_missed_grant": {
+      "system": "code_only",
+      "missed_grant_rate": {
+        "k": 0,
+        "n": 33,
+        "rate": 0.0
+      }
+    },
+    "best_tradeoff": {
+      "system": "code_only",
+      "tradeoff_score": 0.384,
+      "missed_grant_rate": {
+        "k": 0,
+        "n": 33,
+        "rate": 0.0
+      },
+      "human_read_share": {
+        "k": 48,
+        "n": 125,
+        "rate": 0.384
+      }
+    }
+  }
+}

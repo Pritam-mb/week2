@@ -1,0 +1,80 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# C extensions
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.hypothesis/
+
+# Type checking & Linters
+.mypy_cache/
+.ruff_cache/
+
+# IDE & Editor artifacts
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Project-specific: Process logs & PID files
+*.log
+*.pid
+
+# Project-specific: Raw cache & mock fetch logs
+data/raw/*.json
+data/raw/*.fetched
+!data/raw/.gitkeep
+data/mock_raw/*.fetched
+data/extract_cache/
+data/live_probe/
+
+# Project-specific: Pipeline outputs & rendered cards
+results/predictions/
+results/charts/
+results/cards/*.html
+results/cards/*.pdf
+!results/cards/.gitkeep
+
+# Project-specific: Human corrections runtime store
+data/corrections/corrections.json
+
+# Scratch & temporary workspace files
+scratch/
+*.tmp

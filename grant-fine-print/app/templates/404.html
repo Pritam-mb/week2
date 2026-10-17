@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Page not found — Grant Fine Print{% endblock %}
+{% block meta_description %}The requested Grant Fine Print page could not be found.{% endblock %}
+{% block content %}
+<main class="empty-state" aria-labelledby="not-found-title">
+  <p class="eyebrow">404</p>
+  <h2 id="not-found-title">That page is not available</h2>
+  <p class="muted">The link may be outdated, or the page may have moved.</p>
+  <p><a class="btn" href="{{ url_for('main.dashboard') }}">Back to dashboard</a></p>
+</main>
+{% endblock %}

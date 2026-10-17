@@ -1,0 +1,28 @@
+[project]
+name = "grant-fine-print"
+version = "0.1.0"
+description = "A weekly one-page fine-print card for freelance grant writers."
+requires-python = ">=3.10"
+dependencies = [
+    "PyYAML>=6.0",
+    "python-dotenv>=1.0",
+    "requests>=2.31",
+]
+
+[project.optional-dependencies]
+app = [
+    "Flask>=3.0",
+    "gunicorn>=22.0; platform_system != 'Windows'",
+]
+test = [
+    "pytest>=7.4",
+]
+
+[project.scripts]
+gfp = "src.cli:main"
+
+[tool.setuptools]
+packages = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

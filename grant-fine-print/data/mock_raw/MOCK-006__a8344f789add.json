@@ -1,0 +1,24 @@
+{
+  "id": "MOCK-006",
+  "oppNumber": "MOCK-006",
+  "oppTitle": "Individual Artist Residency",
+  "agencyName": "National Endowment for the Arts",
+  "oppStatus": "posted",
+  "openDate": "2026-03-01",
+  "closeDate": "2026-08-01",
+  "awardFloor": 5000,
+  "awardCeiling": 50000,
+  "awardEstimate": 20000,
+  "costSharing": false,
+  "applicantTypes": [
+    {
+      "code": "21",
+      "label": "Individuals"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Provides residencies for working artists.",
+    "eligibilityCriteria": "Individuals are eligible to apply. Organizations are not eligible for this program."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-006"
+}

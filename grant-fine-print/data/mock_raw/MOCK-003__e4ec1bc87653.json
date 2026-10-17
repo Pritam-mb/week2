@@ -1,0 +1,28 @@
+{
+  "id": "MOCK-003",
+  "oppNumber": "MOCK-003",
+  "oppTitle": "Tribal Language Preservation Award",
+  "agencyName": "Department of the Interior",
+  "oppStatus": "posted",
+  "openDate": "2026-02-01",
+  "closeDate": "2026-06-01",
+  "awardFloor": 10000,
+  "awardCeiling": 150000,
+  "awardEstimate": 60000,
+  "costSharing": false,
+  "applicantTypes": [
+    {
+      "code": "07",
+      "label": "Federally recognized tribal governments"
+    },
+    {
+      "code": "11",
+      "label": "Native American tribal organizations"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Supports documentation and teaching of tribal languages.",
+    "eligibilityCriteria": "Restricted to federally recognized tribal governments and native American tribal organizations."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-003"
+}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Request could not be completed — Grant Fine Print{% endblock %}
+{% block meta_description %}The Grant Fine Print request could not be completed.{% endblock %}
+{% block content %}
+<main class="empty-state" aria-labelledby="bad-request-title">
+  <p class="eyebrow">400</p>
+  <h2 id="bad-request-title">We could not complete that request</h2>
+  <p class="muted">{{ description or "Check the details and try again." }}</p>
+  <p><a class="btn" href="{{ url_for('main.dashboard') }}">Back to dashboard</a></p>
+</main>
+{% endblock %}

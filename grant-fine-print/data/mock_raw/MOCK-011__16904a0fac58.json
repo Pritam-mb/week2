@@ -1,0 +1,32 @@
+{
+  "id": "MOCK-011",
+  "oppNumber": "MOCK-011",
+  "oppTitle": "Community Arts Access Demonstration Grants",
+  "agencyName": "National Endowment for the Arts",
+  "oppStatus": "posted",
+  "openDate": "2026-03-01",
+  "closeDate": "2026-06-01",
+  "awardFloor": 10000,
+  "awardCeiling": 75000,
+  "awardEstimate": 40000,
+  "costSharing": true,
+  "applicantTypes": [
+    {
+      "code": "12",
+      "label": "Nonprofits with 501(c)(3) status"
+    },
+    {
+      "code": "22",
+      "label": "For-profit organizations other than small businesses"
+    },
+    {
+      "code": "06",
+      "label": "Public and State controlled institutions of higher education"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Grants for public programming that increases access to the arts in underserved communities.",
+    "eligibilityCriteria": "For-profit organizations are not eligible to apply under this program element. Applicants must be U.S.-based organizations located in the United States and must not have received a similar award from the Endowment in the prior two years."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-011"
+}

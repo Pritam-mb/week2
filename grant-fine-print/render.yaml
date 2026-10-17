@@ -1,0 +1,30 @@
+# Grant Fine Print — Render Blueprint
+#
+# Uses Render's free tier. The Hacktoberfest Open-Source AI Challenge sponsor
+# credits (Render) map to this blueprint: one free web service. The UI exposes
+# an explicit refresh action; upgrade the plan / attach a persistent disk if
+# you need the cache and profiles to survive redeploys.
+#
+# Secrets: set GFP_PROVIDER_BASE_URL and GFP_API_KEY in the Render dashboard
+# (sync: false below) — never commit them. Without them the pipeline falls
+# back to the offline MockBackend and records offline_fallback in each
+# predictions .meta.json, so results are never silently mislabelled.
+
+services:
+  - type: web
+    name: grant-fine-print
+    runtime: python
+    plan: free
+    buildCommand: pip install -e ".[app]"
+    startCommand: gunicorn "app.main:create_app()" --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: GFP_PROVIDER_BASE_URL
+        sync: false
+      - key: GFP_API_KEY
+        sync: false
+
+# The web UI now exposes an explicit "Refresh Grants.gov" action. Keeping the
+# refresh in the same service avoids claiming that a cron container writes to a
+# different container's ephemeral filesystem on Render's free tier.

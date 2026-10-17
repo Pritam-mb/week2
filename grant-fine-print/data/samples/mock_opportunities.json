@@ -1,0 +1,326 @@
+[
+ {
+  "id": "MOCK-001",
+  "oppNumber": "MOCK-001",
+  "oppTitle": "Community Health Outreach Program",
+  "agencyName": "Department of Health and Human Services",
+  "oppStatus": "posted",
+  "openDate": "2026-01-10",
+  "closeDate": "2026-04-10",
+  "awardFloor": 25000,
+  "awardCeiling": 300000,
+  "awardEstimate": 120000,
+  "costSharing": false,
+  "applicantTypes": [
+   {
+    "code": "25",
+    "label": "Others"
+   },
+   {
+    "code": "12",
+    "label": "Nonprofits with 501(c)(3) status"
+   },
+   {
+    "code": "13",
+    "label": "Nonprofits without 501(c)(3) status"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Funds community health outreach and education activities.",
+   "eligibilityCriteria": "Eligibility is open to all applicant types, including Others. No geographic or organisational restriction applies."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-001"
+ },
+ {
+  "id": "MOCK-002",
+  "oppNumber": "MOCK-002",
+  "oppTitle": "Rural Broadband Expansion Grant",
+  "agencyName": "Department of Agriculture",
+  "oppStatus": "posted",
+  "openDate": "2026-01-15",
+  "closeDate": "2026-05-01",
+  "awardFloor": 50000,
+  "awardCeiling": 1000000,
+  "awardEstimate": 400000,
+  "costSharing": true,
+  "applicantTypes": [
+   {
+    "code": "00",
+    "label": "State governments"
+   },
+   {
+    "code": "01",
+    "label": "County governments"
+   },
+   {
+    "code": "02",
+    "label": "City or township governments"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Expands high-speed internet access in rural communities.",
+   "eligibilityCriteria": "Only state, county and municipal governments may apply. For-profit entities are ineligible."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-002"
+ },
+ {
+  "id": "MOCK-003",
+  "oppNumber": "MOCK-003",
+  "oppTitle": "Tribal Language Preservation Award",
+  "agencyName": "Department of the Interior",
+  "oppStatus": "posted",
+  "openDate": "2026-02-01",
+  "closeDate": "2026-06-01",
+  "awardFloor": 10000,
+  "awardCeiling": 150000,
+  "awardEstimate": 60000,
+  "costSharing": false,
+  "applicantTypes": [
+   {
+    "code": "07",
+    "label": "Federally recognized tribal governments"
+   },
+   {
+    "code": "11",
+    "label": "Native American tribal organizations"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Supports documentation and teaching of tribal languages.",
+   "eligibilityCriteria": "Restricted to federally recognized tribal governments and native American tribal organizations."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-003"
+ },
+ {
+  "id": "MOCK-004",
+  "oppNumber": "MOCK-004",
+  "oppTitle": "Small Business Innovation Research",
+  "agencyName": "National Science Foundation",
+  "oppStatus": "posted",
+  "openDate": "2026-01-20",
+  "closeDate": "2026-03-20",
+  "awardFloor": 150000,
+  "awardCeiling": 750000,
+  "awardEstimate": 300000,
+  "costSharing": false,
+  "applicantTypes": [
+   {
+    "code": "23",
+    "label": "Small businesses"
+   },
+   {
+    "code": "22",
+    "label": "For-profit organizations"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Seeds early-stage technology development by small firms.",
+   "eligibilityCriteria": "Open to small businesses and for-profit organizations. Universities may not be the prime applicant."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-004"
+ },
+ {
+  "id": "MOCK-005",
+  "oppNumber": "MOCK-005",
+  "oppTitle": "Public University Research Fellowship",
+  "agencyName": "Department of Energy",
+  "oppStatus": "posted",
+  "openDate": "2026-02-10",
+  "closeDate": "2026-07-10",
+  "awardFloor": 40000,
+  "awardCeiling": 250000,
+  "awardEstimate": 90000,
+  "costSharing": false,
+  "applicantTypes": [
+   {
+    "code": "06",
+    "label": "Public/state controlled institutions of higher education"
+   },
+   {
+    "code": "20",
+    "label": "Private institutions of higher education"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Funds fellowships for energy-related research.",
+   "eligibilityCriteria": "Eligible applicants are public and private institutions of higher education."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-005"
+ },
+ {
+  "id": "MOCK-006",
+  "oppNumber": "MOCK-006",
+  "oppTitle": "Individual Artist Residency",
+  "agencyName": "National Endowment for the Arts",
+  "oppStatus": "posted",
+  "openDate": "2026-03-01",
+  "closeDate": "2026-08-01",
+  "awardFloor": 5000,
+  "awardCeiling": 50000,
+  "awardEstimate": 20000,
+  "costSharing": false,
+  "applicantTypes": [
+   {
+    "code": "21",
+    "label": "Individuals"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Provides residencies for working artists.",
+   "eligibilityCriteria": "Individuals are eligible to apply. Organizations are not eligible for this program."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-006"
+ },
+ {
+  "id": "MOCK-007",
+  "oppNumber": "MOCK-007",
+  "oppTitle": "Statewide Workforce Development",
+  "agencyName": "Department of Labor",
+  "oppStatus": "posted",
+  "openDate": "2026-01-25",
+  "closeDate": "2026-05-25",
+  "awardFloor": 100000,
+  "awardCeiling": 2000000,
+  "awardEstimate": 800000,
+  "costSharing": true,
+  "applicantTypes": [
+   {
+    "code": "00",
+    "label": "State governments"
+   },
+   {
+    "code": "04",
+    "label": "Special district governments"
+   },
+   {
+    "code": "25",
+    "label": "Others"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Builds statewide job-training capacity.",
+   "eligibilityCriteria": "State governments and special district governments are eligible; Other applicants may apply where permitted."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-007"
+ },
+ {
+  "id": "MOCK-008",
+  "oppNumber": "MOCK-008",
+  "oppTitle": "Nonprofit Capacity Building Fund",
+  "agencyName": "Federal Emergency Management Agency",
+  "oppStatus": "posted",
+  "openDate": "2026-02-20",
+  "closeDate": "2026-06-20",
+  "awardFloor": 20000,
+  "awardCeiling": 200000,
+  "awardEstimate": 75000,
+  "costSharing": false,
+  "applicantTypes": [
+   {
+    "code": "12",
+    "label": "Nonprofits with 501(c)(3) status"
+   },
+   {
+    "code": "13",
+    "label": "Nonprofits without 501(c)(3) status"
+   },
+   {
+    "code": "25",
+    "label": "Others"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Strengthens organizational capacity of community nonprofits.",
+   "eligibilityCriteria": "Open to 501(c)(3) and other nonprofits, including Others. Government agencies are not eligible."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-008"
+ },
+ {
+  "id": "MOCK-009",
+  "oppNumber": "MOCK-009",
+  "oppTitle": "Municipal Climate Resilience Planning",
+  "agencyName": "Environmental Protection Agency",
+  "oppStatus": "posted",
+  "openDate": "2026-03-15",
+  "closeDate": "2026-09-15",
+  "awardFloor": 30000,
+  "awardCeiling": 350000,
+  "awardEstimate": 140000,
+  "costSharing": false,
+  "applicantTypes": [
+   {
+    "code": "02",
+    "label": "City or township governments"
+   },
+   {
+    "code": "04",
+    "label": "Special district governments"
+   },
+   {
+    "code": "25",
+    "label": "Others"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Helps municipalities plan for climate hazards.",
+   "eligibilityCriteria": "Cities, townships and special districts may apply; Other applicants are welcome to submit proposals."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-009"
+ },
+ {
+  "id": "MOCK-010",
+  "oppNumber": "MOCK-010",
+  "oppTitle": "Rural Behavioral Health Workforce Pipeline",
+  "agencyName": "Substance Abuse and Mental Health Services Administration",
+  "oppStatus": "posted",
+  "openDate": "2026-02-01",
+  "closeDate": "2026-05-01",
+  "awardFloor": 100000,
+  "awardCeiling": 500000,
+  "awardEstimate": 300000,
+  "costSharing": false,
+  "applicantTypes": [
+   {
+    "code": "25",
+    "label": "Others"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Supports training pipelines for behavioral health workers in rural counties.",
+   "eligibilityCriteria": "Applicants must be U.S.-based commercial organizations with a principal place of business in the United States. For-profit organizations are eligible to apply under this announcement; nonprofits and government entities are excluded."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-010"
+ },
+ {
+  "id": "MOCK-011",
+  "oppNumber": "MOCK-011",
+  "oppTitle": "Community Arts Access Demonstration Grants",
+  "agencyName": "National Endowment for the Arts",
+  "oppStatus": "posted",
+  "openDate": "2026-03-01",
+  "closeDate": "2026-06-01",
+  "awardFloor": 10000,
+  "awardCeiling": 75000,
+  "awardEstimate": 40000,
+  "costSharing": true,
+  "applicantTypes": [
+   {
+    "code": "12",
+    "label": "Nonprofits with 501(c)(3) status"
+   },
+   {
+    "code": "22",
+    "label": "For-profit organizations other than small businesses"
+   },
+   {
+    "code": "06",
+    "label": "Public and State controlled institutions of higher education"
+   }
+  ],
+  "synopsis": {
+   "synopsisDesc": "Grants for public programming that increases access to the arts in underserved communities.",
+   "eligibilityCriteria": "For-profit organizations are not eligible to apply under this program element. Applicants must be U.S.-based organizations located in the United States and must not have received a similar award from the Endowment in the prior two years."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-011"
+ }
+]

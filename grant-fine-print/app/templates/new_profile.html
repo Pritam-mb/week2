@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}New profile — Grant Fine Print{% endblock %}
+{% block meta_description %}Create a client profile to screen Grants.gov opportunities against its eligibility details.{% endblock %}
+{% block content %}
+<h2>Create a profile</h2>
+{% if errors %}
+<ul class="flash error">
+  {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+</ul>
+{% endif %}
+<form method="post" action="{{ url_for('main.new_profile') }}">
+  <label>Name <input type="text" name="name" value="{{ form.get('name', '') }}" required></label>
+  <label>Organization type
+    <select name="org_type">
+      {% for t in org_types %}
+      <option value="{{ t }}" {% if form.get('org_type') == t %}selected{% endif %}>{{ t }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label><input type="checkbox" name="us_based" {% if form.get('us_based', True) %}checked{% endif %}> US-based</label>
+  <label>State <input type="text" name="state" value="{{ form.get('state', '') }}"></label>
+  <label>Size band
+    <select name="size_band">
+      <option value="" {% if not form.get('size_band') %}selected{% endif %}>(unknown)</option>
+      {% for s in size_bands %}
+      <option value="{{ s }}" {% if form.get('size_band') == s %}selected{% endif %}>{{ s }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Focus keywords (comma-separated)
+    <input type="text" name="focus_keywords" value="{{ form.get('focus_keywords', '') }}">
+  </label>
+  <label>Notes <textarea name="notes" rows="4">{{ form.get('notes', '') }}</textarea></label>
+  <button class="btn" type="submit">Create profile</button>
+</form>
+<p><a href="{{ url_for('main.dashboard') }}">Back to dashboard</a></p>
+{% endblock %}

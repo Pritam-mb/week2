@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Grant Fine Print{% endblock %}
+{% block meta_description %}Review cached Grants.gov opportunities, refresh the source, and screen grants against client profiles.{% endblock %}
+{% block content %}
+<p class="muted">
+  {{ profiles|length }} profile{{ "" if profiles|length == 1 else "s" }} &middot;
+  {{ n_opportunities }} cached opportunit{{ "y" if n_opportunities == 1 else "ies" }}
+  {% if pull_date %} &middot; pulled {{ pull_date }}{% endif %}
+</p>
+
+<div class="refresh-box">
+  <h2>Refresh the source</h2>
+  <p class="muted">Grants.gov is the authoritative source. Use the offline sample only for a zero-network demo.</p>
+  <form method="post" action="{{ url_for('main.refresh') }}" class="inline-form">
+    <input type="hidden" name="mode" value="live">
+    <button class="btn" type="submit">Refresh Grants.gov</button>
+  </form>
+  <form method="post" action="{{ url_for('main.refresh') }}" class="inline-form">
+    <input type="hidden" name="mode" value="mock">
+    <button class="btn secondary" type="submit">Load offline sample</button>
+  </form>
+  {% if pull_stats %}
+  <p class="muted">Last pull: {{ pull_stats.get('new', 0) }} new, {{ pull_stats.get('changed', 0) }} changed, {{ pull_stats.get('duplicates', 0) }} duplicates.</p>
+  {% endif %}
+</div>
+
+<h2>Run now</h2>
+<form method="post" action="{{ url_for('main.run_now') }}">
+  <label>Profile
+    <select name="profile_id">
+      <option value="">All profiles</option>
+      {% for p in profiles %}
+      <option value="{{ p.id }}">{{ p.name }} ({{ p.id }})</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Backend
+    <select name="backend">
+      {% for b in backends %}<option value="{{ b }}">{{ b }}</option>{% endfor %}
+    </select>
+  </label>
+  <button class="btn" type="submit">Run now</button>
+</form>
+
+<h2>Profiles</h2>
+<p><a class="btn" href="{{ url_for('main.new_profile') }}">Create a profile</a></p>
+{% if profiles %}
+<div class="table-wrap">
+<table>
+  <tr><th>ID</th><th>Name</th><th>Org type</th><th>US-based</th><th>State</th><th>Focus</th><th>Card</th></tr>
+  {% for p in profiles %}
+  <tr>
+    <td data-label="ID">{{ p.id }}</td>
+    <td data-label="Name">{{ p.name }}</td>
+    <td data-label="Org type">{{ p.org_type }}</td>
+    <td data-label="US-based">{{ "yes" if p.us_based else "no" }}</td>
+    <td data-label="State">{{ p.state if p.state else "—" }}</td>
+    <td data-label="Focus">{{ p.focus_keywords|join(", ") if p.focus_keywords else "—" }}</td>
+    <td data-label="Card"><a href="{{ url_for('main.card', profile_id=p.id) }}">View card</a></td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+{% else %}
+<p class="muted">No profiles yet. <a href="{{ url_for('main.new_profile') }}">Create one</a>.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,32 @@
+{
+  "id": "MOCK-001",
+  "oppNumber": "MOCK-001",
+  "oppTitle": "Community Health Outreach Program",
+  "agencyName": "Department of Health and Human Services",
+  "oppStatus": "posted",
+  "openDate": "2026-01-10",
+  "closeDate": "2026-04-10",
+  "awardFloor": 25000,
+  "awardCeiling": 300000,
+  "awardEstimate": 120000,
+  "costSharing": false,
+  "applicantTypes": [
+    {
+      "code": "25",
+      "label": "Others"
+    },
+    {
+      "code": "12",
+      "label": "Nonprofits with 501(c)(3) status"
+    },
+    {
+      "code": "13",
+      "label": "Nonprofits without 501(c)(3) status"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Funds community health outreach and education activities.",
+    "eligibilityCriteria": "Eligibility is open to all applicant types, including Others. No geographic or organisational restriction applies."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-001"
+}

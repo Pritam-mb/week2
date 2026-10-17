@@ -1,0 +1,131 @@
+# Grant Fine Print configuration
+# Every value here is a knob; no magic numbers in code.
+
+api:
+  # Grants.gov public API. No authentication required for search2.
+  base_url: "https://api.grants.gov/v1/api"
+  search2_path: "/search2"
+  fetch_opportunity_path: "/fetchOpportunity"
+  # The proxy's fetchOpportunity backend (apply07.../grantsws) is frequently
+  # unavailable through api.grants.gov. The same legacy service is reachable
+  # directly, but only with Content-Type: application/x-www-form-urlencoded.
+  legacy_detail_url: "https://apply07.grants.gov/grantsws/rest/opportunity/details"
+  # Grants.gov expects a pipe-string here, NOT a list (a list returns 0 hits).
+  opp_statuses: "posted"
+  # search2 paginates; fetch `page_rows` at a time until hitCount is reached.
+  page_rows: 100
+  # Safety cap on opportunities pulled (0 = no cap).
+  max_opportunities: 0
+  # Be polite: minimum seconds between requests and per-request timeout.
+  min_request_interval_seconds: 1.0
+  timeout_seconds: 30
+  max_retries: 3
+  # Fields requested from search2. Adjust after checking one live response.
+  search_fields:
+    - id
+    - opportunityNumber
+    - opportunityTitle
+    - agencyName
+    - oppStatus
+    - openDate
+    - closeDate
+    - awardFloor
+    - awardCeiling
+    - estimatedFunding
+    - costSharing
+    - applicantTypes
+    - synopsisDesc
+    - forecastDesc
+    - applicantEligibilityDesc
+
+cache:
+  raw_dir: "data/raw"
+  # Cache key = opportunity id + first 12 hex chars of sha256(normalised text).
+  hash_prefix_length: 12
+  manifest: "data/raw/manifest.json"
+
+profiles_dir: "data/profiles"
+corrections_path: "data/corrections/corrections.json"
+
+extract:
+  # Base model for stage 1. Replace with a Tinker-supported model name after
+  # checking Tinker's docs.
+  base_model: "Qwen/Qwen2.5-3B-Instruct"
+  fine_tuned_model: null   # e.g. "tinker:grant-fine-print-v1"
+  provider: "tinker"       # tinker | openai-compatible | mock
+  provider_base_url: null
+  temperature: 0.0
+  max_output_tokens: 1024
+  timeout_seconds: 120
+  # Stage 1 runs once per opportunity; results cached by text hash.
+  cache_dir: "data/extract_cache"
+
+match:
+  # Condition types the code can evaluate directly against a profile.
+  # Everything else falls through to CHECK.
+  evaluable_types:
+    - org_type
+    - location
+    - size
+  # Org-type codes from Grants.gov's own applicant-type list.
+  # See https://grants.gov for the authoritative list.
+  org_type_codes:
+    "00": "state_government"
+    "01": "county_government"
+    "02": "city_or_township_government"
+    "04": "special_district_government"
+    "05": "independent_school_district"
+    "06": "public_state_university"
+    "07": "federally_recognized_tribal_government"
+    "08": "public_housing_authority"
+    "11": "native_american_tribal_organization"
+    "12": "nonprofit_501c3"
+    "13": "nonprofit_non_501c3"
+    "20": "private_university"
+    "21": "individual"
+    "22": "for_profit"
+    "23": "small_business"
+    "25": "others"
+    "99": "unrestricted"
+  # Size-band bands used by the matcher (profile.size_band).
+  size_bands: ["micro", "small", "medium", "large"]
+
+card:
+  # Print to A4 by default.
+  page_size: "A4"
+  output_dir: "results/cards"
+  max_rows_per_verdict: 40
+
+study:
+  # Number of opportunities to hand-label for number (b). Stratified ~half
+  # "Others"-code, half permissive. Kept modest so every row is really read.
+  sample_size: 60
+  random_seed: 20261018
+  exclusion_keywords:
+    - "not eligible"
+    - "ineligible"
+    - "only .* may apply"
+    - "must be"
+    - "restricted to"
+    - "limited to"
+    - "excluded"
+    - "outside the united states"
+    - "u.s.-based"
+    - "united states"
+  results_dir: "results"
+  sample_path: "data/samples/study_sample.csv"
+  # Hand-applied (b) labels. Written/frozen by a human before any model runs.
+  labels_path: "data/labels/study_labels.csv"
+
+eval:
+  labels_path: "data/labels/test_labels.csv"
+  predictions_dir: "results/predictions"
+  output: "results/eval.json"
+  chart_dir: "results/charts"
+
+app:
+  host: "0.0.0.0"
+  port: 8000
+  # Optional product contact details. Leave blank until real details are set.
+  support_email: ""
+  support_phone: ""

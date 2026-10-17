@@ -1,0 +1,88 @@
+{
+  "pull_date": "2026-10-17T13:59:01.326275+00:00",
+  "total_pulled": 11,
+  "new": 2,
+  "changed": 9,
+  "duplicates": 0,
+  "files": [
+    {
+      "id": "MOCK-001",
+      "file": "MOCK-001__3109f66495c1.json",
+      "text_hash": "3109f66495c169717e2bcd9f824325be64dc2746db9a8316b7a1dafa7def34fc",
+      "hit_hash": "3109f66495c169717e2bcd9f824325be64dc2746db9a8316b7a1dafa7def34fc"
+    },
+    {
+      "id": "MOCK-002",
+      "file": "MOCK-002__b79fcc4e8d08.json",
+      "text_hash": "b79fcc4e8d084dc3d9a9b6110d4a3c580033f4cc6ee549a14f047de36ac08028",
+      "hit_hash": "b79fcc4e8d084dc3d9a9b6110d4a3c580033f4cc6ee549a14f047de36ac08028"
+    },
+    {
+      "id": "MOCK-003",
+      "file": "MOCK-003__e4ec1bc87653.json",
+      "text_hash": "e4ec1bc87653362c60e78e68d3db5d34792a9efec98e6b15fa69829caacb1e3d",
+      "hit_hash": "e4ec1bc87653362c60e78e68d3db5d34792a9efec98e6b15fa69829caacb1e3d"
+    },
+    {
+      "id": "MOCK-004",
+      "file": "MOCK-004__42284e82e300.json",
+      "text_hash": "42284e82e300a95c06e989a943aa0b72db3ae8a1f8205277f2b090077baf1c10",
+      "hit_hash": "42284e82e300a95c06e989a943aa0b72db3ae8a1f8205277f2b090077baf1c10"
+    },
+    {
+      "id": "MOCK-005",
+      "file": "MOCK-005__e5bf5f289d65.json",
+      "text_hash": "e5bf5f289d651f0c4c5a0eabd31658a6169347bddfb8a32c6c15d6227de09fcc",
+      "hit_hash": "e5bf5f289d651f0c4c5a0eabd31658a6169347bddfb8a32c6c15d6227de09fcc"
+    },
+    {
+      "id": "MOCK-006",
+      "file": "MOCK-006__a8344f789add.json",
+      "text_hash": "a8344f789adda4fe8ba85dcb55812f2209bb7ce2ad4616fa6302ae571eac5e4a",
+      "hit_hash": "a8344f789adda4fe8ba85dcb55812f2209bb7ce2ad4616fa6302ae571eac5e4a"
+    },
+    {
+      "id": "MOCK-007",
+      "file": "MOCK-007__552753b6ca9b.json",
+      "text_hash": "552753b6ca9b04c5b3a798d4c8a7eecc3330c114c086196db64801f80b61a440",
+      "hit_hash": "552753b6ca9b04c5b3a798d4c8a7eecc3330c114c086196db64801f80b61a440"
+    },
+    {
+      "id": "MOCK-008",
+      "file": "MOCK-008__964490136b15.json",
+      "text_hash": "964490136b15845bcd66a52c4d52d4099efc36b7f0c6662f652f398d91287991",
+      "hit_hash": "964490136b15845bcd66a52c4d52d4099efc36b7f0c6662f652f398d91287991"
+    },
+    {
+      "id": "MOCK-009",
+      "file": "MOCK-009__b86c20ae8ec8.json",
+      "text_hash": "b86c20ae8ec87430527b28bb4bad28a3cdcb4b70939f6c7e7cdb68894bfb5041",
+      "hit_hash": "b86c20ae8ec87430527b28bb4bad28a3cdcb4b70939f6c7e7cdb68894bfb5041"
+    },
+    {
+      "id": "MOCK-010",
+      "file": "MOCK-010__1151bcdef97c.json",
+      "text_hash": "1151bcdef97cdd8d0fe563c6149b229580548e22bc99b4cf99a50ea68cffd978",
+      "hit_hash": "1151bcdef97cdd8d0fe563c6149b229580548e22bc99b4cf99a50ea68cffd978"
+    },
+    {
+      "id": "MOCK-011",
+      "file": "MOCK-011__16904a0fac58.json",
+      "text_hash": "16904a0fac58c8c6d44b4f27a6f86f59805e4aff7f6f35e4215afda85b32ad90",
+      "hit_hash": "16904a0fac58c8c6d44b4f27a6f86f59805e4aff7f6f35e4215afda85b32ad90"
+    }
+  ],
+  "opportunities": {
+    "MOCK-001": "3109f66495c169717e2bcd9f824325be64dc2746db9a8316b7a1dafa7def34fc",
+    "MOCK-002": "b79fcc4e8d084dc3d9a9b6110d4a3c580033f4cc6ee549a14f047de36ac08028",
+    "MOCK-003": "e4ec1bc87653362c60e78e68d3db5d34792a9efec98e6b15fa69829caacb1e3d",
+    "MOCK-004": "42284e82e300a95c06e989a943aa0b72db3ae8a1f8205277f2b090077baf1c10",
+    "MOCK-005": "e5bf5f289d651f0c4c5a0eabd31658a6169347bddfb8a32c6c15d6227de09fcc",
+    "MOCK-006": "a8344f789adda4fe8ba85dcb55812f2209bb7ce2ad4616fa6302ae571eac5e4a",
+    "MOCK-007": "552753b6ca9b04c5b3a798d4c8a7eecc3330c114c086196db64801f80b61a440",
+    "MOCK-008": "964490136b15845bcd66a52c4d52d4099efc36b7f0c6662f652f398d91287991",
+    "MOCK-009": "b86c20ae8ec87430527b28bb4bad28a3cdcb4b70939f6c7e7cdb68894bfb5041",
+    "MOCK-010": "1151bcdef97cdd8d0fe563c6149b229580548e22bc99b4cf99a50ea68cffd978",
+    "MOCK-011": "16904a0fac58c8c6d44b4f27a6f86f59805e4aff7f6f35e4215afda85b32ad90"
+  }
+}

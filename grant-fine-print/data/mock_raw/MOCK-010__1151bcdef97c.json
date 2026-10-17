@@ -1,0 +1,24 @@
+{
+  "id": "MOCK-010",
+  "oppNumber": "MOCK-010",
+  "oppTitle": "Rural Behavioral Health Workforce Pipeline",
+  "agencyName": "Substance Abuse and Mental Health Services Administration",
+  "oppStatus": "posted",
+  "openDate": "2026-02-01",
+  "closeDate": "2026-05-01",
+  "awardFloor": 100000,
+  "awardCeiling": 500000,
+  "awardEstimate": 300000,
+  "costSharing": false,
+  "applicantTypes": [
+    {
+      "code": "25",
+      "label": "Others"
+    }
+  ],
+  "synopsis": {
+    "synopsisDesc": "Supports training pipelines for behavioral health workers in rural counties.",
+    "eligibilityCriteria": "Applicants must be U.S.-based commercial organizations with a principal place of business in the United States. For-profit organizations are eligible to apply under this announcement; nonprofits and government entities are excluded."
+  },
+  "oppHttps": "https://grants.gov/view-opportunity?oppId=MOCK-010"
+}
