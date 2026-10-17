@@ -68,9 +68,11 @@ data/live_probe/
 # Project-specific: Pipeline outputs & rendered cards
 results/predictions/
 results/charts/
+results/extract_cache/
 results/cards/*.html
 results/cards/*.pdf
 !results/cards/.gitkeep
+data/training/*.clean.jsonl
 
 # Project-specific: Human corrections runtime store
 data/corrections/corrections.json

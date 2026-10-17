@@ -18,9 +18,9 @@ from typing import Any
 
 from dotenv import load_dotenv
 
-from .models import Opportunity
+from .models import Opportunity, Profile
 from .config import load_config, get
-from .io_utils import load_opportunities
+from .io_utils import load_opportunities, load_profiles
 
 
 SCHEMA = """
@@ -71,6 +71,31 @@ CREATE TABLE IF NOT EXISTS official_link_candidates (
 );
 CREATE INDEX IF NOT EXISTS official_link_candidate_opp_idx
     ON official_link_candidates(opportunity_id);
+CREATE TABLE IF NOT EXISTS client_profiles (
+    profile_id TEXT PRIMARY KEY,
+    name TEXT NOT NULL DEFAULT '',
+    org_type TEXT NOT NULL DEFAULT '',
+    us_based BOOLEAN NOT NULL DEFAULT TRUE,
+    state TEXT NOT NULL DEFAULT '',
+    size_band TEXT NOT NULL DEFAULT '',
+    focus_keywords JSONB NOT NULL DEFAULT '[]'::jsonb,
+    notes TEXT NOT NULL DEFAULT '',
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS human_corrections (
+    correction_key TEXT PRIMARY KEY,
+    profile_id TEXT NOT NULL,
+    opportunity_id TEXT NOT NULL,
+    verdict TEXT NOT NULL,
+    note TEXT NOT NULL DEFAULT '',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE TABLE IF NOT EXISTS rendered_cards (
+    profile_id TEXT PRIMARY KEY,
+    card_html TEXT NOT NULL,
+    provenance JSONB NOT NULL DEFAULT '{}'::jsonb,
+    rendered_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 """
 
 
@@ -258,6 +283,135 @@ class PostgresStore:
                 )
             connection.commit()
 
+    def upsert_profile(self, profile: Profile) -> None:
+        with self.connect() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """INSERT INTO client_profiles
+                       (profile_id, name, org_type, us_based, state, size_band, focus_keywords, notes, updated_at)
+                       VALUES (%s, %s, %s, %s, %s, %s, %s::jsonb, %s, now())
+                       ON CONFLICT (profile_id) DO UPDATE SET
+                         name = EXCLUDED.name,
+                         org_type = EXCLUDED.org_type,
+                         us_based = EXCLUDED.us_based,
+                         state = EXCLUDED.state,
+                         size_band = EXCLUDED.size_band,
+                         focus_keywords = EXCLUDED.focus_keywords,
+                         notes = EXCLUDED.notes,
+                         updated_at = EXCLUDED.updated_at""",
+                    (
+                        profile.id,
+                        profile.name,
+                        profile.org_type,
+                        profile.us_based,
+                        profile.state,
+                        profile.size_band,
+                        json.dumps(profile.focus_keywords),
+                        profile.notes,
+                    ),
+                )
+            connection.commit()
+
+    def load_profiles(self) -> list[Profile]:
+        with self.connect() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """SELECT profile_id, name, org_type, us_based, state, size_band, focus_keywords, notes
+                       FROM client_profiles ORDER BY name, profile_id"""
+                )
+                rows = cursor.fetchall()
+        profiles: list[Profile] = []
+        for r in rows:
+            fk = r.get("focus_keywords") or []
+            if isinstance(fk, str):
+                fk = json.loads(fk)
+            profiles.append(
+                Profile(
+                    id=r["profile_id"],
+                    name=r["name"],
+                    org_type=r["org_type"],
+                    us_based=bool(r["us_based"]),
+                    state=r["state"],
+                    size_band=r["size_band"],
+                    focus_keywords=fk,
+                    notes=r["notes"],
+                )
+            )
+        return profiles
+
+    def save_correction(
+        self, profile_id: str, opportunity_id: str, verdict: str, note: str = ""
+    ) -> dict[str, Any]:
+        key = f"{profile_id}|{opportunity_id}"
+        now_iso = datetime.now(timezone.utc).isoformat()
+        with self.connect() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """INSERT INTO human_corrections
+                       (correction_key, profile_id, opportunity_id, verdict, note, created_at)
+                       VALUES (%s, %s, %s, %s, %s, %s)
+                       ON CONFLICT (correction_key) DO UPDATE SET
+                         verdict = EXCLUDED.verdict,
+                         note = EXCLUDED.note,
+                         created_at = EXCLUDED.created_at""",
+                    (key, profile_id, opportunity_id, verdict, note, now_iso),
+                )
+            connection.commit()
+        return {
+            "verdict": verdict,
+            "note": note,
+            "created_at": now_iso,
+            "profile_id": profile_id,
+            "opportunity_id": opportunity_id,
+        }
+
+    def load_corrections(self) -> dict[str, dict[str, Any]]:
+        with self.connect() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """SELECT correction_key, profile_id, opportunity_id, verdict, note, created_at
+                       FROM human_corrections"""
+                )
+                rows = cursor.fetchall()
+        corrections: dict[str, dict[str, Any]] = {}
+        for r in rows:
+            ca = r["created_at"]
+            corrections[r["correction_key"]] = {
+                "verdict": r["verdict"],
+                "note": r["note"],
+                "created_at": ca.isoformat() if hasattr(ca, "isoformat") else str(ca),
+                "profile_id": r["profile_id"],
+                "opportunity_id": r["opportunity_id"],
+            }
+        return corrections
+
+    def save_card(
+        self, profile_id: str, card_html: str, provenance: dict[str, Any] | None = None
+    ) -> None:
+        prov = provenance or {}
+        with self.connect() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """INSERT INTO rendered_cards (profile_id, card_html, provenance, rendered_at)
+                       VALUES (%s, %s, %s::jsonb, now())
+                       ON CONFLICT (profile_id) DO UPDATE SET
+                         card_html = EXCLUDED.card_html,
+                         provenance = EXCLUDED.provenance,
+                         rendered_at = EXCLUDED.rendered_at""",
+                    (profile_id, card_html, json.dumps(prov)),
+                )
+            connection.commit()
+
+    def load_card(self, profile_id: str) -> str | None:
+        with self.connect() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT card_html FROM rendered_cards WHERE profile_id = %s",
+                    (profile_id,),
+                )
+                row = cursor.fetchone()
+        return row["card_html"] if row else None
+
 
 def _row_to_opportunity(row: dict[str, Any]) -> Opportunity:
     applicant_types = row.get("applicant_types") or []
@@ -285,7 +439,7 @@ def _row_to_opportunity(row: dict[str, Any]) -> Opportunity:
 def main(argv: list[str] | None = None) -> int:
     load_dotenv()
     parser = argparse.ArgumentParser(prog="python -m src.storage")
-    parser.add_argument("command", choices=["init", "import-cache", "search"])
+    parser.add_argument("command", choices=["init", "import-cache", "search", "sync-profiles"])
     parser.add_argument("--raw-dir", default=None)
     parser.add_argument("--query", default="")
     parser.add_argument("--limit", type=int, default=20)
@@ -294,6 +448,13 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "init":
         store.initialize()
         print("Tiger Data schema initialized.")
+    elif args.command == "sync-profiles":
+        config = load_config()
+        profiles_dir = get(config, "profiles_dir", "data/profiles")
+        profiles = load_profiles(profiles_dir)
+        for p in profiles:
+            store.upsert_profile(p)
+        print(f"Synced {len(profiles)} profiles into Tiger Data.")
     elif args.command == "import-cache":
         config = load_config()
         raw_dir = args.raw_dir or get(config, "cache.raw_dir", "data/raw")

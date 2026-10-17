@@ -59,7 +59,16 @@ def prepare(
     backend_name: str = "prompted",
 ) -> int:
     """Create model-assisted candidate SFT conversations from non-test data."""
-    opportunities = load_opportunities(get(config, "cache.raw_dir", "data/raw"))
+    storage_backend = str(get(config, "storage.backend", "filesystem")).lower()
+    if storage_backend == "postgres":
+        try:
+            from .storage import PostgresStore
+            opportunities = PostgresStore().current_opportunities()
+        except Exception:
+            opportunities = load_opportunities(get(config, "cache.raw_dir", "data/raw"))
+    else:
+        opportunities = load_opportunities(get(config, "cache.raw_dir", "data/raw"))
+
     test_ids = _test_ids(get(config, "eval.labels_path", "data/labels/test_labels.csv"))
     selected = [opp for opp in opportunities if opp.id not in test_ids]
     if limit is not None:
@@ -239,7 +248,7 @@ def train(
             optim_future.result()
             loss = "recorded"
             if hasattr(forward_result, "metrics") and isinstance(forward_result.metrics, dict):
-                loss = forward_result.metrics.get("loss", loss)
+                loss = forward_result.metrics.get("loss:sum", forward_result.metrics.get("loss", loss))
             elif hasattr(forward_result, "loss"):
                 loss = forward_result.loss
             print(f"epoch={epoch + 1} batch={batch_index + 1} loss={loss}")

@@ -66,55 +66,55 @@
       "n_labels": 125,
       "missing_pairs": [],
       "missed_grant_rate": {
-        "k": 11,
+        "k": 18,
         "n": 33,
-        "rate": 0.3333333333333333
+        "rate": 0.5454545454545454
       },
       "soft_miss": {
-        "k": 9,
+        "k": 0,
         "n": 27,
-        "rate": 0.3333333333333333
+        "rate": 0.0
       },
       "human_read_share": {
-        "k": 57,
+        "k": 12,
         "n": 125,
-        "rate": 0.456
+        "rate": 0.096
       },
       "accuracy": {
-        "k": 66,
+        "k": 24,
         "n": 125,
-        "rate": 0.528
+        "rate": 0.192
       },
       "confusion_matrix": {
         "ELIGIBLE": {
-          "ELIGIBLE": 0,
-          "NOT_ELIGIBLE": 11,
-          "CHECK": 22
+          "ELIGIBLE": 9,
+          "NOT_ELIGIBLE": 18,
+          "CHECK": 6
         },
         "NOT_ELIGIBLE": {
-          "ELIGIBLE": 0,
-          "NOT_ELIGIBLE": 48,
-          "CHECK": 17
+          "ELIGIBLE": 44,
+          "NOT_ELIGIBLE": 15,
+          "CHECK": 6
         },
         "CHECK": {
-          "ELIGIBLE": 0,
-          "NOT_ELIGIBLE": 9,
-          "CHECK": 18
+          "ELIGIBLE": 27,
+          "NOT_ELIGIBLE": 0,
+          "CHECK": 0
         }
       },
       "quote_validity": {
-        "k": 158,
-        "n": 158,
+        "k": 70,
+        "n": 70,
         "rate": 1.0
       },
       "quote_correctness": {
-        "k": 8,
-        "n": 68,
-        "rate": 0.11764705882352941
+        "k": 9,
+        "n": 33,
+        "rate": 0.2727272727272727
       },
       "latency_ms": {
-        "median_ms": 0.962,
-        "p95_ms": 2.179,
+        "median_ms": 1934.105,
+        "p95_ms": 6352.959,
         "n": 125
       },
       "cost": {
@@ -127,55 +127,55 @@
       "n_labels": 125,
       "missing_pairs": [],
       "missed_grant_rate": {
-        "k": 11,
+        "k": 20,
         "n": 33,
-        "rate": 0.3333333333333333
+        "rate": 0.6060606060606061
       },
       "soft_miss": {
-        "k": 9,
+        "k": 4,
         "n": 27,
-        "rate": 0.3333333333333333
+        "rate": 0.14814814814814814
       },
       "human_read_share": {
-        "k": 57,
+        "k": 64,
         "n": 125,
-        "rate": 0.456
+        "rate": 0.512
       },
       "accuracy": {
-        "k": 66,
+        "k": 47,
         "n": 125,
-        "rate": 0.528
+        "rate": 0.376
       },
       "confusion_matrix": {
         "ELIGIBLE": {
           "ELIGIBLE": 0,
-          "NOT_ELIGIBLE": 11,
-          "CHECK": 22
+          "NOT_ELIGIBLE": 20,
+          "CHECK": 13
         },
         "NOT_ELIGIBLE": {
-          "ELIGIBLE": 0,
-          "NOT_ELIGIBLE": 48,
-          "CHECK": 17
+          "ELIGIBLE": 1,
+          "NOT_ELIGIBLE": 30,
+          "CHECK": 34
         },
         "CHECK": {
-          "ELIGIBLE": 0,
-          "NOT_ELIGIBLE": 9,
-          "CHECK": 18
+          "ELIGIBLE": 6,
+          "NOT_ELIGIBLE": 4,
+          "CHECK": 17
         }
       },
       "quote_validity": {
-        "k": 158,
-        "n": 158,
-        "rate": 1.0
+        "k": 94,
+        "n": 95,
+        "rate": 0.9894736842105263
       },
       "quote_correctness": {
-        "k": 8,
-        "n": 68,
-        "rate": 0.11764705882352941
+        "k": 13,
+        "n": 54,
+        "rate": 0.24074074074074073
       },
       "latency_ms": {
-        "median_ms": 1.149,
-        "p95_ms": 2.266,
+        "median_ms": 1056.594,
+        "p95_ms": 1426.63,
         "n": 125
       },
       "cost": {

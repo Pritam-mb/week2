@@ -39,14 +39,14 @@ share): code_only — score 0.384
 <h2>Missed-grant rate (lower is better)</h2>
 <div class="chart">
 <div class="chart-row"><span class="sys-label">code_only</span><span class="bar" style="width:0.0%;background:#b03a2e"></span><span class="bar-label">0 of 33</span></div>
-<div class="chart-row"><span class="sys-label">fine_tuned</span><span class="bar" style="width:33.3%;background:#b03a2e"></span><span class="bar-label">11 of 33</span></div>
-<div class="chart-row"><span class="sys-label">prompted</span><span class="bar" style="width:33.3%;background:#b03a2e"></span><span class="bar-label">11 of 33</span></div>
+<div class="chart-row"><span class="sys-label">fine_tuned</span><span class="bar" style="width:54.5%;background:#b03a2e"></span><span class="bar-label">18 of 33</span></div>
+<div class="chart-row"><span class="sys-label">prompted</span><span class="bar" style="width:60.6%;background:#b03a2e"></span><span class="bar-label">20 of 33</span></div>
 </div>
 <h2>Human-read share</h2>
 <div class="chart">
 <div class="chart-row"><span class="sys-label">code_only</span><span class="bar" style="width:38.4%;background:#2e6da4"></span><span class="bar-label">48 of 125</span></div>
-<div class="chart-row"><span class="sys-label">fine_tuned</span><span class="bar" style="width:45.6%;background:#2e6da4"></span><span class="bar-label">57 of 125</span></div>
-<div class="chart-row"><span class="sys-label">prompted</span><span class="bar" style="width:45.6%;background:#2e6da4"></span><span class="bar-label">57 of 125</span></div>
+<div class="chart-row"><span class="sys-label">fine_tuned</span><span class="bar" style="width:9.6%;background:#2e6da4"></span><span class="bar-label">12 of 125</span></div>
+<div class="chart-row"><span class="sys-label">prompted</span><span class="bar" style="width:51.2%;background:#2e6da4"></span><span class="bar-label">64 of 125</span></div>
 </div>
 
 <h2>All metrics</h2>
@@ -55,7 +55,7 @@ share): code_only — score 0.384
 <th>soft_miss</th><th>human_read_share</th><th>accuracy</th>
 <th>quote_validity</th><th>quote_correctness</th><th>latency</th>
 <th>cost/1k opps</th></tr>
-<tr><td>code_only</td><td>125</td><td>125</td><td>0 of 33 (0.0%)</td><td>5 of 27 (18.5%)</td><td>48 of 125 (38.4%)</td><td>70 of 125 (56.0%)</td><td>0 of 0</td><td>0 of 33 (0.0%)</td><td>n/a</td><td>n/a</td></tr><tr><td>fine_tuned</td><td>125</td><td>125</td><td>11 of 33 (33.3%)</td><td>9 of 27 (33.3%)</td><td>57 of 125 (45.6%)</td><td>66 of 125 (52.8%)</td><td>158 of 158 (100.0%)</td><td>8 of 68 (11.8%)</td><td>median 0.962 ms, p95 2.179 ms</td><td>n/a</td></tr><tr><td>prompted</td><td>125</td><td>125</td><td>11 of 33 (33.3%)</td><td>9 of 27 (33.3%)</td><td>57 of 125 (45.6%)</td><td>66 of 125 (52.8%)</td><td>158 of 158 (100.0%)</td><td>8 of 68 (11.8%)</td><td>median 1.149 ms, p95 2.266 ms</td><td>n/a</td></tr>
+<tr><td>code_only</td><td>125</td><td>125</td><td>0 of 33 (0.0%)</td><td>5 of 27 (18.5%)</td><td>48 of 125 (38.4%)</td><td>70 of 125 (56.0%)</td><td>0 of 0</td><td>0 of 33 (0.0%)</td><td>n/a</td><td>n/a</td></tr><tr><td>fine_tuned</td><td>125</td><td>125</td><td>18 of 33 (54.5%)</td><td>0 of 27 (0.0%)</td><td>12 of 125 (9.6%)</td><td>24 of 125 (19.2%)</td><td>70 of 70 (100.0%)</td><td>9 of 33 (27.3%)</td><td>median 1934.11 ms, p95 6352.96 ms</td><td>n/a</td></tr><tr><td>prompted</td><td>125</td><td>125</td><td>20 of 33 (60.6%)</td><td>4 of 27 (14.8%)</td><td>64 of 125 (51.2%)</td><td>47 of 125 (37.6%)</td><td>94 of 95 (98.9%)</td><td>13 of 54 (24.1%)</td><td>median 1056.59 ms, p95 1426.63 ms</td><td>n/a</td></tr>
 </table>
 
 <h2>Metric definitions</h2>

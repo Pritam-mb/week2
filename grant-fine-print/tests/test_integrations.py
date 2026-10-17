@@ -37,3 +37,17 @@ def test_remote_requires_key_and_finetuned_model(monkeypatch) -> None:
     assert not _has_remote(config, "fine_tuned")
     config["extract"]["fine_tuned_model"] = "tinker://run/sampler_weights/1"
     assert _has_remote(config, "fine_tuned")
+
+
+def test_postgres_store_requires_dsn(monkeypatch) -> None:
+    from src.storage import PostgresStore, SCHEMA
+
+    assert "client_profiles" in SCHEMA
+    assert "human_corrections" in SCHEMA
+    assert "rendered_cards" in SCHEMA
+
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+    import pytest
+
+    with pytest.raises(RuntimeError, match="DATABASE_URL is required"):
+        PostgresStore()

@@ -75,7 +75,7 @@ training:
   # src.train prepare only creates candidates and never marks them reviewed.
   renderer: "qwen3_5"
   max_length: 4096
-  batch_size: 2
+  batch_size: 4
   checkpoint_name: "grant-fine-print-sft"
 
 match:
