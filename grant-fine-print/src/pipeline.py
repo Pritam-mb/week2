@@ -111,14 +111,36 @@ def run_model_system(
     dropped_by_opp: dict[str, list[tuple[Condition, str]]] = {}
     latencies: dict[str, float] = {}
 
-    for opp in opportunities:
-        start = time.perf_counter()
+    concurrency = int(
+        os.environ.get("GFP_CONCURRENCY")
+        or get(config, "extract.concurrency", default=8)
+    )
+
+    def _extract_worker(opp: Opportunity) -> tuple[str, list[Condition], Any, float]:
+        t0 = time.perf_counter()
         raw = extract_conditions(opp, backend, config)
-        latencies[opp.id] = round((time.perf_counter() - start) * 1000, 3)
-        result = verify_conditions(raw, opp.source_text)
-        raw_by_opp[opp.id] = raw
-        verified_by_opp[opp.id] = result.verified
-        dropped_by_opp[opp.id] = result.dropped
+        lat = round((time.perf_counter() - t0) * 1000, 3)
+        res = verify_conditions(raw, opp.source_text)
+        return opp.id, raw, res, lat
+
+    if concurrency > 1 and len(opportunities) > 1 and type(backend).__name__ != "MockBackend":
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+
+        with ThreadPoolExecutor(max_workers=concurrency) as executor:
+            futures = [executor.submit(_extract_worker, opp) for opp in opportunities]
+            for fut in as_completed(futures):
+                opp_id, raw, res, lat = fut.result()
+                raw_by_opp[opp_id] = raw
+                verified_by_opp[opp_id] = res.verified
+                dropped_by_opp[opp_id] = res.dropped
+                latencies[opp_id] = lat
+    else:
+        for opp in opportunities:
+            opp_id, raw, res, lat = _extract_worker(opp)
+            raw_by_opp[opp_id] = raw
+            verified_by_opp[opp_id] = res.verified
+            dropped_by_opp[opp_id] = res.dropped
+            latencies[opp_id] = lat
 
     rows: list[VerdictRow] = []
     for profile in profiles:
@@ -154,6 +176,7 @@ def run(
     write_cards: bool = True,
     out_dir: Optional[str] = None,
     opportunities: Optional[list[Opportunity]] = None,
+    discover_links: bool = False,
 ) -> dict[str, Any]:
     """Product run: one system, all profiles, optional printed cards.
 
@@ -165,6 +188,24 @@ def run(
         opportunities, profiles = _load_all(config, profile_ids)
     else:
         _, profiles = _load_all(config, profile_ids)
+
+    if discover_links or get(config, "pipeline.discover_links", default=False):
+        from .discovery import enrich_opportunity_link, is_official_grants_url
+
+        store = None
+        if str(get(config, "storage.backend", "filesystem")).lower() == "postgres":
+            try:
+                from .storage import PostgresStore
+
+                store = PostgresStore()
+            except Exception:
+                pass
+        for opp in opportunities:
+            if not opp.link or not is_official_grants_url(opp.link):
+                try:
+                    enrich_opportunity_link(opp, store=store)
+                except Exception:
+                    pass
 
     rows, dropped, backend_used = run_model_system(
         config, opportunities, profiles, backend_name,
@@ -207,6 +248,7 @@ def run_systems(
     out_dir: Optional[str] = None,
     opportunity_ids: Optional[set[str]] = None,
     backend_override: Optional[str] = None,
+    discover_links: bool = False,
 ) -> dict[str, Any]:
     """Run the evaluation systems and write one predictions JSONL per system.
 
@@ -219,6 +261,25 @@ def run_systems(
     opportunities, profiles = _load_all(config)
     if opportunity_ids is not None:
         opportunities = [o for o in opportunities if o.id in opportunity_ids]
+
+    if discover_links or get(config, "pipeline.discover_links", default=False):
+        from .discovery import enrich_opportunity_link, is_official_grants_url
+
+        store = None
+        if str(get(config, "storage.backend", "filesystem")).lower() == "postgres":
+            try:
+                from .storage import PostgresStore
+
+                store = PostgresStore()
+            except Exception:
+                pass
+        for opp in opportunities:
+            if not opp.link or not is_official_grants_url(opp.link):
+                try:
+                    enrich_opportunity_link(opp, store=store)
+                except Exception:
+                    pass
+
     pred_dir = get(config, "eval.predictions_dir") or "results/predictions"
     os.makedirs(pred_dir, exist_ok=True)
 
@@ -323,6 +384,11 @@ def main(argv: Optional[list[str]] = None) -> int:
         default=None,
         help="CSV with an opportunity_id column; restrict the run to those ids",
     )
+    parser.add_argument(
+        "--discover",
+        action="store_true",
+        help="Use SerpApi to discover missing official Grants.gov links",
+    )
     args = parser.parse_args(argv)
 
     config = load_config()
@@ -346,6 +412,7 @@ def main(argv: Optional[list[str]] = None) -> int:
             config,
             backend_name=args.backend or systems[0],
             write_cards=not args.no_cards,
+            discover_links=args.discover,
         )
         print(
             f"ran {result['n_profiles']} profiles x "
@@ -363,6 +430,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         cards_from=args.cards_from,
         opportunity_ids=opportunity_ids,
         backend_override=args.backend,
+        discover_links=args.discover,
     )
     for system, path in result["predictions_files"].items():
         print(f"predictions [{system}]: {path}")

@@ -57,7 +57,13 @@ class SerpApiLinkFinder:
             return []
         if not self.api_key:
             return []
-        query = f'site:grants.gov "{opportunity.opp_number}" "{opportunity.title}"'
+        clean_num = (opportunity.opp_number or "").strip()
+        if clean_num:
+            query = f'site:grants.gov "{clean_num}"'
+        else:
+            words = [w for w in (opportunity.title or "").split() if len(w) > 3][:6]
+            query = f"site:grants.gov {' '.join(words)}" if words else "site:grants.gov"
+
         response = requests.get(
             self.endpoint,
             params={
@@ -89,6 +95,44 @@ class SerpApiLinkFinder:
                 )
             )
         return candidates
+
+
+def enrich_opportunity_link(
+    opportunity: Opportunity,
+    finder: SerpApiLinkFinder | None = None,
+    store: Any = None,
+) -> str | None:
+    """Attempt to discover an official Grants.gov link if missing.
+
+    Returns the discovered official URL if found, else None.
+    Never alters source_text or eligibility decisions.
+    """
+    if opportunity.link and is_official_grants_url(opportunity.link):
+        return opportunity.link
+    finder = finder or SerpApiLinkFinder()
+    candidates = finder.discover(opportunity)
+    official_candidates = [c for c in candidates if c.is_official]
+    if not official_candidates:
+        return None
+    best = official_candidates[0]
+    opportunity.link = best.url
+    if store is not None and hasattr(store, "save_link_candidate"):
+        try:
+            store.save_link_candidate(
+                {
+                    "opportunity_id": opportunity.id,
+                    "query": best.query,
+                    "url": best.url,
+                    "title": best.title,
+                    "snippet": best.snippet,
+                    "position": best.position,
+                    "is_official": True,
+                    "selected": True,
+                }
+            )
+        except Exception:
+            pass
+    return best.url
 
 
 def main(argv: list[str] | None = None) -> int:

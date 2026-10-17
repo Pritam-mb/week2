@@ -498,6 +498,30 @@ def correct():
     return redirect(url_for("main.card", profile_id=profile_id))
 
 
+@bp.route("/discover/<opportunity_id>", methods=["POST"])
+def discover_link(opportunity_id: str):
+    """Enrich an opportunity with an official Grants.gov link using SerpApi."""
+    config = _cfg()
+    opportunities = {opp.id: opp for opp in _opportunities(config)}
+    opp = opportunities.get(opportunity_id)
+    if opp is None:
+        return jsonify(error="Opportunity not found"), 404
+    from src.discovery import enrich_opportunity_link
+
+    store = None
+    if str(get(config, "storage.backend", "filesystem")).lower() == "postgres":
+        try:
+            from src.storage import PostgresStore
+
+            store = PostgresStore()
+        except Exception:
+            pass
+    link = enrich_opportunity_link(opp, store=store)
+    if link:
+        return jsonify(status="ok", link=link)
+    return jsonify(status="not_found", message="No official Grants.gov link found via SerpApi"), 404
+
+
 @bp.route("/healthz")
 def healthz():
     return jsonify(status="ok")

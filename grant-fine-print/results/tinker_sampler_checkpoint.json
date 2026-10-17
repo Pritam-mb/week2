@@ -1,8 +1,8 @@
 {
-  "checkpoint_path": "tinker://1eccd803-3c51-56e9-aa8e-c82c1745dbdd:train:0/sampler_weights/grant-fine-print-sft",
+  "checkpoint_path": "tinker://146167b6-6a85-54ec-bc00-f0489e3f207d:train:0/sampler_weights/grant-fine-print-sft",
   "base_model": "Qwen/Qwen3.5-4B",
   "training_file": "data/training/extraction_reviewed.jsonl",
-  "epochs": 1,
-  "rank": 8,
+  "epochs": 3,
+  "rank": 16,
   "learning_rate": 0.0002
 }

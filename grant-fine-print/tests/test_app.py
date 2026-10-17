@@ -218,3 +218,8 @@ def test_healthz(client):
     resp = client.get("/healthz")
     assert resp.status_code == 200
     assert resp.get_json() == {"status": "ok"}
+
+
+def test_discover_link_unknown_opportunity(client):
+    resp = client.post("/discover/nonexistent-opp")
+    assert resp.status_code == 404
