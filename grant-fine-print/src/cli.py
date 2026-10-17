@@ -19,6 +19,9 @@ SUBCOMMANDS: dict[str, str] = {
     "cards": "src.cards",
     "eval": "src.eval",
     "correct": "src.corrections",
+    "train": "src.train",
+    "storage": "src.storage",
+    "discover": "src.discovery",
 }
 
 USAGE = (

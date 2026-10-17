@@ -8,10 +8,9 @@ verbatim substring. Stage 2 (match, plain code) compares the verified
 conditions with a profile and, per the quote-or-abstain rule, can only emit
 NOT ELIGIBLE with a verified quote.
 
-Offline by default: if no remote provider is configured
-(``extract.provider_base_url`` or ``GFP_PROVIDER_BASE_URL``), the model
-systems fall back to the deterministic MockBackend and record that fact in a
-``.meta.json`` sidecar next to each predictions file.
+Production model systems require an explicitly configured remote provider. The
+deterministic MockBackend remains available only when the caller explicitly
+selects ``--backend mock`` or uses the offline demo fixtures.
 """
 
 from __future__ import annotations
@@ -33,6 +32,14 @@ from .match import evaluate_condition, match
 from .models import Condition, Opportunity, Profile, VerdictRow
 from .verify import verify_conditions
 
+
+def _load_opportunities(config: dict[str, Any]) -> list[Opportunity]:
+    if str(get(config, "storage.backend", "filesystem")).lower() == "postgres":
+        from .storage import PostgresStore
+
+        return PostgresStore().current_opportunities()
+    return load_opportunities(get(config, "cache.raw_dir"))
+
 DEFAULT_SYSTEMS = ("code_only", "prompted", "fine_tuned")
 
 
@@ -51,7 +58,7 @@ def _load_all(
     config: dict[str, Any],
     profile_ids: Optional[list[str]] = None,
 ) -> tuple[list[Opportunity], list[Profile]]:
-    opportunities = load_opportunities(get(config, "cache.raw_dir"))
+    opportunities = _load_opportunities(config)
     profiles = load_profiles(get(config, "profiles_dir"))
     if profile_ids:
         wanted = set(profile_ids)
@@ -64,10 +71,11 @@ def _load_all(
     return opportunities, profiles
 
 
-def _has_remote(config: dict[str, Any]) -> bool:
+def _has_remote(config: dict[str, Any], backend_name: str = "prompted") -> bool:
     return bool(
         (get(config, "extract.provider_base_url") or os.environ.get("GFP_PROVIDER_BASE_URL"))
         and (os.environ.get("GFP_API_KEY") or os.environ.get("TINKER_API_KEY"))
+        and (backend_name != "fine_tuned" or get(config, "extract.fine_tuned_model"))
     )
 
 
@@ -84,8 +92,12 @@ def run_model_system(
     verifier dropped (missing or non-verbatim quote).
     """
     effective_backend = backend_name
-    if backend_name in ("prompted", "fine_tuned") and not _has_remote(config):
-        effective_backend = "mock"
+    if backend_name in ("prompted", "fine_tuned") and not _has_remote(config, backend_name):
+        raise RuntimeError(
+            f"Real {backend_name} inference is not configured. Set TINKER_API_KEY "
+            "and GFP_PROVIDER_BASE_URL; fine_tuned also requires GFP_FINE_TUNED_MODEL. "
+            "Use --backend mock explicitly for an offline run."
+        )
 
     backend = make_backend(config, effective_backend)
     corrections = (
@@ -194,6 +206,7 @@ def run_systems(
     cards_from: str = "fine_tuned",
     out_dir: Optional[str] = None,
     opportunity_ids: Optional[set[str]] = None,
+    backend_override: Optional[str] = None,
 ) -> dict[str, Any]:
     """Run the evaluation systems and write one predictions JSONL per system.
 
@@ -225,7 +238,7 @@ def run_systems(
             backend_used = "none (applicant-type codes only)"
         else:
             rows, system_dropped, backend_used = run_model_system(
-                config, opportunities, profiles, system,
+                config, opportunities, profiles, backend_override or system,
                 apply_corrections=False,
             )
             dropped = system_dropped
@@ -244,8 +257,7 @@ def run_systems(
         meta[system] = {
             "backend": backend_used,
             "n_rows": len(rows),
-            "offline_fallback": system in ("prompted", "fine_tuned")
-            and backend_used == "MockBackend",
+            "offline_fallback": False,
         }
         write_json(os.path.join(pred_dir, f"{system}.meta.json"), meta[system])
 
@@ -350,6 +362,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         write_cards=not args.no_cards,
         cards_from=args.cards_from,
         opportunity_ids=opportunity_ids,
+        backend_override=args.backend,
     )
     for system, path in result["predictions_files"].items():
         print(f"predictions [{system}]: {path}")

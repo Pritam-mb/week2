@@ -23,6 +23,7 @@ def app_config(tmp_path):
     config["extract"]["cache_dir"] = str(tmp_path / "extract_cache")
     config["cache"]["raw_dir"] = str(ROOT / "data" / "mock_raw")
     config["cache"]["manifest"] = str(ROOT / "data" / "mock_raw" / "manifest.json")
+    config["storage"]["backend"] = "filesystem"
     return config
 
 

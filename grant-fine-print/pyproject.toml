@@ -17,6 +17,13 @@ app = [
 test = [
     "pytest>=7.4",
 ]
+train = [
+    "tinker>=0.34.0",
+    "tinker-cookbook>=0.1.0",
+]
+postgres = [
+    "psycopg[binary]>=3.2",
+]
 
 [project.scripts]
 gfp = "src.cli:main"

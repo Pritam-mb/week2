@@ -4,9 +4,8 @@ Entry points:
 - ``flask --app app.main run`` (Flask finds the ``create_app`` factory)
 - ``python -m app.main`` (runs ``main()``, reading host/port from config)
 
-Everything is offline-friendly: when no remote model provider is configured,
-the pipeline falls back to the deterministic MockBackend and the run summary
-warns loudly about it.
+The offline sample is explicit. Production model runs require a configured
+provider and the run summary identifies the backend used.
 """
 
 from __future__ import annotations
@@ -83,6 +82,14 @@ def _ensure_dir(path: Any, default: str) -> str:
 
 def _profiles_dir(config: dict[str, Any]) -> str:
     return _ensure_dir(get(config, "profiles_dir"), DEFAULT_PROFILES_DIR)
+
+
+def _opportunities(config: dict[str, Any]) -> list[Any]:
+    if str(get(config, "storage.backend", "filesystem")).lower() == "postgres":
+        from src.storage import PostgresStore
+
+        return PostgresStore().current_opportunities()
+    return load_opportunities(get(config, "cache.raw_dir") or "data/raw")
 
 
 def _default_backend(config: dict[str, Any]) -> str:
@@ -213,7 +220,7 @@ def dashboard():
     config = _cfg()
     profiles = load_profiles(_profiles_dir(config))
     raw_dir = get(config, "cache.raw_dir") or "data/raw"
-    opportunities = load_opportunities(raw_dir)
+    opportunities = _opportunities(config)
     manifest_path = get(config, "cache.manifest") or os.path.join(raw_dir, "manifest.json")
     manifest = load_manifest(manifest_path)
     return render_template(
@@ -241,11 +248,33 @@ def refresh():
         return redirect(url_for("main.dashboard"))
     try:
         opportunities = pull_grants(config, mock=mode == "mock")
+        if str(get(config, "storage.backend", "filesystem")).lower() == "postgres":
+            from src.storage import PostgresStore
+
+            PostgresStore().upsert_snapshots(opportunities)
     except Exception as exc:  # network/API failures should return to the UI
         flash(f"Refresh failed: {exc}", "error")
         return redirect(url_for("main.dashboard"))
     source = "offline sample" if mode == "mock" else "Grants.gov"
-    flash(f"Loaded {len(opportunities)} opportunities from {source}.", "success")
+    profiles = load_profiles(_profiles_dir(config))
+    if profiles:
+        try:
+            result = run_pipeline(
+                config,
+                backend_name=_default_backend(config),
+                apply_corrections=True,
+                write_cards=True,
+                opportunities=opportunities,
+            )
+            flash(
+                f"Loaded {len(opportunities)} opportunities from {source} and rebuilt "
+                f"{result['n_profiles']} profile card(s).",
+                "success",
+            )
+        except (RuntimeError, ValueError) as exc:
+            flash(f"Loaded the source, but card rebuild failed: {exc}", "error")
+    else:
+        flash(f"Loaded {len(opportunities)} opportunities from {source}.", "success")
     return redirect(url_for("main.dashboard"))
 
 
@@ -331,7 +360,7 @@ def run_now():
             apply_corrections=True,
             write_cards=True,
         )
-    except RuntimeError as exc:
+    except (RuntimeError, ValueError) as exc:
         flash(str(exc), "error")
         return redirect(url_for("main.dashboard"))
 
@@ -380,7 +409,7 @@ def card(profile_id: str):
         write_cards=False,
     )
     raw_dir = get(config, "cache.raw_dir") or "data/raw"
-    opp_by_id = {opp.id: opp for opp in load_opportunities(raw_dir)}
+    opp_by_id = {opp.id: opp for opp in _opportunities(config)}
     out_dir = get(config, "card.output_dir") or "results/cards"
     query = request.args.get("q", "").strip()
     verdict = request.args.get("verdict", "").strip()
@@ -453,7 +482,7 @@ def correct():
     if not opportunity_id:
         abort(400, description="Opportunity ID is required.")
     raw_dir = get(config, "cache.raw_dir") or "data/raw"
-    known_opportunities = {opp.id for opp in load_opportunities(raw_dir)}
+    known_opportunities = {opp.id for opp in _opportunities(config)}
     if opportunity_id not in known_opportunities:
         abort(400, description="Opportunity ID is not in the current Grants.gov cache.")
     if verdict not in VERDICTS:

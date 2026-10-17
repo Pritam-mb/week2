@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import tempfile
+from pathlib import Path
 
 from src.extract import (
     EXTRACTION_PROMPT,
     EXTRACTION_SYSTEM,
     MockBackend,
+    _load_opportunity_file,
     extract_conditions,
 )
 from src.models import ConditionType, Opportunity, Polarity
@@ -75,3 +77,17 @@ def test_mock_backend_does_not_promote_program_description_to_eligibility() -> N
     )
     conditions = extract_conditions(opportunity, MockBackend(), _config())
     assert conditions == []
+
+
+def test_cli_loads_nested_grants_payload(tmp_path: Path) -> None:
+    path = tmp_path / "opportunity.json"
+    path.write_text(
+        '{"id":"O-1","oppNumber":"O-1","oppTitle":"Title",'
+        '"synopsis":{"synopsisDesc":"Summary",'
+        '"eligibilityCriteria":"Only nonprofits may apply."}}',
+        encoding="utf-8",
+    )
+    opportunity = _load_opportunity_file(str(path))
+    assert opportunity.title == "Title"
+    assert opportunity.synopsis == "Summary"
+    assert opportunity.eligibility_text == "Only nonprofits may apply."

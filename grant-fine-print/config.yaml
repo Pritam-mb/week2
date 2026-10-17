@@ -47,6 +47,11 @@ cache:
 profiles_dir: "data/profiles"
 corrections_path: "data/corrections/corrections.json"
 
+storage:
+  # filesystem keeps tests/offline demos self-contained; set GFP_STORAGE=postgres
+  # in production after running `python -m src.storage init` and import-cache.
+  backend: "filesystem"
+
 extract:
   # Base model for stage 1. Replace with a Tinker-supported model name after
   # checking Tinker's docs.
@@ -55,10 +60,23 @@ extract:
   provider: "tinker"       # tinker | openai-compatible | mock
   provider_base_url: null
   temperature: 0.0
+  # Tinker Qwen3.5 accepts a boolean reasoning_effort. False keeps the
+  # structured extraction answer in message.content instead of spending the
+  # output budget on a reasoning trace.
+  reasoning_effort: false
+  separate_reasoning: false
   max_output_tokens: 1024
   timeout_seconds: 120
   # Stage 1 runs once per opportunity; results cached by text hash.
   cache_dir: "data/extract_cache"
+
+training:
+  # Tinker cookbook settings. Training requires a separately reviewed JSONL;
+  # src.train prepare only creates candidates and never marks them reviewed.
+  renderer: "qwen3_5"
+  max_length: 4096
+  batch_size: 2
+  checkpoint_name: "grant-fine-print-sft"
 
 match:
   # Condition types the code can evaluate directly against a profile.

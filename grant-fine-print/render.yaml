@@ -7,8 +7,8 @@
 #
 # Secrets: set GFP_PROVIDER_BASE_URL and GFP_API_KEY in the Render dashboard
 # (sync: false below) — never commit them. Without them the pipeline falls
-# back to the offline MockBackend and records offline_fallback in each
-# predictions .meta.json, so results are never silently mislabelled.
+# Production model runs require the configured provider credentials; offline
+# MockBackend runs are for local demos only and are never silently selected.
 
 services:
   - type: web

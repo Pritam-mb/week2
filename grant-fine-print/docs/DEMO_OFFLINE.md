@@ -18,7 +18,7 @@ pip install -e ".[app,test]"
 ```bash
 python -m src.pull --mock    # offline sample -> data/raw/ + manifest.json
 python -m src.study          # results/study.json + data/samples/study_sample.csv
-python -m src.pipeline       # results/predictions/*.jsonl (+ .meta.json), results/cards/*.html
+python -m src.pipeline --backend mock  # results/predictions/*.jsonl (+ .meta.json), results/cards/*.html
 python -m src.eval           # results/eval.json + results/eval_report.html
 ```
 
@@ -29,8 +29,8 @@ offline sample** before running a profile.
 
 No `GFP_PROVIDER_BASE_URL` / `GFP_API_KEY` is needed. `src.pull --mock` reads
 `data/samples/mock_opportunities.json` (or synthesises opportunities if that
-file is missing) and makes no HTTP request; the pipeline then uses the
-**MockBackend** for both model systems.
+file is missing) and makes no HTTP request; `--backend mock` explicitly uses
+the **MockBackend** for both model systems.
 
 ## What the mock backend guarantees
 

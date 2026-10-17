@@ -24,7 +24,7 @@ from typing import Any, Protocol
 import requests
 
 from .config import get, load_config
-from .io_utils import load_opportunities, read_json, write_json
+from .io_utils import load_opportunities, opportunity_from_raw, read_json, write_json
 from .models import Condition, ConditionType, Opportunity, Polarity
 from .verify import is_verbatim_quote  # noqa: F401  (re-exported for callers)
 
@@ -201,6 +201,8 @@ class OpenAICompatibleBackend:
         max_tokens: int = 1024,
         temperature: float = 0.0,
         provider: str = "openai-compatible",
+        reasoning_effort: Any = False,
+        separate_reasoning: bool = False,
     ) -> None:
         if not base_model:
             raise ValueError("OpenAICompatibleBackend requires a base_model name")
@@ -220,6 +222,8 @@ class OpenAICompatibleBackend:
         self.max_tokens = max_tokens
         self.temperature = temperature
         self.provider = provider
+        self.reasoning_effort = reasoning_effort
+        self.separate_reasoning = separate_reasoning
 
     def _endpoint(self) -> str:
         base = self.provider_base_url.rstrip("/")
@@ -241,6 +245,12 @@ class OpenAICompatibleBackend:
             "temperature": self.temperature,
             "max_tokens": self.max_tokens,
         }
+        # Tinker Qwen3.5 otherwise spends a small extraction request on its
+        # reasoning trace and may return an empty message.content. Keep this
+        # provider-specific behavior out of generic OpenAI-compatible APIs.
+        if self.provider.lower() == "tinker":
+            payload["reasoning_effort"] = self.reasoning_effort
+            payload["separate_reasoning"] = self.separate_reasoning
         response = requests.post(
             self._endpoint(),
             json=payload,
@@ -270,6 +280,8 @@ class FineTunedBackend(OpenAICompatibleBackend):
             max_tokens=get(config, "extract.max_output_tokens", default=1024),
             temperature=get(config, "extract.temperature", default=0.0),
             provider=get(config, "extract.provider", default="tinker"),
+            reasoning_effort=get(config, "extract.reasoning_effort", default=False),
+            separate_reasoning=get(config, "extract.separate_reasoning", default=False),
             **overrides,
         )
 
@@ -293,6 +305,8 @@ def make_backend(config: dict[str, Any], which: str = "prompted") -> Backend:
         max_tokens=get(config, "extract.max_output_tokens", default=1024),
         temperature=get(config, "extract.temperature", default=0.0),
         provider=provider,
+        reasoning_effort=get(config, "extract.reasoning_effort", default=False),
+        separate_reasoning=get(config, "extract.separate_reasoning", default=False),
     )
 
 
@@ -411,6 +425,12 @@ def _load_opportunity_file(path: str) -> Opportunity:
         if not data:
             raise ValueError(f"No opportunities found in {path}")
         data = data[0]
+    # CLI inputs are usually cached Grants.gov payloads (camelCase and nested
+    # synopsis), not already-normalized Opportunity dictionaries.
+    if isinstance(data, dict) and (
+        "opp_number" not in data and "eligibility_text" not in data
+    ):
+        return opportunity_from_raw(data)
     return Opportunity.from_dict(data)
 
 

@@ -63,6 +63,7 @@ def _apply_environment_overrides(config: dict[str, Any]) -> None:
         "GFP_FINE_TUNED_MODEL": "extract.fine_tuned_model",
         "GFP_SUPPORT_EMAIL": "app.support_email",
         "GFP_SUPPORT_PHONE": "app.support_phone",
+        "GFP_STORAGE": "storage.backend",
     }
     for env_name, dotted_key in overrides.items():
         value = os.environ.get(env_name)

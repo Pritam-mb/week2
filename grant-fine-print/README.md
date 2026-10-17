@@ -58,8 +58,9 @@ pip install -e ".[app,test]"
 
 ### Environment configuration (`.env`)
 
-The pipeline runs completely offline with **zero network access and zero keys**
-using the deterministic `MockBackend`.
+The offline sample commands use the deterministic `MockBackend` with **zero
+network access and zero keys**. Production prompted/fine-tuned runs require a
+real provider and never silently fall back to mock output.
 
 To configure a real model provider or optional contact links:
 
@@ -72,8 +73,13 @@ To configure a real model provider or optional contact links:
    Copy-Item .env.example .env
    ```
 2. Set the variables in `.env`:
-   - `GFP_PROVIDER_BASE_URL`: Base URL of an OpenAI-compatible completions endpoint for Stage 1 condition extraction (e.g. `https://api.example.com`).
-   - `GFP_API_KEY`: API key sent as a `Bearer` token.
+   - `GFP_PROVIDER_BASE_URL`: Tinker OpenAI-compatible endpoint.
+   - `TINKER_API_KEY`: Tinker API key sent as a `Bearer` token (`GFP_API_KEY` remains a legacy alias).
+   - `GFP_BASE_MODEL`: Tinker base model ID.
+   - `GFP_FINE_TUNED_MODEL`: Tinker sampler checkpoint path after training.
+   - `DATABASE_URL`: Tiger Data PostgreSQL connection string.
+   - `GFP_STORAGE=postgres`: Use Tiger Data after initializing/importing the schema.
+   - `SERPAPI_KEY`: Optional key for missing official-link discovery only.
    - `GFP_SUPPORT_EMAIL`: (Optional) Product support email displayed in the web app header/footer.
    - `GFP_SUPPORT_PHONE`: (Optional) Product support phone displayed in the web app header/footer.
 
@@ -93,7 +99,9 @@ To configure a real model provider or optional contact links:
 Useful command options:
 - `python -m src.pipeline --systems prompted --corrections`: Applies stored human corrections (`data/corrections/corrections.json`) and renders updated cards.
 - `python -m src.pipeline --ids-file data/samples/test_sample.csv`: Restricts execution to specific opportunity IDs.
-- `python -m pytest`: Runs the test suite (46 unit and integration tests).
+- `python -m pytest`: Runs the test suite (including the provider, storage, and discovery boundary tests).
+- `python -m src.storage init` / `python -m src.storage import-cache`: Initialize and import the Tiger Data store.
+- `python -m src.train prepare` / `python -m src.train train`: Prepare reviewed extraction data and train a real Tinker LoRA checkpoint. See [`docs/PRODUCTION_SETUP.md`](docs/PRODUCTION_SETUP.md).
 - `gfp <command>`: Console dispatcher installed with the package (`gfp pull`, `gfp study`, `gfp eval`).
 
 ## The Web App
@@ -115,25 +123,24 @@ The Flask application (`app/main.py`) provides an interactive interface for free
 
 ## Using a real model (stage 1)
 
-Without a configured provider the pipeline uses the deterministic
-**MockBackend** (offline). To point stage 1 at a real model:
+The deterministic **MockBackend** is only for the explicit offline demo. To
+point stage 1 at a real model:
 
-- Set environment variables `GFP_PROVIDER_BASE_URL` (an OpenAI-compatible
+- Set environment variables `GFP_PROVIDER_BASE_URL` (the Tinker OpenAI-compatible
   base URL; the code calls `{base}/v1/chat/completions`, or
   `{base}/chat/completions` when the URL already ends in `/v1`) and
-  `GFP_API_KEY` (sent as a Bearer token). See `.env.example`.
+  `TINKER_API_KEY` (sent as a Bearer token). See `.env.example`.
 - Or set the same knobs in `config.yaml` under `extract:`:
   `provider_base_url`, `base_model` (the prompted baseline model, default
-  `Qwen/Qwen2.5-3B-Instruct`), `fine_tuned_model` (must be set before a
+   `Qwen/Qwen3.5-4B`), `fine_tuned_model` (must be set before a
   `fine_tuned` run will work), and `provider` (informational label:
   `tinker | openai-compatible | mock`).
 
-When neither `extract.provider_base_url` nor `GFP_PROVIDER_BASE_URL` is set,
-the pipeline silently degrades to MockBackend **but never silently mislabels
-results**: each predictions file gets a `.meta.json` sidecar recording the
-backend class and an `offline_fallback: true` flag
-(`results/predictions/*.meta.json`). A `fine_tuned` run additionally requires
-`extract.fine_tuned_model` to be set in `config.yaml`.
+If the provider, key, or fine-tuned checkpoint is missing, a production model
+run stops with a configuration error. This prevents a real evaluation from
+being silently replaced with mock output. Choose the mock backend explicitly
+for offline plumbing tests. A `fine_tuned` run requires
+`extract.fine_tuned_model` to be set.
 
 ## Evaluation & Results
 
@@ -229,8 +236,8 @@ A production-ready [render.yaml](file:///d:/week2/grant-fine-print/render.yaml) 
 - This is a screening aid, not legal or grant advice. Always confirm in the
   original notice.
 - Opportunities and amendments change after the pull date.
-- Without provider credentials the pipeline runs the MockBackend: a pipeline
-  smoke test, **not** real model results (see `docs/DEMO_OFFLINE.md`).
+- Offline runs use MockBackend only when explicitly requested: a pipeline smoke
+  test, **not** real model results (see `docs/DEMO_OFFLINE.md`).
 
 ## Product boundaries
 
