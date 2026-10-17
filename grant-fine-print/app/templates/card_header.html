@@ -1,0 +1,116 @@
+<div class="app-only card-top-bar" id="card-top-bar">
+  <!-- Top Navigation -->
+  <header class="site-header" style="margin-bottom: 24px;">
+    <div class="brand-group">
+      <a class="brand" href="{{ url_for('main.dashboard') }}">Grant Fine Print</a>
+      <span class="brand-tag">Verbatim Screening</span>
+    </div>
+    <nav class="site-nav" id="site-nav">
+      <a href="{{ url_for('main.dashboard') }}" class="active">Cards</a>
+      <a href="{{ url_for('main.evidence') }}">Evidence</a>
+      <a href="{{ url_for('main.stack') }}">Stack</a>
+      <a href="{{ url_for('main.profiles') }}">Profiles</a>
+      <button class="theme-toggle-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">☾ Dark ink</button>
+    </nav>
+  </header>
+
+  <!-- Hero Strip with Study Number & Count-Up -->
+  <div class="hero-strip">
+    <div class="hero-inner">
+      <span class="hero-tag">Empirical Finding</span>
+      <p class="hero-sentence">
+        <span class="count-up" data-target="{{ study_stats.a_count }}">{{ study_stats.a_count }}</span> of <span class="count-up" data-target="{{ study_stats.total }}">{{ study_stats.total }}</span> open grants hide their real eligibility rules in free text.
+      </p>
+    </div>
+  </div>
+
+  <!-- Profile Switcher Tabs -->
+  <div class="profile-switcher-wrap">
+    <span class="switcher-label">Client Profile:</span>
+    <div class="profile-tabs" role="tablist">
+      {% for p in profiles %}
+      <a href="{{ url_for('main.card', profile_id=p.id) }}"
+         class="profile-tab-pill {% if p.id == profile.id %}active{% endif %}"
+         role="tab">
+        {{ p.name }}
+      </a>
+      {% endfor %}
+      <a href="{{ url_for('main.new_profile') }}" class="profile-tab-pill add-tab" title="Create new client profile">+ New</a>
+    </div>
+  </div>
+
+  <!-- Filter & Search Controls -->
+  <div class="filter-panel-card">
+    <form method="get" action="{{ url_for('main.card', profile_id=profile.id) }}" class="filter-form">
+      <div class="filter-row">
+        <!-- Full-text search with Tiger Data query badge -->
+        <div class="search-field-wrap">
+          <label for="search-input" class="filter-label">
+            Search title, agency, or source text
+            {% if filter_state.q %}
+              <span class="badge badge-query" title="Lexical full-text query time">⚡ Tiger Data: {{ query_time_ms }}ms</span>
+            {% endif %}
+          </label>
+          <div class="search-input-group">
+            <input type="text" id="search-input" name="q" value="{{ filter_state.q }}" placeholder="e.g. non-profit, health, California..." class="paper-input">
+            {% if filter_state.q %}
+              <a href="{{ url_for('main.card', profile_id=profile.id, verdict=filter_state.verdict, sort=filter_state.sort) }}" class="clear-search-btn" title="Clear search">&times;</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Sort Select -->
+        <div class="sort-field-wrap">
+          <label for="sort-select" class="filter-label">Sort By</label>
+          <select id="sort-select" name="sort" class="paper-select" onchange="this.form.submit()">
+            <option value="relevance" {% if filter_state.sort == "relevance" %}selected{% endif %}>Focus relevance, then closing date</option>
+            <option value="close" {% if filter_state.sort == "close" %}selected{% endif %}>Closing date</option>
+            <option value="award" {% if filter_state.sort == "award" %}selected{% endif %}>Largest award</option>
+            <option value="title" {% if filter_state.sort == "title" %}selected{% endif %}>Title</option>
+          </select>
+        </div>
+
+        <div class="submit-wrap">
+          <button type="submit" class="btn btn-primary">Apply</button>
+        </div>
+      </div>
+
+      <!-- Verdict Filter Chips with Counts -->
+      <div class="verdict-chips-row">
+        <span class="filter-label" style="margin:0; align-self:center;">Verdict:</span>
+        <div class="chips-group">
+          <!-- All Chip -->
+          <a href="{{ url_for('main.card', profile_id=profile.id, q=filter_state.q, sort=filter_state.sort) }}"
+             class="chip-pill {% if not filter_state.verdict %}active{% endif %}">
+            ALL <span class="chip-count">{{ n_total }}</span>
+          </a>
+
+          <!-- Likely Eligible Chip -->
+          <a href="{{ url_for('main.card', profile_id=profile.id, verdict='ELIGIBLE', q=filter_state.q, sort=filter_state.sort) }}"
+             class="chip-pill chip-eligible {% if filter_state.verdict == 'ELIGIBLE' %}active{% endif %}">
+            LIKELY ELIGIBLE <span class="chip-count">{{ verdict_counts.ELIGIBLE }}</span>
+          </a>
+
+          <!-- Check Chip -->
+          <a href="{{ url_for('main.card', profile_id=profile.id, verdict='CHECK', q=filter_state.q, sort=filter_state.sort) }}"
+             class="chip-pill chip-check {% if filter_state.verdict == 'CHECK' %}active{% endif %}">
+            CHECK <span class="chip-count">{{ verdict_counts.CHECK }}</span>
+          </a>
+
+          <!-- Not Eligible Chip -->
+          <a href="{{ url_for('main.card', profile_id=profile.id, verdict='NOT_ELIGIBLE', q=filter_state.q, sort=filter_state.sort) }}"
+             class="chip-pill chip-not {% if filter_state.verdict == 'NOT_ELIGIBLE' %}active{% endif %}">
+            NOT ELIGIBLE <span class="chip-count">{{ verdict_counts.NOT_ELIGIBLE }}</span>
+          </a>
+        </div>
+      </div>
+    </form>
+
+    <div class="filter-summary-line">
+      <span>Showing {{ n_visible }} of {{ n_total }} opportunities{% if focus_keywords %}. Focus: {{ focus_keywords|join(", ") }}{% endif %}.</span>
+      {% if filter_state.q or filter_state.verdict or filter_state.sort != "relevance" %}
+        <a href="{{ url_for('main.card', profile_id=profile.id) }}" class="reset-link">Reset filters</a>
+      {% endif %}
+    </div>
+  </div>
+</div>

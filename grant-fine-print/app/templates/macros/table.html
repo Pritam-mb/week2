@@ -1,0 +1,175 @@
+{# Shared Table Macros for Study and Benchmark Data
+   - Short headers: Category, Count, Total, Share, Interpretation
+   - Fixed colgroup layout (28%, 10%, 10%, 24%, 28%)
+   - Right-aligned numeric columns with tabular-nums
+   - Primary format: 'k of N' with secondary percentage and inline fill bar
+   - 95% Wilson score confidence interval when N < threshold (default 30)
+   - One-line definition under each row label
+   - Mobile card conversion under 640px
+#}
+
+{% macro render_study_table(study, threshold=30) %}
+{% set rows = [
+  {
+    "label": "Code 99/25 ('Others' only)",
+    "definition": "Opportunities whose only applicant-type code is '25' (Others), making code filtering useless.",
+    "k": study.a_count,
+    "n": study.total,
+    "color": "var(--clay)",
+    "interpretation": "Requires free-text parsing; standard Grants.gov filters fail completely."
+  },
+  {
+    "label": "Substantive Free-Text Eligibility",
+    "definition": "Regex matches against exclusion phrases (e.g. 'not eligible', 'must be', 'restricted to') in eligibility free text.",
+    "k": study.c_count,
+    "n": study.total,
+    "color": "var(--clay)",
+    "interpretation": "Detailed rules published in free-text synopsis rather than standardized codes."
+  },
+  {
+    "label": "Permissive Sample: Disqualifier Rate",
+    "definition": "Hand-audited sample of grants with broad codes (e.g. 99 Unrestricted) containing fine-print disqualifiers.",
+    "k": study.b.permissive_with_disqualifier,
+    "n": study.b.permissive_total,
+    "color": "var(--not)",
+    "interpretation": "Grants appearing eligible by code that disqualify applicants in fine print."
+  },
+  {
+    "label": "'Others' Sample: Disqualifier Rate",
+    "definition": "Hand-audited sample of Code 25 grants containing restrictive clauses in free text.",
+    "k": study.b.others_with_disqualifier,
+    "n": study.b.others_total,
+    "color": "var(--not)",
+    "interpretation": "Overwhelming majority of 'Others' grants exclude applicants in unindexed text."
+  }
+] %}
+
+<div class="table-wrap">
+  <table class="dt" role="table" aria-label="Study breakdown of Grants.gov opportunities">
+    <colgroup>
+      <col style="width: 28%;">
+      <col style="width: 10%;">
+      <col style="width: 10%;">
+      <col style="width: 24%;">
+      <col style="width: 28%;">
+    </colgroup>
+    <thead>
+      <tr>
+        <th scope="col">Category</th>
+        <th scope="col" class="num">Count</th>
+        <th scope="col" class="num">Total</th>
+        <th scope="col" class="num">Share</th>
+        <th scope="col">Interpretation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      {% set cell = compute_share_cell(r.k, r.n, threshold) %}
+      <tr>
+        <td data-label="Category">
+          <span class="row-label">{{ r.label }}</span>
+          <span class="row-subtext">{{ r.definition }}</span>
+        </td>
+        <td data-label="Count" class="num font-ui">{{ r.k }}</td>
+        <td data-label="Total" class="num font-ui">{{ r.n }}</td>
+        <td data-label="Share" class="num font-ui">
+          <div class="share-cell-content">
+            <span class="share-primary">{{ cell.k_of_n }}</span>
+            <span class="share-secondary">({{ cell.pct }}%)</span>
+            {% if cell.is_small_sample %}
+              <span class="small-sample-chip" title="Sample size N < {{ threshold }}">small sample</span>
+              <div class="ci-text">{{ cell.ci_text }}</div>
+            {% endif %}
+            <div class="inline-bar-track" aria-hidden="true">
+              <div class="inline-bar-fill" style="width: {{ [cell.pct, 100]|min }}%; background: {{ r.color }};"></div>
+            </div>
+          </div>
+        </td>
+        <td data-label="Interpretation" class="desc-cell">{{ r.interpretation }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endmacro %}
+
+
+{% macro render_eval_table(eval_data, threshold=30) %}
+<div class="table-wrap">
+  <table class="dt" role="table" aria-label="Systems evaluation benchmark table">
+    <colgroup>
+      <col style="width: 24%;">
+      <col style="width: 22%;">
+      <col style="width: 22%;">
+      <col style="width: 16%;">
+      <col style="width: 16%;">
+    </colgroup>
+    <thead>
+      <tr>
+        <th scope="col">System</th>
+        <th scope="col" class="num">Missed-Grant Rate</th>
+        <th scope="col" class="num">Quote Validity</th>
+        <th scope="col" class="num">Exact Accuracy</th>
+        <th scope="col" class="num">Human Read</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for name, sys in eval_data.systems.items() %}
+      {% set mgr = compute_share_cell(sys.missed_grant_rate.k, sys.missed_grant_rate.n, threshold) %}
+      {% set qv = compute_share_cell(sys.quote_validity.k, sys.quote_validity.n, threshold) if sys.quote_validity.n > 0 else None %}
+      {% set acc = compute_share_cell(sys.accuracy.k, sys.accuracy.n, threshold) %}
+      <tr>
+        <td data-label="System">
+          <span class="row-label">{{ name }}</span>
+          <span class="row-subtext">
+            {% if name == 'code_only' %}Structured applicant codes only
+            {% elif name == 'prompted' %}Zero-shot Qwen prompt
+            {% elif name == 'fine_tuned' %}LoRA fine-tuned on rubric reviews
+            {% endif %}
+          </span>
+        </td>
+        <td data-label="Missed-Grant Rate" class="num font-ui">
+          <div class="share-cell-content">
+            <span class="share-primary">{{ mgr.k_of_n }}</span>
+            <span class="share-secondary">({{ mgr.pct }}%)</span>
+            <div class="inline-bar-track" aria-hidden="true">
+              <div class="inline-bar-fill" style="width: {{ [mgr.pct, 100]|min }}%; background: {% if mgr.pct > 20 %}var(--not){% elif mgr.pct > 5 %}var(--check){% else %}var(--eligible){% endif %};"></div>
+            </div>
+          </div>
+        </td>
+        <td data-label="Quote Validity" class="num font-ui">
+          {% if qv %}
+          <div class="share-cell-content">
+            <span class="share-primary">{{ qv.k_of_n }}</span>
+            <span class="share-secondary">({{ qv.pct }}%)</span>
+            {% if qv.is_small_sample %}
+              <span class="small-sample-chip">small sample</span>
+              <div class="ci-text">{{ qv.ci_text }}</div>
+            {% endif %}
+            <div class="inline-bar-track" aria-hidden="true">
+              <div class="inline-bar-fill" style="width: {{ [qv.pct, 100]|min }}%; background: var(--eligible);"></div>
+            </div>
+          </div>
+          {% else %}
+          <span class="muted font-ui">&mdash; (no quotes)</span>
+          {% endif %}
+        </td>
+        <td data-label="Exact Accuracy" class="num font-ui">
+          <div class="share-cell-content">
+            <span class="share-primary">{{ acc.k_of_n }}</span>
+            <span class="share-secondary">({{ acc.pct }}%)</span>
+            <div class="inline-bar-track" aria-hidden="true">
+              <div class="inline-bar-fill" style="width: {{ [acc.pct, 100]|min }}%; background: var(--paper-2); border-right: 2px solid var(--ink);"></div>
+            </div>
+          </div>
+        </td>
+        <td data-label="Human Read" class="num font-ui">
+          <span class="share-primary">{{ sys.human_read_share.k }} of {{ sys.human_read_share.n }}</span>
+          <span class="share-secondary">({{ (sys.human_read_share.rate * 100)|round(1) }}%)</span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endmacro %}

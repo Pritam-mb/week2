@@ -1,0 +1,142 @@
+/* Grant Fine Print — Design Tokens
+ * Concept: "The fine print, under a magnifier."
+ * Warm paper, printer's ink, serif display headlines, marker yellow highlighter.
+ * Depth from paper layering, borders, and hard offset shadows (3px 3px 0 var(--ink)).
+ * Banned: blue, violet, purple, indigo, cyan, neon, glow, blurred colored shadows.
+ */
+
+:root {
+  /* Warm Paper Surfaces */
+  --paper: #F4EFE3;
+  --paper-2: #EAE2D0;
+  --paper-card: #FAF6EE;
+  --paper-trans: rgba(244, 239, 227, 0.94);
+
+  /* Deep Printer's Ink */
+  --ink: #221C14;
+  --ink-soft: #5B5246;
+  --ink-faint: #8C8577;
+  --rule: #D8CFBD;
+  --rule-dark: #BDB39E;
+
+  /* Natural Earth Accents */
+  --clay: #A8643C;
+  --stone: #8C8577;
+  --highlight: #F7E37A; /* Marker yellow */
+  --highlight-ink: #221C14;
+
+  /* Editorial Verdict Palette */
+  --eligible: #4C6B3A;       /* Olive green */
+  --eligible-bg: #EDF3E8;
+  --eligible-stamp: #3D572E;
+
+  --not: #A93B2B;            /* Brick red */
+  --not-bg: #FAECE9;
+  --not-stamp: #8A2C1F;
+
+  --check: #C98A12;          /* Amber */
+  --check-bg: #FCF5E5;
+  --check-stamp: #9E6B08;
+
+  /* === TYPOGRAPHY SYSTEM ===
+   * Three distinct font roles:
+   * 1. Display (serif): page titles, card titles, big numbers
+   * 2. UI (sans): body, labels, buttons, table headers, table cells, chart labels, legends, captions
+   * 3. Mono: ONLY file paths, ids, timestamps, and code (never table numbers or bar labels)
+   */
+  --font-display: "Fraunces", "Source Serif 4", Georgia, serif;
+  --font-ui: "Instrument Sans", "Work Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "SF Mono", Consolas, Menlo, monospace;
+
+  /* Backward-compatible aliases */
+  --font-serif: var(--font-display);
+  --font-sans: var(--font-ui);
+
+  /* Type Scale & Hierarchy */
+  --fs-h1: clamp(1.75rem, 3.5vw, 2.25rem);  /* 28px - 36px */
+  --fs-h2: clamp(1.25rem, 2.5vw, 1.5rem);   /* 20px - 24px */
+  --fs-h3: clamp(1.0625rem, 2vw, 1.25rem);  /* 17px - 20px */
+  --fs-body: 16px;                          /* Base body */
+  --fs-table: 15px;                         /* Table cells */
+  --fs-caption: 13px;                       /* Captions and legends */
+  --fs-label: 12px;                         /* Section labels & uppercase metadata (absolute min) */
+
+  /* Line Heights */
+  --lh-body: 1.5;
+  --lh-heading: 1.25;
+
+  /* Font Weights (strictly 400, 500, 600) */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+
+  /* Letter Spacing */
+  --tracking-caps: 0.05em;
+
+  /* 8px Scale Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+
+  /* Geometry & Radius (2 to 4px only) */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  /* Button Dimensions */
+  --btn-height: 36px;
+
+  /* Consistent Hard Offset Shadows */
+  --shadow-offset: 3px 3px 0 var(--ink);
+  --shadow-card: 3px 3px 0 var(--ink);
+  --shadow-card-hover: 4px 4px 0 var(--ink);
+  --shadow-btn: 2px 2px 0 var(--ink);
+  --shadow-btn-pressed: 1px 1px 0 var(--ink);
+  --shadow-sm: 2px 2px 0 var(--ink);
+  --shadow-stamp: 2px 2px 0 var(--ink);
+
+  /* Transitions */
+  --trans-fast: 0.12s ease-out;
+  --trans-med: 0.2s ease-out;
+}
+
+[data-theme="dark"] {
+  /* Warm Browns Only — Never Blue-Black */
+  --paper: #1D1812;
+  --paper-2: #28221B;
+  --paper-card: #241E17;
+  --paper-trans: rgba(29, 24, 18, 0.94);
+
+  --ink: #EFE6D2;
+  --ink-soft: #B8AF9F;
+  --ink-faint: #877E71;
+  --rule: #3D352B;
+  --rule-dark: #52473A;
+
+  --clay: #C27D52;
+  --stone: #9C9587;
+  --highlight: #BFA52E;
+  --highlight-ink: #1D1812;
+
+  --eligible: #688F52;
+  --eligible-bg: #222B1E;
+  --eligible-stamp: #7AA860;
+
+  --not: #C75240;
+  --not-bg: #321F1C;
+  --not-stamp: #DE6451;
+
+  --check: #DE9E26;
+  --check-bg: #2F2615;
+  --check-stamp: #F2B035;
+
+  --shadow-offset: 3px 3px 0 #000;
+  --shadow-card: 3px 3px 0 #000;
+  --shadow-card-hover: 4px 4px 0 #000;
+  --shadow-btn: 2px 2px 0 #000;
+  --shadow-btn-pressed: 1px 1px 0 #000;
+  --shadow-sm: 2px 2px 0 #000;
+  --shadow-stamp: 2px 2px 0 #000;
+}

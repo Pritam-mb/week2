@@ -1,0 +1,72 @@
+{# Reusable Data Card Component Macro
+   Shared layout for Evidence and Stack proof cards:
+   - Header row: Eyebrow on left, 36px action buttons on right
+   - Display serif title
+   - Takeaway pull-quote with 3px clay border
+   - Inset chart panel
+   - Footer meta row with source, pull date, counts, and generated time
+#}
+
+{% macro data_card(id, eyebrow, title, takeaway_html, download_id=None, download_filename=None, toggle_details_id=None, source_path=None, pull_date=None, evaluated_count=None, generated_at=None, empty_command=None) %}
+<article class="data-card" id="{{ id }}">
+  <!-- Card Header Row -->
+  <header class="data-card-header">
+    <div class="data-card-eyebrow">{{ eyebrow|safe }}</div>
+    <div class="data-card-actions">
+      {% if download_id %}
+      <button type="button" class="btn btn-action" onclick="downloadSvgAsPng('{{ download_id }}', '{{ download_filename or 'grant-fine-print-chart' }}')" aria-label="Download chart as PNG image">
+        <svg class="btn-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+        </svg>
+        <span>Download PNG</span>
+      </button>
+      {% endif %}
+    </div>
+  </header>
+
+  <!-- Title in display serif -->
+  <h2 class="data-card-title">{{ title }}</h2>
+
+  <!-- Core Takeaway Pull-Quote Block -->
+  <div class="data-card-takeaway">
+    <div class="takeaway-label">Core Takeaway</div>
+    <div class="takeaway-text">{{ takeaway_html|safe }}</div>
+  </div>
+
+  {% if empty_command %}
+  <div class="empty-state-box">
+    <h3>Data Not Generated Yet</h3>
+    <p>Run the following command to generate this source file:</p>
+    <code>{{ empty_command }}</code>
+  </div>
+  {% else %}
+  <!-- Inset Paper-2 Chart Panel -->
+  <div class="chart-panel">
+    {{ caller() }}
+  </div>
+
+  <!-- Footer Meta Row -->
+  <footer class="data-card-footer">
+    <div class="footer-meta-left">
+      {% if source_path %}
+      <span>Source: <code class="meta-mono">{{ source_path }}</code></span>
+      {% endif %}
+      {% if pull_date %}
+      <span class="meta-sep">&middot;</span>
+      <span>Pull date: <span class="meta-val">{{ pull_date }}</span></span>
+      {% endif %}
+      {% if evaluated_count %}
+      <span class="meta-sep">&middot;</span>
+      <span>Evaluated: <span class="meta-val">{{ evaluated_count }}</span></span>
+      {% endif %}
+    </div>
+    <div class="footer-meta-right">
+      {% if generated_at %}
+      <span>Generated: <span class="meta-val">{{ generated_at }}</span></span>
+      {% endif %}
+    </div>
+  </footer>
+  {% endif %}
+</article>
+{% endmacro %}

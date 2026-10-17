@@ -34,58 +34,109 @@ SECTION_ORDER: list[tuple[Verdict, str]] = [
 _ACTIVE_CONFIG: Optional[dict[str, Any]] = None
 
 _STYLE_TEMPLATE = """\
-:root { --ink: #1a1a1a; --muted: #666; --rule: #d0d0d0; }
+:root {
+  --paper: #FAF6EE; --paper-2: #EAE2D0; --ink: #221C14; --ink-soft: #5B5246;
+  --rule: #D8CFBD; --rule-dark: #BDB39E;
+  --eligible: #4C6B3A; --eligible-bg: #EDF3E8; --eligible-stamp: #3D572E;
+  --not: #A93B2B; --not-bg: #FAECE9; --not-stamp: #8A2C1F;
+  --check: #C98A12; --check-bg: #FCF5E5; --check-stamp: #9E6B08;
+  --highlight: #F7E37A;
+}
 * { box-sizing: border-box; }
-html { overflow-x: hidden; }
+html { overflow-x: hidden; background: var(--paper); color: var(--ink); }
 body {
-  font-family: Georgia, "Times New Roman", serif;
-  color: var(--ink); margin: 0; padding: clamp(14px, 4vw, 24px); line-height: 1.35;
-  overflow-wrap: anywhere;
+  font-family: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink); margin: 0 auto; padding: clamp(16px, 4vw, 32px); line-height: 1.5;
+  max-width: 960px; overflow-wrap: anywhere;
 }
 .card { max-width: 100%; }
-header { border-bottom: 2px solid var(--ink); margin-bottom: 16px; padding-bottom: 8px; }
-.brand { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-h1 { font-size: 22px; margin: 4px 0; }
-.meta { font-size: 12px; color: var(--muted); }
-.confirm { font-weight: bold; margin-top: 8px; }
-.legal { font-size: 11px; font-style: italic; color: var(--muted); }
+header { border-bottom: 2px solid var(--ink); margin-bottom: 24px; padding-bottom: 12px; }
+.brand { font-family: "Instrument Sans", sans-serif; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-soft); font-weight: 600; }
+h1 { font-family: "Fraunces", Georgia, serif; font-size: clamp(24px, 4vw, 32px); margin: 6px 0; color: var(--ink); font-weight: 600; line-height: 1.25; text-wrap: balance; }
+.meta { font-family: "IBM Plex Mono", monospace; font-size: 12px; color: var(--ink-soft); margin-top: 3px; }
+.confirm { font-weight: 600; margin-top: 10px; font-size: 13.5px; }
+.legal { font-size: 12px; font-style: italic; color: var(--ink-soft); margin-top: 2px; }
 h2 {
-  font-size: 15px; text-transform: uppercase; letter-spacing: 1px;
-  border-bottom: 1px solid var(--rule); margin: 18px 0 8px; padding-bottom: 3px;
+  font-family: "Fraunces", Georgia, serif; font-size: 17px; text-transform: uppercase; letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--rule); margin: 28px 0 12px; padding-bottom: 4px; font-weight: 600;
 }
-.verdict-section.not-eligible h2 { color: #8a1f1f; }
-.verdict-section.check h2 { color: #8a6a00; }
+.verdict-section.not-eligible h2 { color: var(--not); border-color: var(--not); }
+.verdict-section.check h2 { color: var(--check-stamp); border-color: var(--check); }
+.verdict-section.likely-eligible h2 { color: var(--eligible-stamp); border-color: var(--eligible); }
 .row {
-  border: 1px solid var(--rule); border-radius: 4px; padding: 8px 10px;
-  margin-bottom: 8px; break-inside: avoid; page-break-inside: avoid;
+  background: #FFFDF9; border: 2px solid var(--ink); border-radius: 3px; padding: 12px 16px;
+  margin-bottom: 14px; break-inside: avoid; page-break-inside: avoid;
+  box-shadow: 3px 3px 0 var(--ink); position: relative;
 }
-.row .head { font-weight: bold; font-size: 13px; }
-.row .head .opp-number { font-family: "Courier New", monospace; }
-.row .facts { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.link { overflow-wrap: anywhere; word-break: break-word; }
+.row .row-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.row .head { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 16px; flex: 1; line-height: 1.35; color: var(--ink); }
+.row .head .opp-number { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; font-weight: 500; color: var(--ink-soft); text-transform: uppercase; }
+.row .facts { font-size: 13px; color: var(--ink-soft); margin-top: 6px; }
+.link { overflow-wrap: anywhere; word-break: break-word; color: #A8643C; font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+.days-chip { font-family: "Instrument Sans", sans-serif; font-size: 12px; font-weight: 500; padding: 2px 6px; border-radius: 2px; background: var(--paper-2); border: 1px solid var(--rule-dark); margin-left: 6px; font-variant-numeric: tabular-nums; }
+.days-urgent { background: var(--not-bg); color: var(--not); border-color: var(--not); font-weight: 600; }
+.verdict-stamp {
+  font-family: "Instrument Sans", sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 2px; border: 2px solid currentColor;
+  white-space: nowrap; flex-shrink: 0; box-shadow: 2px 2px 0 var(--ink);
+}
+.stamp-eligible { color: var(--eligible-stamp); background: var(--eligible-bg); transform: rotate(-2deg); }
+.stamp-not { color: var(--not-stamp); background: var(--not-bg); transform: rotate(2.5deg); }
+.stamp-check { color: var(--check-stamp); background: var(--check-bg); transform: rotate(-1.5deg); }
 blockquote.disqualifier {
-  margin: 6px 0 2px; padding: 6px 10px; border-left: 3px solid #8a1f1f;
-  background: #fdf3f3; font-style: italic;
+  margin: 10px 0 6px; padding: 8px 12px; border-left: 3px solid var(--not);
+  background: var(--paper-2); font-style: italic; font-size: 14.5px;
 }
-.read-this { margin: 6px 0 0; font-size: 12px; }
-.read-this .label { font-weight: bold; text-transform: uppercase; font-size: 11px; }
-.muted { color: var(--muted); }
+.marker-quote {
+  background: var(--highlight); color: var(--ink); padding: 1px 4px; border-radius: 2px;
+  box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
+.read-this { margin: 8px 0 4px; font-size: 14px; }
+.read-this .label { font-family: "Instrument Sans", sans-serif; font-weight: 600; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em; color: var(--check-stamp); }
+.source-accordion { margin-top: 8px; border: 1px solid var(--rule); border-radius: 2px; background: var(--paper); }
+.source-toggle { padding: 6px 10px; font-family: "Instrument Sans", sans-serif; font-size: 12px; color: #A8643C; cursor: pointer; user-select: none; font-weight: 600; }
+.source-content { padding: 8px 10px; font-family: "Fraunces", Georgia, serif; font-size: 13px; line-height: 1.5; color: var(--ink-soft); border-top: 1px solid var(--rule); max-height: 220px; overflow-y: auto; white-space: pre-wrap; }
+.btn-flag-wrong { background: transparent; border: 1px dashed var(--rule-dark); font-family: "Instrument Sans", sans-serif; font-size: 12px; padding: 2px 6px; color: var(--ink-soft); cursor: pointer; border-radius: 2px; }
+.btn-flag-wrong:hover { border-color: var(--ink); color: var(--not); }
+.muted { color: var(--ink-soft); }
 .more { font-style: italic; }
 @page { size: __PAGE_SIZE__; margin: 12mm; }
 @media print {
-  body { padding: 0; }
-  .row { break-inside: avoid; page-break-inside: avoid; }
+  body { padding: 0; background: #fff !important; }
+  .row { break-inside: avoid; page-break-inside: avoid; box-shadow: none !important; border: 1px solid #666 !important; }
+  .source-accordion, .btn-flag-wrong { display: none !important; }
   a { color: inherit; text-decoration: none; }
 }
 @media (max-width: 640px) {
-  h1 { font-size: 19px; }
-  .row { padding: 8px; }
+  h1 { font-size: 21px; }
+  .row { padding: 10px; }
+  .row .row-header { flex-direction: column-reverse; }
 }
 """
 
 
 def _esc(value: Any) -> str:
     return html.escape("" if value is None else str(value), quote=True)
+
+
+def _days_left_chip(opp: Optional[Opportunity]) -> str:
+    if not opp or not opp.close_date:
+        return ""
+    try:
+        from datetime import date
+        text = str(opp.close_date).strip()[:10]
+        d = date.fromisoformat(text)
+        diff = (d - date.today()).days
+        if diff < 0:
+            return '<span class="days-chip days-urgent">Closed</span>'
+        elif diff == 0:
+            return '<span class="days-chip days-urgent">Closes today</span>'
+        elif diff <= 7:
+            return f'<span class="days-chip days-urgent">{diff}d left</span>'
+        else:
+            return f'<span class="days-chip">{diff}d left</span>'
+    except Exception:
+        return ""
 
 
 def _settings(config: Optional[dict[str, Any]] = None) -> dict[str, Any]:
@@ -146,20 +197,36 @@ def _row_html(row: VerdictRow, opp: Optional[Opportunity]) -> str:
         if link
         else '<span class="muted">\u2014</span>'
     )
+    days_chip = _days_left_chip(opp)
+
+    v_enum = _verdict_of(row)
+    stamp_cls = "stamp-eligible" if v_enum == Verdict.ELIGIBLE else ("stamp-not" if v_enum == Verdict.NOT_ELIGIBLE else "stamp-check")
+    stamp_text = "ELIGIBLE" if v_enum == Verdict.ELIGIBLE else ("NOT ELIGIBLE" if v_enum == Verdict.NOT_ELIGIBLE else "CHECK")
+    stamp_html = f'<div class="verdict-stamp {stamp_cls}">{stamp_text}</div>'
+
+    flag_btn = (
+        f'<button type="button" class="btn-flag-wrong" '
+        f'onclick="if(window.flagWrong)flagWrong(\'{_esc(row.opportunity_id)}\')" '
+        f'title="Record correction for {opp_number}">&#9873; This is wrong</button>'
+    )
 
     parts = [
         '<div class="row">',
+        '<div class="row-header">',
         f'<div class="head"><span class="opp-number">{opp_number}</span> \u2014 {title}</div>',
-        f'<div class="facts">Agency: {agency} &middot; Closes: {close} &middot; Award: {award} &middot; Cost share: {_esc(cost_share)}</div>',
-        f'<div class="facts">Grants.gov: {link_html}</div>',
+        stamp_html,
+        '</div>',
+        f'<div class="facts">Agency: {agency} &middot; Closes: {close} {days_chip} &middot; Award: {award} &middot; Cost share: {_esc(cost_share)}</div>',
+        f'<div class="facts">Grants.gov: {link_html} &middot; {flag_btn}</div>',
     ]
 
+    quotes: list[str] = []
     if _verdict_of(row) == Verdict.NOT_ELIGIBLE:
         quotes = row.disqualifying_quotes or []
         if quotes:
             for quote in quotes:
                 parts.append(
-                    f'<blockquote class="disqualifier">{_esc(quote)}</blockquote>'
+                    f'<blockquote class="disqualifier"><mark class="marker-quote">{_esc(quote)}</mark></blockquote>'
                 )
         else:
             parts.append(
@@ -170,10 +237,22 @@ def _row_html(row: VerdictRow, opp: Optional[Opportunity]) -> str:
         if quotes:
             for quote in quotes:
                 parts.append(
-                    f'<p class="read-this"><span class="label">Read:</span> {_esc(quote)}</p>'
+                    f'<p class="read-this"><span class="label">Read:</span> <mark class="marker-quote">{_esc(quote)}</mark></p>'
                 )
         else:
             parts.append('<p class="muted">No sentence to read recorded.</p>')
+
+    if opp and (opp.source_text or opp.eligibility_text) and quotes:
+        source_raw = opp.source_text or opp.eligibility_text or ""
+        highlighted_snippet = _esc(source_raw)
+        for q in quotes:
+            if q:
+                highlighted_snippet = highlighted_snippet.replace(
+                    _esc(q), f'<mark class="marker-quote">{_esc(q)}</mark>'
+                )
+        parts.append(
+            f'<details class="source-accordion"><summary class="source-toggle">Show in source &darr;</summary><div class="source-content">{highlighted_snippet}</div></details>'
+        )
 
     parts.append("</div>")
     return "\n".join(parts)

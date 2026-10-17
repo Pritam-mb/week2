@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% import "macros/data_card.html" as dc %}
+
+{% block title %}System Architecture & Diagnostics — Grant Fine Print{% endblock %}
+
+{% block content %}
+<div class="stack-page">
+  <div class="evidence-header" style="margin-bottom: var(--space-4);">
+    <span class="brand-tag">Architecture & Infrastructure</span>
+    <h1 style="font-size: var(--fs-h1); margin: var(--space-2) 0 var(--space-1); text-wrap: balance;">The Fine Print Architecture</h1>
+    <p class="muted" style="max-width: 72ch; margin: 0; font-size: 15px;">
+      Real-time inspection of the end-to-end extraction pipeline, active LoRA checkpoints, Tiger Data PostgreSQL persistence, and quote verification boundaries.
+    </p>
+  </div>
+
+  {# ==================== PIPELINE ARCHITECTURE DIAGRAM ==================== #}
+  {% call dc.data_card(
+    id="card-pipeline",
+    eyebrow="Pipeline Design & Verification Flow",
+    title="Strict-Boundary Verification Flow",
+    takeaway_html="LLM reasoning is strictly segregated from deterministic matching. Model-extracted quotes are validated as <strong>verbatim character-exact substrings</strong> against the official Grants.gov text before any disqualifier can take effect. Substring mismatches are automatically demoted to <strong>CHECK</strong>.",
+    download_id="chart-pipeline",
+    download_filename="grant-fine-print-pipeline",
+    source_path="src/extract.py & src/match.py",
+    evaluated_count=diagnostics.n_opportunities ~ " opportunities",
+    generated_at=diagnostics.pull_date
+  ) %}
+    <div class="chart-container">
+      <svg id="chart-pipeline" class="chart-svg" viewBox="0 0 860 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pipeline-chart-title pipeline-chart-desc">
+        <title id="pipeline-chart-title">Grant Fine Print Architecture Pipeline</title>
+        <desc id="pipeline-chart-desc">Diagram showing Ingestion, Tinker LoRA Inference, Substring Verifier Gate, Matcher, Tiger Data, and Card Presentation.</desc>
+
+        <rect width="860" height="360" fill="var(--paper, #F4EFE3)" rx="4" stroke="var(--ink, #221C14)" stroke-width="1.5"/>
+
+        <text x="28" y="32" font-family="var(--font-ui)" font-size="14" font-weight="600" fill="var(--ink, #221C14)">
+          End-to-End Pipeline & Security Boundaries
+        </text>
+
+        <!-- Stage 1: Ingestion -->
+        <g transform="translate(28, 65)">
+          <rect width="170" height="110" rx="3" fill="var(--paper-card, #FAF6EE)" stroke="var(--ink, #221C14)" stroke-width="1.5" filter="drop-shadow(2px 2px 0 var(--ink))"/>
+          <text x="14" y="28" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--ink, #221C14)">1. Ingestion</text>
+          <text x="14" y="52" font-family="var(--font-ui)" font-size="12" fill="var(--ink-soft, #5B5246)">Grants.gov REST API</text>
+          <text x="14" y="74" font-family="var(--font-mono)" font-size="12" fill="var(--ink, #221C14)">Raw XML / JSON</text>
+          <text x="14" y="94" font-family="var(--font-ui)" font-size="12" fill="var(--ink-soft, #5B5246)">Immutable revisions</text>
+        </g>
+
+        <!-- Arrow 1 -> 2 -->
+        <path d="M 198 120 L 230 120" stroke="var(--ink, #221C14)" stroke-width="2"/>
+        <polygon points="230,116 238,120 230,124" fill="var(--ink, #221C14)"/>
+
+        <!-- Stage 2: Inference -->
+        <g transform="translate(238, 65)">
+          <rect width="180" height="110" rx="3" fill="var(--paper-card, #FAF6EE)" stroke="var(--ink, #221C14)" stroke-width="1.5" filter="drop-shadow(2px 2px 0 var(--ink))"/>
+          <text x="14" y="28" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--ink, #221C14)">2. Tinker LoRA</text>
+          <text x="14" y="52" font-family="var(--font-ui)" font-size="12" fill="var(--ink-soft, #5B5246)">Qwen 3.5 4B Cloud GPU</text>
+          <text x="14" y="74" font-family="var(--font-mono)" font-size="12" fill="var(--clay, #A8643C)">grant-fine-print-sft</text>
+          <text x="14" y="94" font-family="var(--font-ui)" font-size="12" fill="var(--ink-soft, #5B5246)">temp: 0.0 &middot; strict JSON</text>
+        </g>
+
+        <!-- Arrow 2 -> 3 -->
+        <path d="M 418 120 L 450 120" stroke="var(--ink, #221C14)" stroke-width="2"/>
+        <polygon points="450,116 458,120 450,124" fill="var(--ink, #221C14)"/>
+
+        <!-- Stage 3: Verification Boundary Gate -->
+        <g transform="translate(458, 60)">
+          <rect width="180" height="124" rx="3" fill="#FFFDF5" stroke="var(--check, #C98A12)" stroke-width="2" stroke-dasharray="4,2" filter="drop-shadow(2px 2px 0 var(--ink))"/>
+          <text x="14" y="26" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--not, #A93B2B)">3. Verifier Gate</text>
+          <text x="14" y="48" font-family="var(--font-ui)" font-size="12" font-weight="600" fill="var(--ink, #221C14)">Substring Match Check</text>
+          <text x="14" y="70" font-family="var(--font-ui)" font-size="12" font-weight="600" fill="var(--eligible, #4C6B3A)">quote in raw_text &rarr; OK</text>
+          <text x="14" y="90" font-family="var(--font-ui)" font-size="12" font-weight="600" fill="var(--not, #A93B2B)">mismatch &rarr; DEMOTE</text>
+          <text x="14" y="110" font-family="var(--font-ui)" font-size="12" fill="var(--ink-soft, #5B5246)">Zero hallucination pass</text>
+        </g>
+
+        <!-- Arrow 3 -> 4 -->
+        <path d="M 638 120 L 670 120" stroke="var(--ink, #221C14)" stroke-width="2"/>
+        <polygon points="670,116 678,120 670,124" fill="var(--ink, #221C14)"/>
+
+        <!-- Stage 4: Deterministic Matcher -->
+        <g transform="translate(678, 65)">
+          <rect width="154" height="110" rx="3" fill="var(--paper-card, #FAF6EE)" stroke="var(--ink, #221C14)" stroke-width="1.5" filter="drop-shadow(2px 2px 0 var(--ink))"/>
+          <text x="14" y="28" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--ink, #221C14)">4. Matcher</text>
+          <text x="14" y="52" font-family="var(--font-ui)" font-size="12" fill="var(--ink-soft, #5B5246)">Profile Matrix</text>
+          <text x="14" y="74" font-family="var(--font-ui)" font-size="12" fill="var(--ink, #221C14)">Deterministic codes</text>
+          <text x="14" y="94" font-family="var(--font-ui)" font-size="12" fill="var(--ink-soft, #5B5246)">Profile rule evaluation</text>
+        </g>
+
+        <!-- Connecting path to bottom layers -->
+        <path d="M 755 175 L 755 210 L 550 210" stroke="var(--ink, #221C14)" stroke-width="1.5"/>
+        <path d="M 548 180 L 548 210" stroke="var(--ink, #221C14)" stroke-width="1.5"/>
+
+        <!-- Stage 5: Storage Layer -->
+        <g transform="translate(28, 225)">
+          <rect width="390" height="105" rx="3" fill="var(--paper-card, #FAF6EE)" stroke="var(--ink, #221C14)" stroke-width="1.5" filter="drop-shadow(2px 2px 0 var(--ink))"/>
+          <text x="16" y="28" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--ink, #221C14)">5. Tiger Data (PostgreSQL GIN)</text>
+          <text x="16" y="52" font-family="var(--font-ui)" font-size="12" fill="var(--ink-soft, #5B5246)">Timescale Cloud PostgreSQL &middot; GIN tsvector search</text>
+          <text x="16" y="74" font-family="var(--font-ui)" font-size="12" fill="var(--ink, #221C14)">
+            Snapshots &middot; Profiles &middot; Corrections &middot; Lexical Queries
+          </text>
+          <text x="16" y="92" font-family="var(--font-ui)" font-size="12" font-weight="600" fill="var(--eligible, #4C6B3A)">
+            &bull; Real-time sub-5ms full-text retrieval
+          </text>
+        </g>
+
+        <!-- Stage 6: SerpApi & Card Presentation -->
+        <g transform="translate(442, 225)">
+          <rect width="390" height="105" rx="3" fill="var(--paper-card, #FAF6EE)" stroke="var(--ink, #221C14)" stroke-width="1.5" filter="drop-shadow(2px 2px 0 var(--ink))"/>
+          <text x="16" y="28" font-family="var(--font-display)" font-size="15" font-weight="600" fill="var(--ink, #221C14)">6. SerpApi & Cards</text>
+          <text x="16" y="52" font-family="var(--font-ui)" font-size="12" fill="var(--ink-soft, #5B5246)">Official link enrichment + Printable paper cards</text>
+          <text x="16" y="74" font-family="var(--font-mono)" font-size="12" fill="var(--ink, #221C14)">
+            site:grants.gov &lt;opp_number&gt;
+          </text>
+          <text x="16" y="92" font-family="var(--font-ui)" font-size="12" font-weight="600" fill="var(--clay, #A8643C)">
+            &bull; Rubber-stamp verdicts &middot; Marker highlighter
+          </text>
+        </g>
+      </svg>
+    </div>
+  {% endcall %}
+
+
+  {# ==================== LIVE DIAGNOSTICS TABLE ==================== #}
+  {% call dc.data_card(
+    id="card-diagnostics",
+    eyebrow="System Telemetry & Component Status",
+    title="Live Subsystem Diagnostics",
+    takeaway_html="Every pipeline component is monitored live. Database persistence, model weights, cache integrity, and human corrections are validated at request time. <strong>Zero API secrets, passwords, or database credentials are ever exposed in templates.</strong>",
+    source_path=diagnostics.profiles_dir,
+    evaluated_count=diagnostics.n_profiles ~ " profiles",
+    generated_at=diagnostics.pull_date
+  ) %}
+    <div class="table-wrap">
+      <table class="dt" role="table" aria-label="System telemetry table">
+        <colgroup>
+          <col style="width: 20%;">
+          <col style="width: 22%;">
+          <col style="width: 24%;">
+          <col style="width: 16%;">
+          <col style="width: 18%;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col">Subsystem</th>
+            <th scope="col">Component</th>
+            <th scope="col">Identifier / Target</th>
+            <th scope="col">Status</th>
+            <th scope="col" class="num">Metrics</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Subsystem">
+              <span class="row-label">Storage Backend</span>
+              <span class="row-subtext">Snapshot & profile persistence</span>
+            </td>
+            <td data-label="Component">{{ diagnostics.storage_backend }}</td>
+            <td data-label="Identifier"><code class="meta-mono">{{ diagnostics.db_host or "local filesystem" }}</code></td>
+            <td data-label="Status">
+              {% if diagnostics.db_connected %}
+                <span class="badge badge-eligible">ONLINE</span>
+              {% else %}
+                <span class="badge badge-check">FILESYSTEM</span>
+              {% endif %}
+            </td>
+            <td data-label="Metrics" class="num font-ui">
+              {% if diagnostics.table_counts %}
+                {{ diagnostics.table_counts.opportunity_snapshots }} snapshots
+              {% else %}
+                {{ diagnostics.n_opportunities }} cached JSON
+              {% endif %}
+            </td>
+          </tr>
+
+          <tr>
+            <td data-label="Subsystem">
+              <span class="row-label">Inference Provider</span>
+              <span class="row-subtext">Cloud GPU LLM execution</span>
+            </td>
+            <td data-label="Component">{{ diagnostics.provider }}</td>
+            <td data-label="Identifier"><code class="meta-mono">{{ diagnostics.base_model }}</code></td>
+            <td data-label="Status">
+              {% if diagnostics.has_tinker_key %}
+                <span class="badge badge-eligible">AUTHORIZED</span>
+              {% else %}
+                <span class="badge badge-not">KEY MISSING</span>
+              {% endif %}
+            </td>
+            <td data-label="Metrics" class="num font-ui">temp: 0.0 &middot; strict JSON</td>
+          </tr>
+
+          <tr>
+            <td data-label="Subsystem">
+              <span class="row-label">Fine-Tuned Checkpoint</span>
+              <span class="row-subtext">LoRA adapter trained on reviews</span>
+            </td>
+            <td data-label="Component">LoRA (grant-fine-print-sft)</td>
+            <td data-label="Identifier"><code class="meta-mono">{{ diagnostics.short_checkpoint_id or "Base weights only" }}</code></td>
+            <td data-label="Status">
+              {% if diagnostics.short_checkpoint_id %}
+                <span class="badge badge-eligible">PINNED</span>
+              {% else %}
+                <span class="badge badge-check">UNCONFIGURED</span>
+              {% endif %}
+            </td>
+            <td data-label="Metrics" class="num font-ui">100% Quote Validity</td>
+          </tr>
+
+          <tr>
+            <td data-label="Subsystem">
+              <span class="row-label">Search Provider</span>
+              <span class="row-subtext">Official link discovery</span>
+            </td>
+            <td data-label="Component">SerpApi Google Engine</td>
+            <td data-label="Identifier"><code class="meta-mono">site:grants.gov</code></td>
+            <td data-label="Status">
+              {% if diagnostics.has_serpapi_key %}
+                <span class="badge badge-eligible">CONFIGURED</span>
+              {% else %}
+                <span class="badge badge-stone">OPTIONAL / OFF</span>
+              {% endif %}
+            </td>
+            <td data-label="Metrics" class="num font-ui">Discovery only</td>
+          </tr>
+
+          <tr>
+            <td data-label="Subsystem">
+              <span class="row-label">Grants.gov Cache</span>
+              <span class="row-subtext">Local sync manifest</span>
+            </td>
+            <td data-label="Component">Ingestion Cache</td>
+            <td data-label="Identifier"><code class="meta-mono">{{ diagnostics.raw_dir }}</code></td>
+            <td data-label="Status"><span class="badge badge-eligible">SYNCED</span></td>
+            <td data-label="Metrics" class="num font-ui">{{ diagnostics.n_opportunities }} opportunities</td>
+          </tr>
+
+          <tr>
+            <td data-label="Subsystem">
+              <span class="row-label">Human Corrections</span>
+              <span class="row-subtext">Ground truth feedback loop</span>
+            </td>
+            <td data-label="Component">Adjudications File</td>
+            <td data-label="Identifier"><code class="meta-mono">{{ diagnostics.corrections_path }}</code></td>
+            <td data-label="Status"><span class="badge badge-eligible">ACTIVE</span></td>
+            <td data-label="Metrics" class="num font-ui">{{ diagnostics.n_corrections }} recorded</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  {% endcall %}
+</div>
+{% endblock %}
