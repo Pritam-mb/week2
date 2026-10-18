@@ -1,11 +1,11 @@
-# Grant Fine Print
+# Grant Fine Print (US & EU Grants)
 
 A weekly **one-page fine-print card** for freelance grant writers: it reads the
-free-text eligibility rules in new federal grant opportunities, checks them
+free-text eligibility rules in federal and international grant opportunities (US Grants.gov and EU Funding & Tenders), checks them
 against each client's profile, and says which grants to pursue, which to rule
 out (with the exact sentence that rules them out), and which need a human read.
 
-[Grants.gov](https://grants.gov) is the authoritative source. This is a
+[Grants.gov](https://grants.gov) and [EU Funding & Tenders](https://ec.europa.eu/info/funding-tenders/opportunities/portal/screen/home) are the authoritative sources. This is a
 **screening aid, not legal or grant advice** — every card carries the line
 "Confirm in the original notice."
 
@@ -231,7 +231,7 @@ A production-ready [render.yaml](file:///d:/week2/grant-fine-print/render.yaml) 
 
 ## Honest limits
 
-- US federal grants from Grants.gov only.
+- Ingestion supports US Federal Grants (Grants.gov) and European Union Grants (EU Funding & Tenders Portal) via `BaseSourceAdapter`, with pre-registered contracts for Canada Grants.
 - The client profiles in the test set are constructed (disclosed as such).
 - Small test set: results come with counts, not tight percentages.
 - Training labels are model-assisted; test labels are hand-made.

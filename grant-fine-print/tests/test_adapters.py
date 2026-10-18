@@ -74,3 +74,16 @@ def test_grants_gov_adapter_pull_mock(tmp_path: Path) -> None:
     opps = adapter.pull(config, mock=True)
     assert len(opps) >= 5
     assert all(isinstance(o, Opportunity) for o in opps)
+
+
+def test_eu_funding_adapter_mock() -> None:
+    from src.adapters import EUFundingAdapter
+    adapter = get_adapter("eu_funding")
+    assert isinstance(adapter, EUFundingAdapter)
+    assert adapter.source_name == "eu_funding"
+    assert adapter.default_country == "EU"
+
+    opps = adapter.pull({}, mock=True)
+    assert len(opps) >= 1
+    assert opps[0].id == "EU-TEST-001"
+    assert "EU Member States" in opps[0].eligibility_text

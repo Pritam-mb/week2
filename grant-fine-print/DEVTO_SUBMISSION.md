@@ -87,10 +87,15 @@ A built-in `/stack` diagnostic page gives grant writers and operators complete t
 ![In-App Stack Diagnostics](APP_STACK_SCREENSHOT_URL)
 *Live system health diagnostics in the web app showing connected services, database row counts, and model checkpoints.*
 
-#### 6. Multi-Source Ingestion & Robustness
-Ingestion is abstracted via `BaseSourceAdapter` (`src/adapters/`). The pipeline is portal-agnostic: US Federal Grants (`GrantsGovAdapter`) is active, with registered adapter contracts for EU Funding & Tenders and Canada Grants. Downstream fine-tuned extraction, quote verification, and client matching work strictly on normalized dataclasses without portal-specific logic.
+#### 6. Multi-Source Ingestion: US & EU Grants
+Ingestion is abstracted via `BaseSourceAdapter` (`src/adapters/`). The pipeline is portal-agnostic with live implementations for:
+- **US Federal Grants (`GrantsGovAdapter`):** Ingests notices across 26 federal agencies via the Grants.gov API.
+- **European Union Grants (`EUFundingAdapter`):** Ingests competitive calls from the EU Funding & Tenders Portal (Horizon Europe).
+- **Canada & Global:** Pre-registered adapter contract for Canada Grants (`canada_grants`).
 
-Extraction runs on 8 parallel workers (`ThreadPoolExecutor(max_workers=8)` in `src/pipeline.py`), and the repository has **72 passing tests** in pytest.
+Downstream fine-tuned extraction, quote verification, and client matching work strictly on normalized dataclasses without portal-specific logic.
+
+Extraction runs on 8 parallel workers (`ThreadPoolExecutor(max_workers=8)` in `src/pipeline.py`), and the repository has **73 passing tests** in pytest.
 
 ---
 
