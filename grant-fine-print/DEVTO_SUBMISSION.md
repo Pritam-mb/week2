@@ -2,50 +2,38 @@
 title: "16 of 26 federal grants that looked open to everyone hid a disqualifier in the fine print"
 published: false
 tags: devchallenge, hf26challenge, opensource, ai
-cover_image: [ADD COVER IMAGE URL - e.g. screenshot of the app's evidence proof sheet or lawyer desk card]
+cover_image: [ADD COVER IMAGE URL - e.g. screenshot of the app's evidence proof sheet or card]
 ---
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 2: Side Hustle](https://dev.to/challenges/hacktoberfest-week2-2026-10-12)*
 
-## The $750,000 grant that said "everyone" and meant "not you"
+## The grant that said "everyone" and meant "not you"
 
-Picture this: It's Sunday night. A freelance grant consultant is putting the finishing touches on an 80-page, $750,000 federal grant application for a small rural healthcare nonprofit in Eastern Kentucky. The team spent 25 billable hours tailoring the narrative, securing local partnership letters, and building line-item budgets. 
+Federal notice **P27AS00032** (*Exploring and Enhancing Outdoor and Heritage Tourism in the Chesapeake Bay Watershed*) has almost every applicant box checked: nonprofits, small businesses, universities, and commercial entities. A code filter tells my Kentucky rural health client this is a green light. But the fine print opens with a hard boundary: 
 
-On Grants.gov, the opportunity looked like a slam dunk: the official checkbox for *"Nonprofits having a 501(c)(3) status"* was clearly ticked. The search filter gave it a bright green light.
-
-Three weeks later, the agency sends a cold, one-paragraph administrative rejection letter:
-> *"Application rejected without merit review. Per Section III.C of the full announcement narrative: 'Projects that take place outside the designated Appalachian Regional Commission priority counties or outside the contiguous watershed boundary are not eligible for consideration.'"*
-
-The client's clinic doesn't get funded. The consultant's reputation is wrecked. And the agency's official database never warned them—because that 23-word death sentence wasn't an indexed field. It was buried on page 14 of an unformatted text narrative.
-
-Take federal notice **P27AS00032** (*Exploring and Enhancing Outdoor and Heritage Tourism in the Chesapeake Bay Watershed*). It has almost every applicant box checked: nonprofits, small businesses, universities, commercial entities. A code filter tells my Kentucky client this is open season. But the fine print opens with a guillotine: 
 > *"PLEASE NOTE: Projects that take place outside the watershed are not eligible for consideration."*
 
-No structured filter will ever catch that. 
+No code filter will ever catch that sentence.
 
-For the freelance grant writers and independent agencies who make their living winning awards, this is the weekly nightmare: **Grants.gov says who *can* apply, but the free-text fine print says who *can't*.** 
+Grants.gov lets you filter by applicant type, so screening looks solved. It isn't. Over a third of open notices use the catch-all "Others" code and leave the real rules to free text, while others mark every code permissive and bury geographic or organizational restrictions deep in the narrative. For a freelance grant writer managing multiple clients, that means opening each new notice and reading the eligibility section by hand, every week.
+
+I built **Grant Fine Print** to do the first read. It produces a one-page weekly screening card per client that shows which grants to pursue, which to drop, and which need a human read—and it never rules a client out without quoting the exact, character-for-character sentence that does.
 
 ---
 
-## What Grant Fine Print is, and how it works
+## What I built
 
-I built **Grant Fine Print** to do the heavy first read. It is an automated screening engine designed as a micro-SaaS side hustle for freelance grant writers. Every Monday, it ingests the official federal catalog, parses the fine print with an open-source fine-tuned model, verifies every extracted restriction against the raw government text with mathematical substring rigor, and outputs a one-page "lawyer's proof sheet" card per client. 
+The model never decides whether a client is eligible. The pipeline has four steps:
 
-And it follows one unbreakable rule: **It never rules a client out without quoting the exact, character-for-character sentence that does.**
+1. **Pull and cache** the notice, keyed by a hash of its normalized text.
+2. **Extract.** A small open model reads the eligibility text once per opportunity and returns structured conditions (organization type, location, size, and status), each paired with an exact quote.
+3. **Verify.** Plain Python code checks that each quote is a verbatim substring of the official text snapshot. If it isn't, the condition is dropped.
+4. **Match.** Deterministic code compares verified conditions with each client profile.
 
-### The "Air-Gapped Truth Boundary"
-
-When developers see unstructured text, the knee-jerk reaction in 2026 is: *"Just throw GPT-4 or Claude at it with a prompt: 'Is this client eligible?'"*
-
-In grant consulting, that is professional suicide. 
-1. **LLMs summarize away critical negations:** A prompt asking for a summary might condense *"Organizations with annual budgets exceeding $500,000 are ineligible unless operating in rural areas"* into *"Nonprofits eligible with rural programs."* That subtle semantic shift costs tens of thousands of dollars.
-2. **LLMs hallucinate rules:** They cite non-existent grant guidelines or blend memories of previous grant cycles.
-3. **LLMs cannot be audited:** When a client asks, *"Why did you tell me not to apply for this $1M grant?"*, an answer of *"The chatbot said so"* loses you the client.
-
-Grant Fine Print solves this by completely segregating **Language Understanding** from **Decision Logic** with a strict, verifiable architecture:
+NOT ELIGIBLE requires a verified quote. Anything else the matcher cannot prove becomes CHECK, accompanied by the exact sentence to read. Because extraction runs once per opportunity and is cached, model cost does not scale with the number of clients. Every card ends with *"Confirm in the original notice,"* reinforcing that this is an auditable screening aid, not legal advice.
 
 ```
-[ Grants.gov API / Tiger Data PostgreSQL ]
+[ Grants.gov API / Tiger Data Postgres ]
                    │
                    ▼ (Raw Official Text Snapshot + SHA256)
        [ Tinker LoRA: Qwen3.5-4B ]
@@ -67,232 +55,157 @@ Grant Fine Print solves this by completely segregating **Language Understanding*
                    └──► CHECK           (Ambiguous text ──► Human review)
 ```
 
-The model **NEVER** decides eligibility. The model has only one job: act as an extraction scalpel, returning structured candidate conditions paired with exact quotes. 
+![A real card with the verified quote highlighted](GRANT_CARD_SCREENSHOT_URL)
+*A real card for Opportunity **58617** (VA-GRANTS-112508-002, State Veterans Home Construction Grant Program). The notice carries applicant codes for State and Tribal governments, but the fine print explicitly commands: "NO PRIVATE ORGANIZATION, RELIGIOUS, NON-PROFIT, OR INDIVIDUAL IS QUALIFIED TO APPLY." The verified quote is highlighted directly on the card.*
 
-Then, our deterministic Python Verifier checks:
-```python
-if condition.quote not in raw_opportunity_text:
-    # Substring mismatch! Demote to human CHECK immediately.
-    return Verdict.CHECK
-```
+### What's in the app
 
-If a model hallucinates so much as a single punctuation mark, the condition is dropped, and the grant is routed to human review. **NOT ELIGIBLE is an emergency brake that can ONLY be pulled by an exact string in the government text.**
-
-![Real Grant Screening Card with Highlighted Quote](GRANT_CARD_SCREENSHOT_URL)
-*A real generated screening card for Opportunity 58617 (VA State Veterans Home Construction). Notice the rubber stamp, the highlighted quote, and the fine-print notice excerpt showing the verbatim source match.*
+- **Profiles.** Five seeded client profiles (nonprofit, for-profit, university, tribal, non-US) plus a form to create your own.
+- **Cards.** Full-text search, verdict filters, sorting, and a print view for the one-page card.
+- **Corrections.** On any card, clicking "This is wrong" saves the corrected verdict and a note for that profile and opportunity to the database. It is applied immediately as an override on the next pipeline run (`apply_corrections=True`) and logged as ground truth for future training.
+- **Evidence page.** The empirical study and evaluation benchmark charts, each with its data table, source file, and pull date.
+- **Stack page.** Live monitoring showing database connection status, table counts, active inference checkpoints, and SerpApi configuration.
+- **Speed and tests.** Extraction runs on 8 parallel workers (`ThreadPoolExecutor(max_workers=8)` in `src/pipeline.py`), and the repository has **68 passing tests** in pytest.
 
 ---
 
-## The Side Hustle Economics: $49/mo Micro-SaaS
+## The stack, and what each sponsor did
 
-Why is this a viable, profitable Side Hustle?
+### Tiger Data: where everything lives
 
-### The Target Customer
-Freelance grant consultants and boutique grant agencies managing 3 to 10 clients. In the United States alone, there are over 40,000 professional grant writers, charging **$75 to $150 per hour**.
+Snapshots, manifests, profiles, evaluation runs, and corrections live in a Postgres database on Timescale Cloud:
 
-### The Weekly Math
-- **The Pain:** Every Monday morning, a consultant spends **4 to 6 hours** manually sifting through new Grants.gov postings for their client roster. That is **$300 to $900 in unbillable weekly overhead**.
-- **The Platform Cost:** Because extraction runs once per opportunity and caches permanently by content hash, inference costs do not scale with the number of clients! 
-  - Processing 100 new weekly grants via Qwen3.5-4B costs less than **$0.05 per week**.
-  - PostgreSQL hosting and Render compute cost under **$25/month**.
-- **The Pricing:** At **$29 to $49/month per consultant**, the tool delivers a 10x return on investment if it saves just *one hour* of manual searching per month—and a 100x return the first time it prevents a catastrophic false-positive application.
-
----
-
-## The Stack: Production Architecture & Sponsor Proofs
-
-Grant Fine Print is not a toy prototype running on local CSVs. It is an end-to-end production architecture powered by the challenge sponsors, complete with live dashboards, real databases, and GPU-accelerated fine-tuning.
-
-Here is what each sponsor powered, and the verifiable proof in their dashboards:
-
-### 1. Tiger Data (Timescale Cloud PostgreSQL): Sub-15ms Full-Text Search
-Tiger Data provides our enterprise persistence layer via a high-performance Timescale Cloud PostgreSQL instance.
-
-Instead of an ephemeral vector database that hallucinates similarity thresholds, we implemented a battle-tested relational schema across 5 core tables:
-- `raw_snapshots`: Immutable notice texts, eligibility narratives, and SHA256 integrity hashes.
-- `manifests`: Source sync logs, pull statistics, and delta tracking.
-- `profiles`: Client entity attributes, 501(c)(3) statuses, NAICS codes, and keyword focus matrices.
-- `eval_runs`: Frozen benchmark runs and model evaluation metrics.
-- `corrections`: Human-in-the-loop audit logs where consultants flag edge cases to feed future training sets.
+| Table | What it holds |
+|---|---|
+| `raw_snapshots` | The notice text, eligibility text, and a hash of each pulled notice |
+| `manifests` | Each pull: date, new, changed, and duplicate counts |
+| `profiles` | Client profiles and focus keywords |
+| `eval_runs` | Frozen evaluation results and metrics |
+| `corrections` | Human corrections and notes |
 
 ```sql
--- Live GIN Index for instant full-text lexical search
-CREATE INDEX idx_raw_snapshots_fts ON raw_snapshots 
+CREATE INDEX idx_raw_snapshots_fts ON raw_snapshots
 USING GIN (to_tsvector('english', title || ' ' || coalesce(eligibility_text, '')));
 ```
 
-With this GIN index, queries across hundreds of 50KB federal notices return in **~12 milliseconds** directly in the UI. 
+Searching 528 notices takes about **12 ms** in the app, measured directly in `app/main.py` via `time.perf_counter()` against `PostgresStore().search(query, limit=20)`. It is keyword full-text search using a GIN index on tsvectors, not vector embeddings. Semantic search with pgvector is the next planned step.
 
-![Tiger Data Timescale Console: Active PostgreSQL Cluster & Tables](TIGER_DATA_DASHBOARD_SCREENSHOT_URL)
-*Proof in the Tiger Data Timescale Console: Showing the active PostgreSQL cluster, connection pool, and the 5 relational tables (`raw_snapshots`, `manifests`, `profiles`, `eval_runs`, `corrections`) with query execution telemetry.*
+![Tiger Data console](TIGER_DATA_DASHBOARD_SCREENSHOT_URL)
+*The active Timescale Cloud console showing the PostgreSQL service, connection pool, and relational tables.*
 
-### 2. Tinker: Cloud GPU LoRA Training & Live Inference
-Tinker powered the entire machine learning lifecycle:
-- Dataset preparation: We formatted 100 hand-verified training examples into chat-templated JSONL.
-- Training: LoRA fine-tuning of `Qwen/Qwen3.5-4B` (rank 16, alpha 32, lr 2e-4) over 75 optimization steps on cloud GPUs.
-- Adapter Deployment: The resulting checkpoint (`grant-fine-print-sft`) was deployed on Tinker's inference endpoint with strict temperature `0.0` sampling and JSON grammar constraints.
+### Tinker: the fine-tune
 
-![Tinker Dashboard: Training Loss Curve and Model Checkpoint](TINKER_DASHBOARD_SCREENSHOT_URL)
-*Proof in the Tinker Dashboard: Showing the completed LoRA training job `grant-fine-print-sft`, training loss convergence, GPU utilization, and deployed adapter endpoint.*
+I used **Qwen3.5-4B** through Tinker. The fine-tuned version is a LoRA adapter (rank 16, learning rate 0.0002) trained on **100 reviewed examples** for 3 epochs (75 optimizer steps) using Tinker's Python SDK (`create_lora_training_client`). 
 
-### 3. SerpApi: Autonomous Government Link Recovery
-Government IT is notoriously fragile. Grants.gov frequently changes URL route schemes, and older NOFO announcements in the API payload contain broken or missing direct application links.
+Training examples were drafted with model assistance and verified line-by-line by hand to guarantee valid JSON and character-exact quotes. All 25 test opportunities were strictly excluded from the training set, and 338 near-duplicate announcements were removed during preprocessing. The test labels were written by hand and frozen before running any evaluation. On live remote inference over the network, Tinker median latency is 2,268 ms.
 
-We integrated SerpApi's Google Search API to dynamically recover authoritative notice links. But to prevent prompt injection or hallucinated URLs, we enforced a strict security envelope:
-- Search queries are locked to official government domains: `site:grants.gov/search-results-detail/ OR site:grants.gov/web/community-resources/`.
-- Every returned link is validated via regex before storage: `^https:\/\/(www\.)?grants\.gov\/`.
-- **Zero snippet pollution:** Web search text snippets are completely barred from entering the eligibility evaluation pipeline—they are used exclusively for navigation.
+![Tinker Dashboard](TINKER_DASHBOARD_SCREENSHOT_URL)
+*Tinker dashboard showing the completed LoRA training run `grant-fine-print-sft` and deployed model checkpoint.*
 
-![SerpApi Playground / Dashboard: Live Queries and Response Logs](SERPAPI_DASHBOARD_SCREENSHOT_URL)
-*Proof in the SerpApi Dashboard: Showing live API calls resolving official `site:grants.gov` notices with sub-second response times and zero external data contamination.*
+### SerpApi: government link discovery
 
-### 4. Render: Zero-Downtime Production Deployment
-The application is live in production at [https://grant-fine-print.onrender.com/](https://grant-fine-print.onrender.com/).
+Discovery runs from the CLI (`--discover`) and from the app (`POST /discover/<id>`), and every result must be an HTTPS `grants.gov` URL. Search queries are restricted strictly to official government domains (`site:grants.gov`), and web search snippets are barred from entering the eligibility evaluation pipeline—they are used exclusively for navigation.
 
-Deployed via a native Render Blueprint (`render.yaml`), the service runs:
-- Python 3.11 with Gunicorn WSGI workers.
-- Automatic SSL/TLS encryption.
-- Direct secure database peering to Tiger Data's Timescale PostgreSQL instance.
-- Automatic cache-busting asset pipelines and static file compression.
+![SerpApi Dashboard](SERPAPI_DASHBOARD_SCREENSHOT_URL)
+*SerpApi search log showing live queries resolving official Grants.gov notice URLs.*
 
-![Render Dashboard: Production Web Service Metrics and Deploys](RENDER_DASHBOARD_SCREENSHOT_URL)
-*Proof in the Render Dashboard: Showing the live production web service, zero-downtime deployment history, memory metrics, and environment variable configuration.*
+### Render: production deployment
+
+Deployed live as a web application at [https://grant-fine-print.onrender.com/](https://grant-fine-print.onrender.com/) via Render Blueprint (`render.yaml`), running Gunicorn connected directly to the Tiger Data Timescale PostgreSQL database.
+
+![Render Dashboard](RENDER_DASHBOARD_SCREENSHOT_URL)
+*Render dashboard showing the live web service deployment and build status.*
 
 ---
 
-## Design Aesthetics: "A Lawyer's Proof Sheet on a Vintage Desk"
+## The design
 
-Most enterprise SaaS tools in 2026 look like generic Tailwind templates: purple gradients, rounded pill buttons, and blurred glassmorphism.
+I wanted the UI to feel like a printed proof sheet on a desk: cream paper with grain, ink-black type, hard-offset shadows (`3px 3px 0 var(--ink)`), no gradients, and no glow.
 
-For Grant Fine Print, I wanted the UI to embody the tactile authority of an investigative legal audit. The aesthetic concept is **"a printed proof sheet on a senior partner's desk"**:
-- **Palette:** Rich cream paper (`#FAF6EE`), printer's ink (`#221C14`), warm clay (`#A8643C`), and amber markers (`#F7E37A`).
-- **Paper Grain & Depth:** Real-time SVG `feTurbulence` fractal noise grain sitting behind content at 5% opacity, paired with crisp, hard-offset box shadows (`3px 3px 0 var(--ink)`).
-- **Physical Motifs:** Rubber stamps with rough-edge displacement filters (`#stamp-rough`) that thump into place on verdict changes; paperclip badges pinning grant IDs; perforated tear-lines; and delicate corner paper folds.
-- **Micro-Animations:** Yellow highlighter sweeps (`.marker-quote`) that animate across the exact disqualifying sentences when scrolled into view.
-- **Accessibility:** 100% WCAG AA contrast compliance across all text, full keyboard navigation, sticky tabular headers, and zero reliance on color alone.
+- **Stamps.** Each verdict is a rubber stamp with a rough edge (`#stamp-rough` SVG displacement filter) that lands with a small thump.
+- **Highlighter.** The verified sentence gets a marker-yellow swipe (`.marker-quote`).
+- **Proof-sheet details.** Corner paper folds (`.paper-fold-corner`), crop marks on the evidence chart panels, ruled lines on cards, and paper clips and tape strips.
+- **Accessibility.** Charts use pattern fills as well as colour, there is a light and dark ink mode, and transitions respect `prefers-reduced-motion` settings.
 
 ---
 
-# THE EVIDENCE: Forensic Audit & Empirical Benchmarks
+## Who would pay
 
-The entire evaluation suite is live and interactive in the web app under the **Evidence** tab ([https://grant-fine-print.onrender.com/evidence](https://grant-fine-print.onrender.com/evidence)). 
+This is designed as a focused **Side Hustle** for freelance grant writers and boutique consultancies managing 3 to 10 clients. 
 
-Every benchmark was evaluated against hand-labelled ground truth audited by the author before any model was executed, permanently committed to the repository in git commit `2f90797`.
+Freelance grant writers charge between $75 and $150 per hour. Every Monday morning, they spend hours manually sifting through Grants.gov announcements for their client roster. 
 
-Here is the four-part forensic proof:
+Because extraction runs **once per opportunity** and is cached permanently in Postgres by text hash, model cost does not scale with the number of clients. At **$29 to $49/month**, the tool pays for itself if it saves a writer just 30 minutes a month—while protecting their professional reputation by catching fine-print disqualifiers code filters miss.
 
 ---
 
-### Evidence Part 1: The Catalog Audit (The Unindexed Catalog & Permissive Booby-Traps)
+## The Evidence: Forensic Audit & Benchmark Results
 
-Before testing any machine learning model, I pulled **528 official open opportunities** from the Grants.gov REST API to measure the real-world gap:
+The Evidence suite is live and interactive in the web app under the **Evidence** tab ([https://grant-fine-print.onrender.com/evidence](https://grant-fine-print.onrender.com/evidence)). All benchmarks were evaluated against ground truth hand-labelled by the author before any model was run (git commit `2f90797`).
 
-| What I counted | Result | Percentage | Significance |
-|---|---:|---:|---|
-| **Full Opportunity Catalog** | **528** | 100.0% | Official active federal opportunities |
-| **"Others" (Code 25) as Sole Code** | **180** | **34.1%** | The code tells you nothing; forces manual reading |
-| **Categorized / Specific Codes** | **348** | 65.9% | Standard applicant categories |
-| **Notices with Explicit Disqualification Phrases** | **221** | **41.9%** | Contain phrases like *"not eligible"*, *"restricted to"* |
-| **Permissive Sample with Hidden Disqualifier** | **16 of 26** | **61.5%** | 95% Wilson CI: 42.5% to 77.6% (small sample) |
-| **"Others" Sample with Hidden Disqualifier** | **12 of 15** | **80.0%** | 95% Wilson CI: 54.8% to 93.0% (small sample) |
+### 1. The Opportunity Catalog Audit
+
+I pulled **528 open opportunities** on 2026-10-17 and measured the gap before building any model:
+
+| What I counted | Result | Note |
+|---|---:|---|
+| "Others" as the only applicant code | **180 of 528** (34.1%) | The code tells you nothing |
+| Free text with explicit exclusion phrases | **221 of 528** (41.9%) | Regex match for 10 exclusion patterns (e.g., *"not eligible"*, *"only .* may apply"*, *"restricted to"*) |
+| Sample: permissive codes, hard disqualifier in the text | **16 of 26** (61.5%) | About 43% to 78% (95% Wilson interval: 42.5% to 77.6%) |
+| Sample: "Others" code, hard disqualifier in the text | **12 of 15** (80.0%) | About 55% to 93% (95% Wilson interval: 54.8% to 93.0%) |
 
 ![Study Breakdown: Catalog Audit & Permissive Sample](STUDY_CHART_IMAGE_URL)
 *(Downloadable directly as a PNG from Section 1 of the app's `/evidence` sheet)*
 
-**The Finding:** Over a third (34.1%) of the entire federal catalog completely avoids structured categorization by using Code 25 ("Others"). Furthermore, among grants with permissive codes that appear open to everyone, **61.5% (16 of 26)** bury a hard disqualifying clause in free text. 
+A hard disqualifier is a sentence that says who may not apply, or restricts applicants by location, organisation type, status, or size. The 221 count represents opportunities containing explicit restriction phrases in their `applicantEligibilityDesc` field. In the permissive-code sample, **16 of 26** notices hid a disqualifier that overruled the permissive code. In the "Others" sample, **12 of 15** hid a hard disqualifier. Because sample sizes are small, the Wilson score intervals show the problem is real, even if the exact population rate has wide bounds.
 
----
+### 2. Three systems on the same frozen test
 
-### Evidence Part 2: Systems Benchmark (The Scores & Accuracy)
+The test benchmark consists of 5 constructed client profiles evaluated across 25 opportunities, giving **125 pairs**. A "missed grant" means a truly eligible pair was wrongly marked NOT ELIGIBLE. "Wrongly told likely eligible" means a truly disqualified pair was marked LIKELY ELIGIBLE.
 
-We constructed a frozen benchmark of **125 test pairs** (5 distinct profiles across 25 diverse opportunities: Nonprofit, For-Profit Small Business, University, Tribal Government, and Foreign Entity). 
-
-We compared three systems head-to-head:
-1. **Code-Only Baseline:** Filters strictly using Grants.gov applicant-type codes.
-2. **Prompted Base Qwen:** Base `Qwen/Qwen3.5-4B` with zero-shot extraction prompt.
-3. **Fine-Tuned Qwen (Tinker LoRA):** `Qwen/Qwen3.5-4B` with LoRA adapter trained on 100 verified examples.
-
-| Metric | Code-Only Baseline | Prompted Base Qwen | Fine-Tuned Qwen (Tinker LoRA) |
-|---|---:|---:|---:|
-| **Missed-Grant Rate** (Lower is better) | 0 of 33 (0.0%) | 20 of 33 (60.6%) | **2 of 33 (6.1%)** |
-| **Wrongly Told "Likely Eligible"** (Fatal error!) | **14 of 65 (21.5%)** | 1 of 65 (1.5%) | **0 of 65 (0.0%)** |
-| **Quote Substring Validity** (Higher is better) | N/A (no quotes) | 94 of 95 (98.9%) | **18 of 18 (100.0%)** |
-| **Human-Read Share (Routed to CHECK)** | 48 of 125 (38.4%) | 64 of 125 (51.2%) | 101 of 125 (80.8%) |
-| **Exact Match Accuracy** | 70 of 125 (56.0%) | 47 of 125 (37.6%) | 29 of 125 (23.2%) |
+| System | Missed grants | Wrongly told "likely eligible" | Human-read share | Exact accuracy | Quote validity |
+|---|---:|---:|---:|---:|---:|
+| Code-only filter | 0 of 33 (0.0%) | **14 of 65** (21.5%) | 48 of 125 (38.4%) | 70 of 125 (56.0%) | N/A |
+| Prompted Qwen | 20 of 33 (60.6%) | 1 of 65 (1.5%) | 64 of 125 (51.2%) | 47 of 125 (37.6%) | 94 of 95 (98.9%) |
+| Fine-tuned Qwen | **2 of 33** (6.1%) | **0 of 65** (0.0%) | 101 of 125 (80.8%) | 29 of 125 (23.2%) | **18 of 18** (100.0%) |
 
 ![Comparative Systems Benchmark](EVAL_CHART_IMAGE_URL)
 *(Downloadable directly as a PNG from Section 2 of the app's `/evidence` sheet)*
 
-#### The Deep Analysis:
-- **The Code-Only Trap:** Code-Only looks deceptively strong with 56.0% exact accuracy and 0 missed grants. But it achieves 0 missed grants only because it *never reads the narrative*. Consequently, it committed **14 fatal false-positive errors (21.5%)**, telling barred clients they were "likely eligible." 
-- **Prompted Base Model Paranoia:** Zero-shot Prompted Qwen was hyper-paranoid. It panicked on standard boilerplate and missed **20 of 33 valid grants (60.6% missed grant rate!)**.
-- **The Fine-Tuning Victory:** Fine-Tuned Qwen slashed missed grants from 20/33 down to **2 of 33 (6.1%)**, committed **0 false-positive errors (0 of 65)**, and achieved **100% verified quote validity (18 of 18)**. It safely routed 101 pairs (80.8%) to **CHECK**, handing the consultant the exact sentence to verify.
+### 3. What the numbers say
+
+- **Why code-only looks like a winner at first:** Code-only has 0 missed grants, the lowest human-read share (48), and the best accuracy (70 of 125). A reader will ask why the model exists. But code-only achieves zero missed grants only because it **never** says NOT ELIGIBLE from free text.
+- **The fatal flaw of code-only:** In **14 of 65** cases where a client was strictly disqualified by the text, code-only falsely told them they were **"likely eligible."** That is the 16-of-26 study appearing in production. If a grant writer trusts a code filter, their client spends 15 hours drafting an application for a grant they are barred from winning.
+- **What fine-tuning fixed:** Fine-tuned Qwen had **0 of 65** false eligibility errors (0.0%). It never told a disqualified client to apply. Against the prompted base model—which suffered from severe false exclusions, missing 20 of 33 winnable grants (60.6%)—fine-tuning slashed missed grants to just **2 of 33** (6.1%).
+- **The trade-off:** The fine-tuned model extracted fewer conditions overall (18 vs 95), but every single one was a valid quote (18 of 18, 100%). When it was uncertain, it safely routed the opportunity to **CHECK** (101 of 125). In grant consulting, sending a card to human review costs 60 seconds; sending a disqualified client after an impossible grant costs thousands of dollars.
+
+### 4. Confusion matrices
+
+Here are the confusion matrices across all 125 test pairs:
+
+```
+Code-Only Baseline (Fatal false-positive bias: 14 false eligibilities)
+True \ Pred      ELIGIBLE   NOT_ELIGIBLE   CHECK   TOTAL
+ELIGIBLE            25            0          8       33
+NOT_ELIGIBLE        14           28         23       65
+CHECK                5            5         17       27
+
+Prompted Base Qwen (Over-exclusion: 20 missed grants)
+True \ Pred      ELIGIBLE   NOT_ELIGIBLE   CHECK   TOTAL
+ELIGIBLE             0           20         13       33
+NOT_ELIGIBLE         1           30         34       65
+CHECK                6            4         17       27
+
+Fine-Tuned Qwen (Zero false eligibilities: 0 of 65, safe routing to CHECK)
+True \ Pred      ELIGIBLE   NOT_ELIGIBLE   CHECK   TOTAL
+ELIGIBLE             0            2         31       33
+NOT_ELIGIBLE         0           12         53       65
+CHECK                6            4         17       27
+```
 
 ---
 
-### Evidence Part 3: Confusion Matrices & Error Breakdown
-
-To examine the exact distribution of errors, here are the full 3×3 confusion matrices across all 125 evaluation pairs:
-
-#### 1. Code-Only Baseline Matrix (Fatal False-Positive Bias)
-```
-                  PREDICTED
-TRUE LABEL    ELIGIBLE   NOT_ELIGIBLE   CHECK   TOTAL
-ELIGIBLE         25            0          8       33
-NOT_ELIGIBLE     14 ◄─[!]     28         23       65
-CHECK             5            5         17       27
-TOTAL            44           33         48      125
-```
-*Notice the fatal flaw: **14 grants** where the client was legally NOT ELIGIBLE were marked **ELIGIBLE** because the code filter never checked the free text.*
-
-#### 2. Prompted Base Qwen Matrix (Hyper-Aggressive Exclusion)
-```
-                  PREDICTED
-TRUE LABEL    ELIGIBLE   NOT_ELIGIBLE   CHECK   TOTAL
-ELIGIBLE          0           20 ◄─[!]   13       33
-NOT_ELIGIBLE      1           30         34       65
-CHECK             6            4         17       27
-TOTAL             7           54         64      125
-```
-*Notice the over-disqualification: **20 truly eligible grants** were wrongly marked **NOT ELIGIBLE**, throwing away viable funding opportunities.*
-
-#### 3. Fine-Tuned Qwen (Tinker LoRA) Matrix (Precision & Safety)
-```
-                  PREDICTED
-TRUE LABEL    ELIGIBLE   NOT_ELIGIBLE   CHECK   TOTAL
-ELIGIBLE          0            2         31 ◄───  33  (Safely sent to CHECK)
-NOT_ELIGIBLE      0 ◄─[0!]    12         53 ◄───  65  (Safely sent to CHECK)
-CHECK             6            4         17       27
-TOTAL             6           18        101      125
-```
-*Notice the transformation: **0 false-positive errors** (0 of 65). Ambiguous and edge cases are safely routed to **CHECK** (53 NOT_ELIGIBLE and 31 ELIGIBLE), preserving human oversight while preventing both catastrophic wasted labor and false disqualification.*
-
----
-
-### Evidence Part 4: Inference Latency & Cost Profile
-
-Inference execution telemetry is tracked live on the `/evidence` sheet:
-
-| Metric | Prompted Base API | Fine-Tuned LoRA (Tinker Cloud GPU) |
-|---|---:|---:|
-| **Median Execution Time** | 3.4 ms *(local fixture)* | **2,268 ms (2.27s)** *(live remote GPU)* |
-| **95th Percentile (p95)** | 5.5 ms *(local fixture)* | **7,254 ms (7.25s)** *(live remote GPU)* |
-| **Sampling Temperature** | 0.0 | **0.0 (strictly deterministic)** |
-| **Output Format** | JSON Schema | **Strict JSON Grammar** |
-| **Evaluated Inferences** | 125 pairs | **125 pairs** |
-
-*(Note: The prompted baseline recorded ~3.4ms because predictions were evaluated from a cached test fixture, whereas the fine-tuned model executed live remote GPU sampling calls over the network via Tinker.)*
-
-**Cost Profile:**
-- Base model: `Qwen/Qwen3.5-4B`
-- Prompt: ~1,500 tokens (grant title, description, eligibility text)
-- Completion: ~200 tokens (structured condition JSON)
-- **Cost per 1,000 opportunities:** Under **$0.30**.
-- **Cost per weekly run (100 new opportunities):** Less than **$0.05 per week**.
-
----
-
-## Limits & Real-World Caveats
+## Limits
 
 - **Federal grants only:** Currently ingests notices from Grants.gov. State and private foundation grants are not yet included.
 - **Small evaluation set:** The 125 test pairs provide clear directional findings, but precision estimates should be interpreted via the reported Wilson intervals.
@@ -303,26 +216,19 @@ Inference execution telemetry is tracked live on the `/evidence` sheet:
 
 ---
 
-## Try it live & Inspect the code
+## Try it
 
-- **Live Production App:** [https://grant-fine-print.onrender.com/](https://grant-fine-print.onrender.com/)
-- **GitHub Repository:** {% github Pritam-mb/week2 %}
+- **Live Deployed App:** [https://grant-fine-print.onrender.com/](https://grant-fine-print.onrender.com/)
+- **Repository:** {% github Pritam-mb/week2 %}
 
-### Running locally in 3 commands:
 ```powershell
-# 1. Clone & install
-git clone https://github.com/Pritam-mb/week2.git
-cd week2/grant-fine-print
-pip install -r requirements.txt
-
-# 2. Run local mock extraction & evaluation
+# Run the local pipeline
 python -m src.pull --mock
 python -m src.pipeline --backend mock
-
-# 3. Launch the dashboard
 python -m app.main
 ```
-Navigate to `http://127.0.0.1:8000/evidence` to explore the live interactive proof sheet!
+
+See the repository README for instructions on running live extraction with Tinker API keys and PostgreSQL.
 
 ---
 
@@ -332,13 +238,13 @@ Navigate to `http://127.0.0.1:8000/evidence` to explore the live interactive pro
 
 ---
 
-## Prize categories & Why we qualify
+## Prize categories
 
-- **Best Use of Tinker:** Fine-tuned `Qwen/Qwen3.5-4B` via LoRA on cloud GPUs, transforming a hyper-paranoid zero-shot model (60.6% missed grant rate) into a surgical extraction engine (6.1% missed grants, 0 false eligibilities, and 100% verified quote validity).
-- **Best Use of Tiger Data:** Architected a live PostgreSQL persistence layer on Timescale Cloud across 5 relational tables, implementing GIN full-text index searching across hundreds of federal opportunities in 12ms.
-- **Best Use of SerpApi:** Engineered an autonomous official link recovery pipeline with a strict security boundary that prevents web search noise from corrupting core extraction logic.
-- **Best Use of Render:** Shipped a production-grade web application with live audit cards, SSL termination, and continuous deployment via `render.yaml` at [https://grant-fine-print.onrender.com/](https://grant-fine-print.onrender.com/).
+- **Best Use of Tinker:** Demonstrated how LoRA fine-tuning of Qwen3.5-4B turned an aggressive prompted base model (20 of 33 missed grants) into a precision extraction engine (2 of 33 missed grants, 18 of 18 verified quotes, and 0 of 65 false eligibility errors).
+- **Best Use of Tiger Data:** Built a live PostgreSQL persistence layer across 5 tables with GIN full-text search indexing, handling snapshot caching, client profiles, and human correction logs at 12ms query latencies.
+- **Best Use of SerpApi:** Automated official government link recovery with a strict security and truth boundary that prevents external search snippets from corrupting decision logic.
+- **Best Use of Render:** Deployed live as a production web application at [https://grant-fine-print.onrender.com/](https://grant-fine-print.onrender.com/) using a Render Blueprint (`render.yaml`), serving Gunicorn connected to Timescale PostgreSQL with real-time audit cards.
 
 ---
 
-*Data sourced from official notices on Grants.gov. Base model: Qwen/Qwen3.5-4B (Apache 2.0 license). Screening aid only; always verify against the original Notice of Funding Opportunity.*
+*Data from Grants.gov. Base model: Qwen/Qwen3.5-4B (Apache 2.0 license).*
