@@ -180,6 +180,7 @@ grant-fine-print/
     eval.py              PRD 8.5 metrics + HTML report with inline charts
     corrections.py       per-(profile, opportunity) human overrides
     cli.py               `gfp` dispatcher
+    adapters/            multi-source ingestion contracts (BaseSourceAdapter, GrantsGovAdapter)
     config.py, io_utils.py, models.py
   app/
     main.py              Flask application & route handlers
@@ -199,7 +200,7 @@ grant-fine-print/
     eval_report.html     self-contained visual evaluation report
     predictions/         <system>.jsonl + <system>.meta.json
     cards/               one printable HTML card per profile
-  tests/                 46-test pytest suite
+  tests/                 72-test pytest suite
   docs/
     DEMO_OFFLINE.md      operator guide for zero-network execution
 ```
@@ -229,7 +230,7 @@ A production-ready [render.yaml](file:///d:/week2/grant-fine-print/render.yaml) 
 
 ## Honest limits
 
-- US federal grants from Grants.gov only.
+- Ingestion is configured for US federal grants (Grants.gov), though `BaseSourceAdapter` supports pluggable international portals.
 - The client profiles in the test set are constructed (disclosed as such).
 - Small test set: results come with counts, not tight percentages.
 - Training labels are model-assisted; test labels are hand-made.

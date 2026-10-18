@@ -65,7 +65,8 @@ NOT ELIGIBLE requires a verified quote. Anything else the matcher cannot prove b
 - **Corrections.** On any card, clicking "This is wrong" saves the corrected verdict and a note for that profile and opportunity to the database. It is applied immediately as an override on the next pipeline run (`apply_corrections=True`) and logged as ground truth for future training.
 - **Evidence page.** The empirical study and evaluation benchmark charts, each with its data table, source file, and pull date.
 - **Stack page.** Live monitoring showing database connection status, table counts, active inference checkpoints, and SerpApi configuration.
-- **Speed and tests.** Extraction runs on 8 parallel workers (`ThreadPoolExecutor(max_workers=8)` in `src/pipeline.py`), and the repository has **68 passing tests** in pytest.
+- **Multi-source adapter architecture.** Ingestion is abstracted via `BaseSourceAdapter` (`src/adapters/`). The pipeline is portal-agnostic: US Federal Grants (`GrantsGovAdapter`) is active, with registered adapter contracts for EU Funding & Tenders and Canada Grants. Downstream fine-tuned extraction, quote verification, and client matching work strictly on normalized dataclasses without portal-specific logic.
+- **Speed and tests.** Extraction runs on 8 parallel workers (`ThreadPoolExecutor(max_workers=8)` in `src/pipeline.py`), and the repository has **72 passing tests** in pytest.
 
 ---
 

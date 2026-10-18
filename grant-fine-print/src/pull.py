@@ -412,11 +412,22 @@ def _hit_fingerprint(hit: dict) -> str:
 
 
 def pull(config: dict, mock: bool = False) -> list[Opportunity]:
-    """Pull, cache and de-duplicate open opportunities.
+    """Pull, cache and de-duplicate open opportunities using configured adapter.
 
-    When ``mock`` is true the offline sample (or synthetic) data is used and
-    no network request is made. Returns the unique opportunities in pull order.
+    Delegates to the active SourceAdapter (default: GrantsGovAdapter).
+    When ``mock`` is true the offline sample (or synthetic) data is used.
     """
+    source_name = str(get(config, "app.source", "grants_gov") or "grants_gov")
+    try:
+        from .adapters import get_adapter
+        adapter = get_adapter(source_name)
+        return adapter.pull(config, mock=mock)
+    except Exception:
+        return _pull_grants_gov(config, mock=mock)
+
+
+def _pull_grants_gov(config: dict, mock: bool = False) -> list[Opportunity]:
+    """Internal Grants.gov implementation of pull and cache."""
     raw_dir = Path(str(get(config, "cache.raw_dir", "data/raw")))
     manifest_path = Path(
         str(get(config, "cache.manifest", str(raw_dir / "manifest.json")))
