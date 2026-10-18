@@ -55,18 +55,42 @@ NOT ELIGIBLE requires a verified quote. Anything else the matcher cannot prove b
                    └──► CHECK           (Ambiguous text ──► Human review)
 ```
 
-![A real card with the verified quote highlighted](GRANT_CARD_SCREENSHOT_URL)
+### What's in the app: A Visual Walkthrough
+
+#### 1. The Multi-Client Screening Dashboard (`/`)
+Freelance grant writers manage multiple clients simultaneously. At the top of the dashboard, client selector tabs let you switch between 5 seeded profiles—or your own custom profiles. The dashboard provides instant sub-12ms full-text keyword search across 528 federal notices powered by PostgreSQL GIN indexes, plus real-time verdict filters (`ALL 528`, `LIKELY ELIGIBLE 117`, `CHECK 264`, `NOT ELIGIBLE 147`).
+
+![Multi-Client Dashboard](APP_DASHBOARD_SCREENSHOT_URL)
+*The main screening dashboard showing client profile selector pills, instant full-text search, and verdict breakdown counters.*
+
+#### 2. The Fine-Print Card & Verbatim Disqualifiers (`/card/<profile_id>`)
+Each client gets a dedicated, printable one-page proof sheet. For every notice, it renders the agency, closing date, award range, and the official Grants.gov link. When an opportunity is ruled out, it prints a rough-edged rubber stamp (`#stamp-rough` SVG displacement filter) and highlights the exact disqualifying clause with a marker-yellow swipe.
+
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/ollpzirjpdbxlp7qp73i.png)
 *A real card for Opportunity **58617** (VA-GRANTS-112508-002, State Veterans Home Construction Grant Program). The notice carries applicant codes for State and Tribal governments, but the fine print explicitly commands: "NO PRIVATE ORGANIZATION, RELIGIOUS, NON-PROFIT, OR INDIVIDUAL IS QUALIFIED TO APPLY." The verified quote is highlighted directly on the card.*
 
-### What's in the app
+#### 3. Human-in-the-Loop Correction Loop (`POST /correct`)
+AI grant screening cannot be a black box. Next to every grant card is an interactive `[ ⚑ This is wrong ]` button. If a grant writer notices an edge case or specialized exception, clicking the button opens an override prompt to change the verdict and submit an explanation note. The correction is immediately saved to the Tiger Data PostgreSQL `corrections` table, applied as a runtime override on subsequent pipeline runs (`apply_corrections=True`), and logged as golden ground truth for future model fine-tuning.
 
-- **Profiles.** Five seeded client profiles (nonprofit, for-profit, university, tribal, non-US) plus a form to create your own.
-- **Cards.** Full-text search, verdict filters, sorting, and a print view for the one-page card.
-- **Corrections.** On any card, clicking "This is wrong" saves the corrected verdict and a note for that profile and opportunity to the database. It is applied immediately as an override on the next pipeline run (`apply_corrections=True`) and logged as ground truth for future training.
-- **Evidence page.** The empirical study and evaluation benchmark charts, each with its data table, source file, and pull date.
-- **Stack page.** Live monitoring showing database connection status, table counts, active inference checkpoints, and SerpApi configuration.
-- **Multi-source adapter architecture.** Ingestion is abstracted via `BaseSourceAdapter` (`src/adapters/`). The pipeline is portal-agnostic: US Federal Grants (`GrantsGovAdapter`) is active, with registered adapter contracts for EU Funding & Tenders and Canada Grants. Downstream fine-tuned extraction, quote verification, and client matching work strictly on normalized dataclasses without portal-specific logic.
-- **Speed and tests.** Extraction runs on 8 parallel workers (`ThreadPoolExecutor(max_workers=8)` in `src/pipeline.py`), and the repository has **72 passing tests** in pytest.
+![Human Correction Modal](APP_CORRECTION_SCREENSHOT_URL)
+*The human correction interface allowing a grant specialist to override a verdict with audit notes directly into PostgreSQL.*
+
+#### 4. Custom Client Profile Onboarding (`/profiles/new`)
+Consultancies can configure new client profiles with specific entity types (501(c)(3) nonprofit, higher education, for-profit corporation, tribal nation, non-US NGO), state jurisdiction, size tier, and domain focus keywords (e.g. "rural health", "clean energy").
+
+![New Client Profile Form](APP_PROFILE_NEW_SCREENSHOT_URL)
+*Client profile builder configuring organization criteria and focus keyword filters.*
+
+#### 5. In-App System Diagnostics & Architecture Monitor (`/stack`)
+A built-in `/stack` diagnostic page gives grant writers and operators complete transparency into the live system health: active Timescale Cloud database row counts, Tinker LoRA checkpoint status and live inference latency, SerpApi link resolver status, and ingestion adapter settings.
+
+![In-App Stack Diagnostics](APP_STACK_SCREENSHOT_URL)
+*Live system health diagnostics in the web app showing connected services, database row counts, and model checkpoints.*
+
+#### 6. Multi-Source Ingestion & Robustness
+Ingestion is abstracted via `BaseSourceAdapter` (`src/adapters/`). The pipeline is portal-agnostic: US Federal Grants (`GrantsGovAdapter`) is active, with registered adapter contracts for EU Funding & Tenders and Canada Grants. Downstream fine-tuned extraction, quote verification, and client matching work strictly on normalized dataclasses without portal-specific logic.
+
+Extraction runs on 8 parallel workers (`ThreadPoolExecutor(max_workers=8)` in `src/pipeline.py`), and the repository has **72 passing tests** in pytest.
 
 ---
 
@@ -91,7 +115,12 @@ USING GIN (to_tsvector('english', title || ' ' || coalesce(eligibility_text, '')
 
 Searching 528 notices takes about **12 ms** in the app, measured directly in `app/main.py` via `time.perf_counter()` against `PostgresStore().search(query, limit=20)`. It is keyword full-text search using a GIN index on tsvectors, not vector embeddings. Semantic search with pgvector is the next planned step.
 
-![Tiger Data console](TIGER_DATA_DASHBOARD_SCREENSHOT_URL)
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/4kf82j2b6cv6e0lqgkt0.png)
+
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/7kkin1agsl15nstr3jk0.png)
+
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/6jil7mws1c3anr77z9ri.png)
+
 *The active Timescale Cloud console showing the PostgreSQL service, connection pool, and relational tables.*
 
 ### Tinker: the fine-tune
@@ -100,21 +129,30 @@ I used **Qwen3.5-4B** through Tinker. The fine-tuned version is a LoRA adapter (
 
 Training examples were drafted with model assistance and verified line-by-line by hand to guarantee valid JSON and character-exact quotes. All 25 test opportunities were strictly excluded from the training set, and 338 near-duplicate announcements were removed during preprocessing. The test labels were written by hand and frozen before running any evaluation. On live remote inference over the network, Tinker median latency is 2,268 ms.
 
-![Tinker Dashboard](TINKER_DASHBOARD_SCREENSHOT_URL)
+[Tinker Training Session Log](https://tinker.thinkingmachines.ai/sessions/146167b6-6a85-54ec-bc00-f0489e3f207d)
+
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/m0yw6svnle6tb7l9j855.png)
+
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/p7tfenhhniy49rkrraep.png)
+
 *Tinker dashboard showing the completed LoRA training run `grant-fine-print-sft` and deployed model checkpoint.*
 
 ### SerpApi: government link discovery
 
 Discovery runs from the CLI (`--discover`) and from the app (`POST /discover/<id>`), and every result must be an HTTPS `grants.gov` URL. Search queries are restricted strictly to official government domains (`site:grants.gov`), and web search snippets are barred from entering the eligibility evaluation pipeline—they are used exclusively for navigation.
 
-![SerpApi Dashboard](SERPAPI_DASHBOARD_SCREENSHOT_URL)
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/o6xc481ebeoenh6xzvjd.png)
+
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/e94ov1fm5x02sfktv0a8.png)
+
 *SerpApi search log showing live queries resolving official Grants.gov notice URLs.*
 
 ### Render: production deployment
 
 Deployed live as a web application at [https://grant-fine-print.onrender.com/](https://grant-fine-print.onrender.com/) via Render Blueprint (`render.yaml`), running Gunicorn connected directly to the Tiger Data Timescale PostgreSQL database.
 
-![Render Dashboard](RENDER_DASHBOARD_SCREENSHOT_URL)
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/mkdclbb5jm1iwe9z2ln2.png)
+
 *Render dashboard showing the live web service deployment and build status.*
 
 ---
@@ -155,7 +193,8 @@ I pulled **528 open opportunities** on 2026-10-17 and measured the gap before bu
 | Sample: permissive codes, hard disqualifier in the text | **16 of 26** (61.5%) | About 43% to 78% (95% Wilson interval: 42.5% to 77.6%) |
 | Sample: "Others" code, hard disqualifier in the text | **12 of 15** (80.0%) | About 55% to 93% (95% Wilson interval: 54.8% to 93.0%) |
 
-![Study Breakdown: Catalog Audit & Permissive Sample](STUDY_CHART_IMAGE_URL)
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/rqdxog2945ce77ge9784.png)
+
 *(Downloadable directly as a PNG from Section 1 of the app's `/evidence` sheet)*
 
 A hard disqualifier is a sentence that says who may not apply, or restricts applicants by location, organisation type, status, or size. The 221 count represents opportunities containing explicit restriction phrases in their `applicantEligibilityDesc` field. In the permissive-code sample, **16 of 26** notices hid a disqualifier that overruled the permissive code. In the "Others" sample, **12 of 15** hid a hard disqualifier. Because sample sizes are small, the Wilson score intervals show the problem is real, even if the exact population rate has wide bounds.
@@ -170,7 +209,8 @@ The test benchmark consists of 5 constructed client profiles evaluated across 25
 | Prompted Qwen | 20 of 33 (60.6%) | 1 of 65 (1.5%) | 64 of 125 (51.2%) | 47 of 125 (37.6%) | 94 of 95 (98.9%) |
 | Fine-tuned Qwen | **2 of 33** (6.1%) | **0 of 65** (0.0%) | 101 of 125 (80.8%) | 29 of 125 (23.2%) | **18 of 18** (100.0%) |
 
-![Comparative Systems Benchmark](EVAL_CHART_IMAGE_URL)
+![Image description](https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/qahfou0aexq5rwh2nyqg.png)
+
 *(Downloadable directly as a PNG from Section 2 of the app's `/evidence` sheet)*
 
 ### 3. What the numbers say

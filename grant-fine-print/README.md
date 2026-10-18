@@ -9,6 +9,8 @@ out (with the exact sentence that rules them out), and which need a human read.
 **screening aid, not legal or grant advice** — every card carries the line
 "Confirm in the original notice."
 
+![Grant Fine Print Multi-Client Dashboard](docs/images/dashboard_preview.jpg)
+
 ## What it does
 
 Grants.gov's applicant-type facet filters on a code; for opportunities coded

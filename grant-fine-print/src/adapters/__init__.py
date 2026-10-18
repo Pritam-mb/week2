@@ -6,10 +6,12 @@ from typing import Any
 
 from .base import BaseSourceAdapter
 from .grants_gov import GrantsGovAdapter
+from .eu_funding import EUFundingAdapter
 
 _REGISTRY: dict[str, type[BaseSourceAdapter]] = {
     "grants_gov": GrantsGovAdapter,
     "grantsgov": GrantsGovAdapter,
+    "eu_funding": EUFundingAdapter,
 }
 
 
@@ -35,9 +37,9 @@ def available_sources() -> list[dict[str, str]]:
         },
         {
             "id": "eu_funding",
-            "name": "EU Funding & Tenders (SEDIA)",
+            "name": "EU Funding & Tenders Portal",
             "country": "EU",
-            "active": False,
+            "active": True,
         },
         {
             "id": "canada_grants",
@@ -51,6 +53,7 @@ def available_sources() -> list[dict[str, str]]:
 __all__ = [
     "BaseSourceAdapter",
     "GrantsGovAdapter",
+    "EUFundingAdapter",
     "get_adapter",
     "register_adapter",
     "available_sources",
