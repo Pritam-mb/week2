@@ -1,3 +1,18 @@
+<!-- Hidden SVG defs for card view (stamp rough-edge filter, wobbly underline, paperclip) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
+  <defs>
+    <filter id="stamp-rough" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.065" numOctaves="3" seed="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <path id="wobbly-path" d="M0 3 Q20 0 40 4 Q60 8 80 3 Q100 0 120 4 Q140 8 160 3 Q180 0 200 4 Q220 8 240 3 Q260 0 280 4 Q300 8 320 3 Q340 0 360 4" fill="none" stroke-linecap="round"/>
+    <g id="paper-clip">
+      <path d="M8 2 C4 2 2 4 2 7 L2 17 C2 21 5 23 8 23 C11 23 14 21 14 17 L14 8 C14 5.5 12 4 10 4 C8 4 6 5.5 6 8 L6 16 C6 17.5 7 18 8 18 C9 18 10 17.5 10 16 L10 7"
+            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </defs>
+</svg>
+
 <div class="app-only card-top-bar" id="card-top-bar">
   <!-- Top Navigation -->
   <header class="site-header" id="site-header" style="margin-bottom: 24px;">
@@ -11,7 +26,25 @@
       <a href="{{ url_for('main.evidence') }}">Evidence</a>
       <a href="{{ url_for('main.stack') }}">Stack</a>
       <a href="{{ url_for('main.profiles') }}">Profiles</a>
-      <button class="theme-toggle-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">☾ Dark ink</button>
+      <button class="theme-toggle-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="theme-toggle-icon" id="icon-moon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M14.5 9.5A6.5 6.5 0 0 1 6.5 1.5a.5.5 0 0 0-.5-.634A7 7 0 1 0 15 10a.5.5 0 0 0-.5-.5z" fill="currentColor"/>
+        </svg>
+        <svg class="theme-toggle-icon" id="icon-sun" viewBox="0 0 16 16" aria-hidden="true" focusable="false" style="display:none">
+          <circle cx="8" cy="8" r="3.5" fill="currentColor"/>
+          <g stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+            <line x1="8" y1="1" x2="8" y2="3"/>
+            <line x1="8" y1="13" x2="8" y2="15"/>
+            <line x1="1" y1="8" x2="3" y2="8"/>
+            <line x1="13" y1="8" x2="15" y2="8"/>
+            <line x1="3.05" y1="3.05" x2="4.46" y2="4.46"/>
+            <line x1="11.54" y1="11.54" x2="12.95" y2="12.95"/>
+            <line x1="12.95" y1="3.05" x2="11.54" y2="4.46"/>
+            <line x1="4.46" y1="11.54" x2="3.05" y2="12.95"/>
+          </g>
+        </svg>
+        <span class="theme-toggle-label">Dark ink</span>
+      </button>
     </nav>
   </header>
 
@@ -41,7 +74,9 @@
   </div>
 
   <!-- Filter & Search Controls -->
-  <div class="filter-panel-card">
+  <div class="filter-panel-card" style="position:relative; overflow:hidden;">
+    <div class="paper-fold-corner" aria-hidden="true"></div>
+    <span class="tape-strip tape-top-right" aria-hidden="true"></span>
     <form method="get" action="{{ url_for('main.card', profile_id=profile.id) }}" class="filter-form">
       <input type="hidden" name="backend" value="{{ filter_state.backend }}">
       <div class="filter-row">

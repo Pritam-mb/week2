@@ -1,9 +1,15 @@
 /* Grant Fine Print — Design Tokens
- * Concept: "The fine print, under a magnifier."
+ * Concept: "A printed proof sheet on a lawyer's desk."
  * Warm paper, printer's ink, serif display headlines, marker yellow highlighter.
  * Depth from paper layering, borders, and hard offset shadows (3px 3px 0 var(--ink)).
  * Banned: blue, violet, purple, indigo, cyan, neon, glow, blurred colored shadows.
  */
+
+/* ──────────────────────────────────────────────────────────────
+   Handwriting font (Caveat) — loaded inline below via @import
+   Only used for margin-note annotations. No body copy.
+   ────────────────────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@500&display=swap");
 
 :root {
   /* Warm Paper Surfaces */
@@ -37,6 +43,36 @@
   --check: #C98A12;          /* Amber */
   --check-bg: #FCF5E5;
   --check-stamp: #9E6B08;
+
+  /* ━━━ TEXTURE TOKENS ━━━ */
+  /* Grain SVG overlay opacity (body::before).
+     Reduce to 0 via prefers-contrast/reduced-transparency media. */
+  --grain-opacity: 0.055;
+
+  /* Hairline rule drawn across card content area (legal-pad ruling) */
+  --rule-color: rgba(34, 28, 20, 0.065);
+
+  /* Graph-paper grid on chart panels */
+  --grid-color: rgba(34, 28, 20, 0.08);
+
+  /* Ink colour used for stamp and outline marks */
+  --stamp-ink: #221C14;
+
+  /* Vertical clay margin rule on cards (40 px from left edge) */
+  --margin-rule: #D0A080;
+
+  /* Small-sample threshold for margin note trigger */
+  --small-n-threshold: 30;
+
+  /* Monogram palette — deterministic by profile id */
+  --mono-a: #4C6B3A;
+  --mono-b: #A93B2B;
+  --mono-c: #C98A12;
+  --mono-d: #A8643C;
+  --mono-e: #5B5246;
+
+  /* Handwriting font — restricted to margin annotations only */
+  --font-hand: "Caveat", cursive;
 
   /* === TYPOGRAPHY SYSTEM ===
    * Three distinct font roles:
@@ -132,6 +168,12 @@
   --check-bg: #2F2615;
   --check-stamp: #F2B035;
 
+  /* Dark texture tokens — lower opacity on dark paper */
+  --grain-opacity: 0.045;
+  --rule-color: rgba(239, 230, 210, 0.055);
+  --grid-color: rgba(239, 230, 210, 0.07);
+  --margin-rule: #7A4E2C;
+
   --shadow-offset: 3px 3px 0 #000;
   --shadow-card: 3px 3px 0 #000;
   --shadow-card-hover: 4px 4px 0 #000;
@@ -139,4 +181,14 @@
   --shadow-btn-pressed: 1px 1px 0 #000;
   --shadow-sm: 2px 2px 0 #000;
   --shadow-stamp: 2px 2px 0 #000;
+}
+
+/* ── Reduced texture: prefers-contrast: more or prefers-reduced-transparency ── */
+@media (prefers-contrast: more), (prefers-reduced-transparency: reduce) {
+  :root {
+    --grain-opacity: 0;
+    --rule-color: transparent;
+    --grid-color: transparent;
+    --margin-rule: transparent;
+  }
 }

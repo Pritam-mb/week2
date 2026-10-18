@@ -531,9 +531,10 @@ def card(profile_id: str):
     # application assets so its filters, theme toggle, correction workflow and
     # responsive navigation work just like the rest of the app.
     assets = (
-        f'<link rel="stylesheet" href="{url_for("static", filename="tokens.css")}?v=2">\n'
-        f'<link rel="stylesheet" href="{url_for("static", filename="style.css")}?v=2">\n'
-        f'<script src="{url_for("static", filename="app.js")}?v=2" defer></script>\n'
+        f'<link rel="stylesheet" href="{url_for("static", filename="tokens.css")}?v=3">\n'
+        f'<link rel="stylesheet" href="{url_for("static", filename="style.css")}?v=3">\n'
+        f'<link rel="stylesheet" href="{url_for("static", filename="texture.css")}?v=3">\n'
+        f'<script src="{url_for("static", filename="app.js")}?v=3" defer></script>\n'
     )
     if "</head>" in page:
         page = page.replace("</head>", assets + "</head>", 1)
@@ -773,10 +774,60 @@ def create_app(config: Optional[dict[str, Any]] = None) -> Flask:
     # Per-process random key for flash-message session signing (no secrets in
     # the repo; flash cookies are reset on restart and useless to an attacker).
     app.secret_key = secrets.token_hex(16)
+    app.config["TEMPLATES_AUTO_RELOAD"] = True
     app.jinja_env.globals["compute_share_cell"] = compute_share_cell
     app.jinja_env.globals["format_wilson_ci"] = format_wilson_ci
     app.jinja_env.globals["wilson_ci"] = wilson_ci
     app.register_blueprint(bp)
+
+    @app.context_processor
+    def _inject_watermark():
+        cfg = app.config.get("GFP", {})
+        raw_dir = get(cfg, "cache.raw_dir") or "data/raw"
+        manifest_path = get(cfg, "cache.manifest") or os.path.join(raw_dir, "manifest.json")
+        try:
+            manifest = load_manifest(manifest_path)
+        except Exception:
+            manifest = {}
+        if not manifest:
+            return {"watermark_text": ""}
+        try:
+            opps = load_opportunities(raw_dir)
+        except Exception:
+            opps = []
+        if not opps:
+            return {"watermark_text": ""}
+        email_re = re.compile(r'[\w\.-]+@[\w\.-]+')
+        phone_re = re.compile(r'\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b')
+        sentences = []
+        for opp in opps:
+            text = opp.eligibility_text or ""
+            if not text:
+                continue
+            parts = re.split(r'(?<=[.!?])\s+', text)
+            for s in parts:
+                s_clean = s.strip()
+                if len(s_clean) < 10:
+                    continue
+                if email_re.search(s_clean) or phone_re.search(s_clean):
+                    continue
+                sentences.append(s_clean)
+                if len(sentences) >= 80:
+                    break
+            if len(sentences) >= 80:
+                break
+        seen = set()
+        uniq = []
+        for s in sentences:
+            key = s.lower()
+            if key not in seen:
+                seen.add(key)
+                uniq.append(s)
+        if not uniq:
+            return {"watermark_text": ""}
+        text = " · ".join(uniq)
+        return {"watermark_text": text + " &ensp;"}
+
     return app
 
 

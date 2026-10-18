@@ -59,10 +59,14 @@
   </div>
 
   <!-- Record a Correction Form -->
-  <div class="record-correction-box" id="record-correction-box" style="margin-top:32px; background:var(--paper-card); border:1.5px solid var(--ink); box-shadow:var(--shadow-card); padding:24px; border-radius:var(--radius-sm);">
-    <h2 style="font-family:var(--font-display); font-size:18px; font-weight:600; margin-top:0; margin-bottom:6px; color:var(--ink);">
+  <div class="record-correction-box" id="record-correction-box" style="margin-top:32px; background:var(--paper-card); border:1.5px solid var(--ink); box-shadow:var(--shadow-card); padding:24px; border-radius:var(--radius-sm); position:relative; overflow:hidden;">
+    <div class="paper-fold-corner" aria-hidden="true"></div>
+    <h2 style="font-family:var(--font-display); font-size:18px; font-weight:600; margin-top:0; margin-bottom:4px; color:var(--ink);">
       Record a correction
     </h2>
+    <svg class="wobbly-underline" viewBox="0 0 200 6" aria-hidden="true" style="margin-bottom:12px; max-width:200px;">
+      <use href="#wobbly-path" stroke="var(--clay)" stroke-width="2" opacity="0.55"/>
+    </svg>
     <p class="muted" style="font-size:13px; margin-top:0; margin-bottom:16px;">
       Flag an incorrect model extraction or override an eligibility decision. Ground truth will be saved to Tiger Data and used to refine future fine-tuning runs.
     </p>

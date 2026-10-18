@@ -33,7 +33,11 @@
 
   function updateThemeButtonText(btn) {
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-    btn.innerHTML = isDark ? "☼ Paper mode" : "☾ Dark ink";
+    const label = btn.querySelector('.theme-toggle-label');
+    if (label) {
+      label.textContent = isDark ? 'Light ink' : 'Dark ink';
+    }
+    // Icons are toggled by the inline script in base.html; do not replace innerHTML
   }
 
   // 2. Mobile Nav Toggle

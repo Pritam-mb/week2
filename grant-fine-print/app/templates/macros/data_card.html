@@ -9,6 +9,9 @@
 
 {% macro data_card(id, eyebrow, title, takeaway_html, download_id=None, download_filename=None, toggle_details_id=None, source_path=None, pull_date=None, evaluated_count=None, generated_at=None, empty_command=None) %}
 <article class="data-card" id="{{ id }}">
+  <!-- Paper fold corner (decorative) -->
+  <div class="paper-fold-corner" aria-hidden="true"></div>
+
   <!-- Card Header Row -->
   <header class="data-card-header">
     <div class="data-card-eyebrow">{{ eyebrow|safe }}</div>
@@ -27,6 +30,9 @@
 
   <!-- Title in display serif -->
   <h2 class="data-card-title">{{ title }}</h2>
+  <svg class="wobbly-underline" viewBox="0 0 320 6" aria-hidden="true" style="margin-top:-6px; margin-bottom:12px; max-width:320px;">
+    <use href="#wobbly-path" stroke="var(--clay)" stroke-width="2" opacity="0.45"/>
+  </svg>
 
   <!-- Core Takeaway Pull-Quote Block -->
   <div class="data-card-takeaway">
@@ -41,9 +47,12 @@
     <code>{{ empty_command }}</code>
   </div>
   {% else %}
-  <!-- Inset Paper-2 Chart Panel -->
-  <div class="chart-panel">
-    {{ caller() }}
+  <!-- Inset Paper-2 Chart Panel with Crop Marks -->
+  <div class="chart-panel-wrap">
+    <span class="crop-marks-bottom" aria-hidden="true"></span>
+    <div class="chart-panel">
+      {{ caller() }}
+    </div>
   </div>
 
   <!-- Footer Meta Row -->

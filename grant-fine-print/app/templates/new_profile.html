@@ -6,6 +6,9 @@
 <div class="evidence-header">
   <span class="brand-tag">Client Repository</span>
   <h1 id="new-profile-title">Create a profile</h1>
+  <svg class="wobbly-underline" viewBox="0 0 240 6" aria-hidden="true" style="margin-top:-4px; margin-bottom:8px; max-width:240px;">
+    <use href="#wobbly-path" stroke="var(--clay)" stroke-width="2" opacity="0.55"/>
+  </svg>
   <p class="muted">Capture the client facts used for deterministic eligibility checks. Unknown details stay in CHECK for human review.</p>
 </div>
 {% if errors %}
@@ -13,7 +16,10 @@
   {% for e in errors %}<li>{{ e }}</li>{% endfor %}
 </ul>
 {% endif %}
-<form method="post" action="{{ url_for('main.new_profile') }}" class="profile-form">
+<div class="paper-box" style="position:relative; overflow:hidden; max-width:680px; margin-bottom:24px;">
+  <div class="paper-fold-corner" aria-hidden="true"></div>
+  <span class="tape-strip tape-top-right" aria-hidden="true"></span>
+  <form method="post" action="{{ url_for('main.new_profile') }}" class="profile-form">
   <div class="form-field">
     <label for="profile-name">Name</label>
     <input class="paper-input" id="profile-name" type="text" name="name" value="{{ form.get('name', '') }}" required {% if errors %}aria-describedby="profile-errors"{% endif %}>
@@ -57,6 +63,7 @@
     <a class="btn btn-outline" href="{{ url_for('main.profiles') }}">Cancel</a>
   </div>
 </form>
+</div>
 <p><a href="{{ url_for('main.dashboard') }}">Back to dashboard</a></p>
 </main>
 {% endblock %}

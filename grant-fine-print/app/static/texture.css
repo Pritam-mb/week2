@@ -1,0 +1,911 @@
+/* Grant Fine Print — Texture & Depth Layer
+ * "A printed proof sheet on a lawyer's desk."
+ * All textures are CSS + inline SVG. No raster images.
+ * Banned: blue, violet, cyan, neon, glow, blurred coloured shadows, glassmorphism, gradient blobs.
+ * WCAG AA contrast preserved on all text elements.
+ */
+
+@import url("./tokens.css");
+
+/* ═══════════════════════════════════════════════════════════════════
+   §1  PAGE GRAIN & VIGNETTE
+   Fixed pseudo-element overlay — does not intercept pointer events.
+   Dropped on mobile via the @media block at the bottom.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Warm paper grain — feTurbulence fractalNoise, warm brown colour matrix */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.48 0 0 0 0 0.36 0 0 0 0 0.22 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+}
+
+/* Paper vignette — subtly darker corners, warm ink colour, no blur */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(34, 28, 20, 0.05) 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §2  CARD RULED LINES & MARGIN RULE
+   Legal-pad look via pseudo-element background — no child padding override.
+   Keeps existing padding intact; rules sit behind content.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.data-card {
+  position: relative;
+  /* Ruled lines at 28px pitch via background (behind content) */
+  background-image:
+    /* Vertical clay margin rule at 40px from card left edge */
+    linear-gradient(
+      to right,
+      transparent 39px,
+      var(--margin-rule) 39px,
+      var(--margin-rule) 41px,
+      transparent 41px
+    ),
+    /* Horizontal ruled lines */
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 27px,
+      var(--rule-color) 27px,
+      var(--rule-color) 28px
+    );
+  background-color: var(--paper-card);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §3  CHART PANEL — GRAPH PAPER GRID + CROP MARKS
+   ═══════════════════════════════════════════════════════════════════ */
+
+.chart-panel {
+  position: relative;
+  background-color: var(--paper-2);
+  background-image:
+    /* Grid 24×24px */
+    repeating-linear-gradient(
+      to right,
+      var(--grid-color) 0px,
+      var(--grid-color) 1px,
+      transparent 1px,
+      transparent 24px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--grid-color) 0px,
+      var(--grid-color) 1px,
+      transparent 1px,
+      transparent 24px
+    );
+  /* Baseline tick marks via box-shadow on a pseudo */
+  overflow: visible;
+}
+
+/* Proof label and FIG caption — set via data attributes in HTML */
+.chart-panel::before {
+  content: attr(data-proof-label);
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.chart-panel::after {
+  content: attr(data-fig-label);
+  position: absolute;
+  bottom: -18px;
+  right: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+}
+
+/* Crop marks on chart panels — CSS-only, four corners */
+.chart-panel-wrap {
+  position: relative;
+  margin: 24px 0 28px;
+  padding: 8px;
+}
+
+.chart-panel-wrap::before,
+.chart-panel-wrap::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
+
+.chart-panel-wrap::before {
+  top: -2px;
+  left: -2px;
+  border-top: 1px solid var(--ink-faint);
+  border-left: 1px solid var(--ink-faint);
+}
+
+.chart-panel-wrap::after {
+  top: -2px;
+  right: -2px;
+  border-top: 1px solid var(--ink-faint);
+  border-right: 1px solid var(--ink-faint);
+}
+
+/* Bottom crop marks via nested span .crop-marks-bottom */
+.crop-marks-bottom::before,
+.crop-marks-bottom::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
+
+.crop-marks-bottom::before {
+  bottom: -2px;
+  left: -2px;
+  border-bottom: 1px solid var(--ink-faint);
+  border-left: 1px solid var(--ink-faint);
+}
+
+.crop-marks-bottom::after {
+  bottom: -2px;
+  right: -2px;
+  border-bottom: 1px solid var(--ink-faint);
+  border-right: 1px solid var(--ink-faint);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §4  FORM FIELDS — PAPER FORM RESTYLE
+   Inset look, 2px ink border, small-caps label, custom chevron,
+   mono placeholder, marker-yellow underline sweep on focus.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Wrapper provides the focus ring and underline sweep */
+.form-field {
+  position: relative;
+}
+
+.form-field > label,
+.filter-label,
+label.paper-label {
+  font-family: var(--font-ui);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+  color: var(--ink-soft);
+  display: block;
+  margin-bottom: 5px;
+  font-variant: small-caps;
+}
+
+.paper-input,
+.paper-select {
+  width: 100%;
+  height: 38px;
+  padding: 0 10px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  /* Inset inner shadow — no blur, no colour */
+  box-shadow: inset 1px 1px 0 rgba(34, 28, 20, 0.10);
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color var(--trans-fast), box-shadow var(--trans-fast);
+}
+
+/* Custom select chevron */
+.paper-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23221C14'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-color: var(--paper);
+  padding-right: 28px;
+}
+
+[data-theme="dark"] .paper-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23EFE6D2'/%3E%3C/svg%3E");
+}
+
+/* Marker-yellow underline sweep on focus */
+.paper-input:focus,
+.paper-select:focus {
+  outline: none;
+  border-color: var(--ink);
+  box-shadow:
+    inset 1px 1px 0 rgba(34, 28, 20, 0.10),
+    0 2px 0 0 var(--highlight);
+}
+
+/* Keyboard focus ring for accessibility */
+.paper-input:focus-visible,
+.paper-select:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Mono placeholder */
+.paper-input::placeholder {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-faint);
+  opacity: 1;
+}
+
+/* ── Custom ink checkbox / radio ── */
+.form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.form-checkbox input[type="checkbox"],
+.form-checkbox input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  background: var(--paper);
+  position: relative;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background var(--trans-fast);
+  box-shadow: inset 1px 1px 0 rgba(34,28,20,0.08);
+}
+
+.form-checkbox input[type="radio"] {
+  border-radius: 50%;
+}
+
+/* Ink check mark drawn via SVG mask */
+.form-checkbox input[type="checkbox"]:checked {
+  background: var(--ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 7l4 4 6-7' stroke='%23F4EFE3' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 10px 10px;
+}
+
+.form-checkbox input[type="radio"]:checked {
+  background: var(--ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Ccircle cx='7' cy='7' r='3' fill='%23F4EFE3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.form-checkbox input:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §5  BUTTONS — PAPER FIBRE TEXTURE + PRESS STATE
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Paper fibre on dark (filled) buttons */
+.btn-primary {
+  background: var(--ink);
+  color: var(--paper);
+  /* Subtle noise via inline SVG — same grain pattern at low opacity */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.07 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"),
+    none;
+  background-blend-mode: overlay;
+  background-color: var(--ink);
+}
+
+.btn-primary:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-offset);
+}
+
+/* Press state: shadow collapses toward zero */
+.btn:active,
+.btn-action:active,
+.btn-primary:active {
+  transform: translate(1px, 1px) !important;
+  box-shadow: var(--shadow-btn-pressed) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §6  EQUAL-HEIGHT CARD ROW
+   Cards in a row share height; action buttons at the bottom.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.dashboard-card-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+  align-items: stretch;
+}
+
+.paper-box {
+  background: var(--paper-card);
+  border: 1.5px solid var(--ink);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  /* Ruled lines */
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 27px,
+      var(--rule-color) 27px,
+      var(--rule-color) 28px
+    );
+  background-color: var(--paper-card);
+}
+
+.paper-box .card-body {
+  flex: 1;
+}
+
+.paper-box .card-actions {
+  margin-top: auto;
+  padding-top: 14px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §7  STAT TILES (Refresh card & Run card)
+   Three small tiles: snapshots, changed, duplicates.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.stat-tiles {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.stat-tile {
+  flex: 1 1 70px;
+  min-width: 60px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px 6px;
+  text-align: center;
+}
+
+.stat-tile-value {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+  display: block;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-tile-label {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin-top: 3px;
+  display: block;
+}
+
+/* Verdict stamp chips in Run result area */
+.verdict-stamp-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+.verdict-stamp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 2px;
+  border: 1.5px solid currentColor;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.verdict-stamp-chip.eligible { color: var(--eligible-stamp); background: var(--eligible-bg); }
+.verdict-stamp-chip.check    { color: var(--check-stamp);    background: var(--check-bg); }
+.verdict-stamp-chip.not      { color: var(--not-stamp);      background: var(--not-bg); }
+
+.chip-count-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §8  VERDICT STAMP — ROUGH EDGE SVG FILTER + THUMP ANIMATION
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* SVG filter defined inline in HTML via <defs> — referenced here */
+.verdict-stamp {
+  filter: url(#stamp-rough);
+  animation: stampThump 180ms cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes stampThump {
+  0%   { transform: scale(1.15) rotate(var(--stamp-rot, -2deg)); opacity: 0.6; }
+  70%  { transform: scale(0.97) rotate(var(--stamp-rot, -2deg)); opacity: 1; }
+  100% { transform: scale(1.0)  rotate(var(--stamp-rot, -2deg)); opacity: 1; }
+}
+
+.stamp-eligible { --stamp-rot: -2.5deg; }
+.stamp-not      { --stamp-rot:  3.0deg; }
+.stamp-check    { --stamp-rot: -1.5deg; }
+
+@media (prefers-reduced-motion: reduce) {
+  .verdict-stamp {
+    animation: none !important;
+    transform: rotate(var(--stamp-rot, 0)) !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §9  HIGHLIGHTER SWIPE
+   Left-to-right sweep when scrolled into view.
+   background-size animates from 0% → 100%.
+   Uneven top edge via clip-path to mimic a hand-drawn swipe.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.marker-quote {
+  background: linear-gradient(
+    to right,
+    var(--highlight) 0%,
+    var(--highlight) 100%
+  );
+  background-size: 0% 85%;
+  background-repeat: no-repeat;
+  background-position: 0 60%;
+  color: var(--highlight-ink);
+  padding: 1px 4px;
+  border-radius: 1px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-size 0.5s ease-out;
+}
+
+/* JS adds .is-visible when intersection observer fires */
+.marker-quote.is-visible {
+  background-size: 100% 85%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marker-quote {
+    background-size: 100% 85% !important;
+    transition: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §10  MONOGRAM BADGE (profiles table/cards)
+   Ink-bordered circle, fill picked from palette by profile id mod 5.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.monogram-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--paper);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+  user-select: none;
+}
+
+/* nth-type palette — class set server-side from profile id hash */
+.monogram-0 { background: var(--mono-a); }
+.monogram-1 { background: var(--mono-b); }
+.monogram-2 { background: var(--mono-c); }
+.monogram-3 { background: var(--mono-d); }
+.monogram-4 { background: var(--mono-e); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   §11  TABLE ENHANCEMENTS
+   Sticky header, 2px ink rule under header, stronger zebra,
+   highlighter hover swipe.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.table-wrap {
+  position: relative;
+  overflow-x: auto;
+}
+
+/* Sticky header */
+.dt thead th,
+.paper-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--paper-2);
+  border-bottom: 2px solid var(--ink);
+  /* Slight separator line under sticky header */
+  box-shadow: 0 1px 0 var(--rule-dark);
+}
+
+/* Stronger zebra stripes */
+.dt tr:nth-child(even) td,
+.paper-table tr:nth-child(even) td {
+  background: rgba(34, 28, 20, 0.035);
+}
+
+/* Highlighter sweep on hover */
+.dt tr:hover td,
+.paper-table tr:hover td {
+  background: rgba(247, 227, 122, 0.20);
+  transition: background var(--trans-fast);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §12  EVIDENCE CARD PAPER FOLD CORNER
+   Top-right triangle with lighter fill — pure CSS.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.data-card {
+  overflow: hidden; /* clip the fold triangle */
+}
+
+/* Paper fold — top-right */
+.paper-fold-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  /* Triangle via linear-gradient */
+  background: linear-gradient(
+    -135deg,
+    var(--paper-2) 50%,
+    var(--rule) 50%
+  );
+  /* Hairline ink shadow to suggest the fold crease */
+  box-shadow: -1px 1px 0 var(--rule-dark);
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §13  PAPER CLIP (decorative, aria-hidden)
+   SVG paperclip positioned at top-left corner of grant cards.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.paper-clip-wrap {
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §14  PERFORATED TEAR LINE
+   Between a card header and its body.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.tear-line {
+  border: none;
+  border-top: 2px dashed var(--rule-dark);
+  margin: 0;
+  position: relative;
+  overflow: visible;
+}
+
+/* Notch holes */
+.tear-line::before,
+.tear-line::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--rule-dark);
+}
+
+.tear-line::before { left: -5px; }
+.tear-line::after  { right: -5px; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   §15  MARGIN NOTES
+   Handwriting font (Caveat), clay colour, small, no body copy.
+   Generated from data only (server or JS); never typed manually.
+   Screen reader sees the same info via aria-label.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.margin-note {
+  font-family: var(--font-hand);
+  font-size: 13px;
+  color: var(--clay);
+  line-height: 1.3;
+  /* Positioned relatively so it flows without disrupting layout */
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* Arrow pointing from note to the relevant number — inline SVG in HTML */
+.margin-arrow {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 3px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §16  THEME TOGGLE — SVG SUN / MOON ICON
+   ═══════════════════════════════════════════════════════════════════ */
+
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+}
+
+.theme-toggle-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §17  FINE-PRINT WATERMARK BAND
+   Behind the page header. Populated by JS from eligibility text.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.fp-watermark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.06;
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  word-break: break-all;
+  white-space: pre-wrap;
+  padding: 4px 8px;
+  user-select: none;
+  aria-hidden: true;
+}
+
+.site-header {
+  position: relative;
+  z-index: 1; /* content sits above watermark */
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §18  HAND-DRAWN WOBBLY UNDERLINE
+   SVG placed via JS or Jinja below page/card titles.
+   Inline block spans 100%.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.wobbly-underline {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: 6px;
+  margin-top: -2px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §19  EMPTY STATE — INK DRAWINGS
+   Simple SVG illustrations in empty folders / no-data states.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: var(--space-5);
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.empty-state-svg {
+  width: 72px;
+  height: 72px;
+  opacity: 0.55;
+}
+
+.empty-state-caption {
+  font-size: var(--fs-caption);
+  color: var(--ink-soft);
+  max-width: 36ch;
+  line-height: 1.5;
+}
+
+.empty-state-cmd {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-dark);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §20  HERO ILLUSTRATION (Cards page, top-right, hidden on mobile)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.hero-illustration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 140px;
+  height: 120px;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+@media (max-width: 640px) {
+  .hero-illustration { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §21  TAPE STRIP (decorative, evidence panels, aria-hidden)
+   Translucent paper colour, no blur.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.tape-strip {
+  display: block;
+  width: 60px;
+  height: 18px;
+  background: rgba(244, 239, 227, 0.70);
+  border: 1px solid var(--rule-dark);
+  border-radius: 1px;
+  position: absolute;
+  pointer-events: none;
+}
+
+.tape-strip.tape-top-left  { top: -9px; left: 16px; transform: rotate(-3deg); }
+.tape-strip.tape-top-right { top: -9px; right: 24px; transform: rotate(4deg); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   §22  SPARKLINE (Pull history in Refresh card)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.sparkline-wrap {
+  margin-top: 10px;
+}
+
+.sparkline-svg {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  height: 32px;
+  overflow: visible;
+}
+
+.sparkline-caption {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §23  PRINT STYLESHEET — Remove textures, keep stamps & quotes
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media print {
+  /* Remove all textures */
+  body::before,
+  body::after,
+  .fp-watermark,
+  .paper-fold-corner,
+  .paper-clip-wrap,
+  .tape-strip,
+  .chart-panel-wrap::before,
+  .chart-panel-wrap::after,
+  .crop-marks-bottom::before,
+  .crop-marks-bottom::after {
+    display: none !important;
+  }
+
+  .data-card,
+  .paper-box {
+    background-image: none !important;
+    background-color: #fff !important;
+  }
+
+  .chart-panel {
+    background-image: none !important;
+    background-color: #f5f5f5 !important;
+  }
+
+  /* Keep stamps */
+  .verdict-stamp {
+    border: 2px solid #000 !important;
+    color: #000 !important;
+    background: transparent !important;
+    filter: none !important;
+    animation: none !important;
+    transform: rotate(var(--stamp-rot, 0)) !important;
+  }
+
+  /* Keep highlighted quotes in greyscale */
+  .marker-quote {
+    background: #e8e8e8 !important;
+    background-size: 100% 85% !important;
+    color: #000 !important;
+    transition: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   §24  MOBILE PERFORMANCE — Drop fixed grain overlay on small screens
+   Reduces repaints on mid-range phones.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+  body::before {
+    /* Replace heavy fixed overlay with a lightweight static bg */
+    background-attachment: scroll;
+    position: absolute;
+    height: 100%;
+    opacity: calc(var(--grain-opacity) * 0.6);
+  }
+
+  /* Simpler ruled lines on mobile — no margin rule, just faint lines */
+  .data-card {
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 27px,
+        var(--rule-color) 27px,
+        var(--rule-color) 28px
+      );
+  }
+}

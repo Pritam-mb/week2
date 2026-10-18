@@ -7,17 +7,50 @@
 <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
 <title>{% block title %}Grant Fine Print{% endblock %}</title>
 
-<!-- Reputable Google Fonts: Fraunces (Headings), Instrument Sans (Body), IBM Plex Mono (Data/IDs) -->
+<!-- Reputable Google Fonts: Fraunces (Headings), Instrument Sans (Body), IBM Plex Mono (Data/IDs), Caveat (Margin Notes) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Caveat:wght@500&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="{{ url_for('static', filename='tokens.css') }}?v=2">
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
+<link rel="stylesheet" href="{{ url_for('static', filename='tokens.css') }}?v=3">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=3">
+<link rel="stylesheet" href="{{ url_for('static', filename='texture.css') }}?v=3">
 <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </head>
+
+<!-- Hidden SVG defs — stamp rough-edge filter, paper grain, clip paths -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden">
+  <defs>
+    <!-- Rubber stamp roughening filter -->
+    <filter id="stamp-rough" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.065" numOctaves="3" seed="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- Hand-drawn wobbly underline path (reused via <use>) -->
+    <path id="wobbly-path" d="M0 3 Q20 0 40 4 Q60 8 80 3 Q100 0 120 4 Q140 8 160 3 Q180 0 200 4 Q220 8 240 3 Q260 0 280 4 Q300 8 320 3 Q340 0 360 4" fill="none" stroke-linecap="round"/>
+    <!-- Paper clip SVG (reused via <use>) -->
+    <g id="paper-clip">
+      <path d="M8 2 C4 2 2 4 2 7 L2 17 C2 21 5 23 8 23 C11 23 14 21 14 17 L14 8 C14 5.5 12 4 10 4 C8 4 6 5.5 6 8 L6 16 C6 17.5 7 18 8 18 C9 18 10 17.5 10 16 L10 7"
+            fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <!-- Tape strip texture pattern -->
+    <pattern id="tape-grain" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+      <rect width="4" height="4" fill="rgba(244,239,227,0.0)"/>
+      <line x1="0" y1="2" x2="4" y2="2" stroke="rgba(34,28,20,0.12)" stroke-width="0.5"/>
+      <line x1="2" y1="0" x2="2" y2="4" stroke="rgba(34,28,20,0.06)" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+</svg>
+
 <body>
 <div class="page-container">
+  <!-- Fine-print watermark band (below header, above page content) -->
+  {% if watermark_text %}
+  <div class="fp-watermark" aria-hidden="true" id="fp-watermark-band">
+    {{ watermark_text|safe }}
+  </div>
+  {% endif %}
+
   <header class="site-header" id="site-header">
     <div class="brand-group">
       <a class="brand" href="{{ url_for('main.dashboard') }}" aria-label="Grant Fine Print home">Grant Fine Print</a>
@@ -29,7 +62,26 @@
       <a href="{{ url_for('main.evidence') }}" class="{% if active_tab == 'evidence' %}active{% endif %}">Evidence</a>
       <a href="{{ url_for('main.stack') }}" class="{% if active_tab == 'stack' %}active{% endif %}">Stack</a>
       <a href="{{ url_for('main.profiles') }}" class="{% if active_tab == 'profiles' %}active{% endif %}">Profiles</a>
-      <button class="theme-toggle-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">☾ Dark ink</button>
+      <button class="theme-toggle-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+        <!-- Moon icon (light mode) / Sun icon (dark mode) toggled by JS -->
+        <svg class="theme-toggle-icon" id="icon-moon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M14.5 9.5A6.5 6.5 0 0 1 6.5 1.5a.5.5 0 0 0-.5-.634A7 7 0 1 0 15 10a.5.5 0 0 0-.5-.5z" fill="currentColor"/>
+        </svg>
+        <svg class="theme-toggle-icon" id="icon-sun" viewBox="0 0 16 16" aria-hidden="true" focusable="false" style="display:none">
+          <circle cx="8" cy="8" r="3.5" fill="currentColor"/>
+          <g stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+            <line x1="8" y1="1" x2="8" y2="3"/>
+            <line x1="8" y1="13" x2="8" y2="15"/>
+            <line x1="1" y1="8" x2="3" y2="8"/>
+            <line x1="13" y1="8" x2="15" y2="8"/>
+            <line x1="3.05" y1="3.05" x2="4.46" y2="4.46"/>
+            <line x1="11.54" y1="11.54" x2="12.95" y2="12.95"/>
+            <line x1="12.95" y1="3.05" x2="11.54" y2="4.46"/>
+            <line x1="4.46" y1="11.54" x2="3.05" y2="12.95"/>
+          </g>
+        </svg>
+        <span class="theme-toggle-label">Dark ink</span>
+      </button>
     </nav>
   </header>
 
@@ -57,5 +109,57 @@
     <div>&copy; {{ current_year }} Grant Fine Print. The fine print, under a magnifier. Screening aid only; confirm in the original notice.</div>
   </footer>
 </div>
+
+<!-- Highlighter sweep intersection observer + theme icon swap -->
+<script>
+(function() {
+  // Highlighter sweep — trigger background-size animation when element enters viewport
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.marker-quote').forEach(function(el) {
+      io.observe(el);
+    });
+  } else {
+    // Fallback: show immediately
+    document.querySelectorAll('.marker-quote').forEach(function(el) {
+      el.classList.add('is-visible');
+    });
+  }
+
+  // Theme toggle — swap Sun / Moon icons
+  var toggleBtn = document.getElementById('theme-toggle');
+  var iconMoon   = document.getElementById('icon-moon');
+  var iconSun    = document.getElementById('icon-sun');
+  var label      = toggleBtn ? toggleBtn.querySelector('.theme-toggle-label') : null;
+
+  function updateIcons(isDark) {
+    if (!iconMoon || !iconSun) return;
+    iconMoon.style.display = isDark ? 'none'  : 'block';
+    iconSun.style.display  = isDark ? 'block' : 'none';
+    if (label) label.textContent = isDark ? 'Light ink' : 'Dark ink';
+  }
+
+  // Read current theme (set by app.js)
+  var currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  updateIcons(currentTheme === 'dark');
+
+  if (toggleBtn) {
+    // Listen for attribute mutation in case app.js changes it
+    var mo = new MutationObserver(function() {
+      var t = document.documentElement.getAttribute('data-theme') || 'light';
+      updateIcons(t === 'dark');
+    });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+})();
+</script>
 </body>
 </html>
