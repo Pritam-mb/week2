@@ -1,12 +1,13 @@
 # Grant Fine Print — Render Blueprint
 #
 # Production deployment with Tiger Data (PostgreSQL) persistence, real Tinker
-# inference, and a scheduled weekly Grants.gov pull worker.
+# inference, and Flask web interface.
 
 services:
   - type: web
     name: grant-fine-print
     runtime: python
+    rootDir: grant-fine-print
     plan: free
     buildCommand: pip install -e ".[app,postgres]"
     startCommand: gunicorn "app.main:create_app()" --bind 0.0.0.0:$PORT
@@ -20,26 +21,12 @@ services:
       - key: TINKER_API_KEY
         sync: false
       - key: GFP_PROVIDER_BASE_URL
-        sync: false
+        value: "https://tinker.thinkingmachines.dev/services/tinker-prod/oai/api/v1"
+      - key: GFP_PROVIDER
+        value: "tinker"
       - key: GFP_BASE_MODEL
         value: "Qwen/Qwen3.5-4B"
       - key: GFP_FINE_TUNED_MODEL
-        sync: false
-      - key: SERPAPI_KEY
-        sync: false
-
-  - type: cron
-    name: grant-fine-print-weekly-pull
-    runtime: python
-    schedule: "0 6 * * 1"
-    buildCommand: pip install -e ".[app,postgres]"
-    startCommand: python -m src.pull && python -m src.storage import-cache
-    envVars:
-      - key: PYTHON_VERSION
-        value: "3.11.9"
-      - key: GFP_STORAGE
-        value: "postgres"
-      - key: DATABASE_URL
         sync: false
       - key: SERPAPI_KEY
         sync: false

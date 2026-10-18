@@ -29,7 +29,7 @@ postgres = [
 gfp = "src.cli:main"
 
 [tool.setuptools]
-packages = ["src"]
+packages = ["src", "app"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

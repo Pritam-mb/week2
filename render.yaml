@@ -1,0 +1,32 @@
+# Grant Fine Print — Render Blueprint
+#
+# Production deployment with Tiger Data (PostgreSQL) persistence, real Tinker
+# inference, and Flask web interface.
+
+services:
+  - type: web
+    name: grant-fine-print
+    runtime: python
+    rootDir: grant-fine-print
+    plan: free
+    buildCommand: pip install -e ".[app,postgres]"
+    startCommand: gunicorn "app.main:create_app()" --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: GFP_STORAGE
+        value: "postgres"
+      - key: DATABASE_URL
+        sync: false
+      - key: TINKER_API_KEY
+        sync: false
+      - key: GFP_PROVIDER_BASE_URL
+        value: "https://tinker.thinkingmachines.dev/services/tinker-prod/oai/api/v1"
+      - key: GFP_PROVIDER
+        value: "tinker"
+      - key: GFP_BASE_MODEL
+        value: "Qwen/Qwen3.5-4B"
+      - key: GFP_FINE_TUNED_MODEL
+        sync: false
+      - key: SERPAPI_KEY
+        sync: false
