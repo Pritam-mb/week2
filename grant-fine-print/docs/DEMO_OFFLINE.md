@@ -24,8 +24,36 @@ python -m src.eval           # results/eval.json + results/eval_report.html
 
 Then open a card, e.g. `results/cards/p_nonprofit.html` in a browser, and
 `results/eval_report.html` for the system comparison. To try the product UI,
-run `python -m app.main`, open `http://127.0.0.1:8000`, and choose **Load
-offline sample** before running a profile.
+run `python -m app.main`, open `http://127.0.0.1:8000`, and follow this
+repeatable flow:
+
+1. Click **Load offline sample** on the dashboard.
+2. In **Run now**, choose `Rural Health Alliance` (or **All profiles**) and
+   choose the `mock` backend explicitly.
+3. Click **Run now**, then open the generated card from the run summary. The
+   selected backend is carried into the card, filters, and profile switcher.
+4. On the card, search for `rural`, switch between the verdict chips, expand a
+   source excerpt, and use **This is wrong** / **Record a correction** to test
+   the human-review loop.
+
+The preloaded `Rural Health Alliance` profile is a constructed U.S. nonprofit
+in Kentucky with rural-health focus keywords. A useful small story is:
+
+- `MOCK-001` **Community Health Outreach Program**: likely eligible because
+  the source says, “Eligibility is open to all applicant types, including
+  Others.”
+- `MOCK-002` **Rural Broadband Expansion Grant**: CHECK because the source
+  says, “Only state, county and municipal governments may apply.” The demo
+  deliberately asks a human to read this unsupported condition type.
+- `MOCK-004` **Small Business Innovation Research**: NOT ELIGIBLE because the
+  source restricts the opportunity to small businesses and for-profit
+  organizations, with the exact source sentence shown on the card.
+
+For a post, capture the dashboard, the filtered card, the expanded quote, and
+the correction form. Describe this as an **offline plumbing demonstration**:
+the MockBackend is deterministic and uses verbatim source sentences, but its
+metrics are not evidence of real-model quality. Use a real provider before
+publishing model-performance claims.
 
 No `GFP_PROVIDER_BASE_URL` / `GFP_API_KEY` is needed. `src.pull --mock` reads
 `data/samples/mock_opportunities.json` (or synthesises opportunities if that

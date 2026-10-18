@@ -88,7 +88,18 @@
       return;
     }
 
-    const svgData = new XMLSerializer().serializeToString(svg);
+    // Blob-loaded SVGs do not inherit the page stylesheet. Resolve the design
+    // tokens before serialization so downloaded charts keep their colors and
+    // typography in light and dark mode.
+    const rootStyles = getComputedStyle(document.documentElement);
+    const tokenValues = {};
+    ["paper", "paper-2", "paper-card", "ink", "ink-soft", "stone", "clay", "eligible", "not", "check", "font-ui", "font-display", "font-mono"].forEach(function (token) {
+      tokenValues["--" + token] = rootStyles.getPropertyValue("--" + token).trim();
+    });
+    let svgData = new XMLSerializer().serializeToString(svg);
+    svgData = svgData.replace(/var\((--[\w-]+)(?:,\s*[^)]+)?\)/g, function (match, token) {
+      return tokenValues[token] || match;
+    });
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
     const img = new Image();
@@ -119,6 +130,11 @@
       document.body.removeChild(a);
     };
 
+    img.onerror = function () {
+      URL.revokeObjectURL(url);
+      alert("The chart could not be exported. Please try again.");
+    };
+
     img.src = url;
   };
 
@@ -131,6 +147,7 @@
         const input = drawer.querySelector("select, textarea");
         if (input) input.focus();
       }
+    }
   };
 
   // 5b. 'This is wrong' handler per card with small confirmation

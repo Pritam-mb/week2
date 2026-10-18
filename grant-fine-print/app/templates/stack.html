@@ -156,10 +156,12 @@
             <td data-label="Component">{{ diagnostics.storage_backend }}</td>
             <td data-label="Identifier"><code class="meta-mono">{{ diagnostics.db_host or "local filesystem" }}</code></td>
             <td data-label="Status">
-              {% if diagnostics.db_connected %}
-                <span class="badge badge-eligible">ONLINE</span>
-              {% else %}
-                <span class="badge badge-check">FILESYSTEM</span>
+               {% if diagnostics.db_connected %}
+                 <span class="badge badge-eligible">ONLINE</span>
+               {% elif diagnostics.storage_backend.startswith("Tiger Data") %}
+                 <span class="badge badge-not">OFFLINE</span>
+               {% else %}
+                 <span class="badge badge-check">FILESYSTEM</span>
               {% endif %}
             </td>
             <td data-label="Metrics" class="num font-ui">
@@ -229,7 +231,13 @@
             </td>
             <td data-label="Component">Ingestion Cache</td>
             <td data-label="Identifier"><code class="meta-mono">{{ diagnostics.raw_dir }}</code></td>
-            <td data-label="Status"><span class="badge badge-eligible">SYNCED</span></td>
+             <td data-label="Status">
+               {% if diagnostics.cache_status == "SYNCED" %}
+                 <span class="badge badge-eligible">SYNCED</span>
+               {% else %}
+                 <span class="badge badge-check">NOT AVAILABLE</span>
+               {% endif %}
+             </td>
             <td data-label="Metrics" class="num font-ui">{{ diagnostics.n_opportunities }} opportunities</td>
           </tr>
 

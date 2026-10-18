@@ -66,6 +66,35 @@ def test_dashboard_lists_profiles(client, seeded):
     assert "pulled" in body
 
 
+def test_dashboard_selects_configured_default_backend(client, app_config, seeded):
+    body = client.get("/").get_data(as_text=True)
+    assert '<option value="prompted" selected>prompted</option>' in body
+
+
+def test_evidence_has_empty_states_when_result_files_are_missing(client, monkeypatch, tmp_path):
+    import app.main as main_module
+
+    monkeypatch.setattr(main_module, "_ROOT", tmp_path)
+    resp = client.get("/evidence")
+    assert resp.status_code == 200
+    body = resp.get_data(as_text=True)
+    assert body.count("Data Not Generated Yet") == 2
+    assert "python -m src.study" in body
+    assert "python -m src.eval" in body
+
+
+def test_evidence_handles_corrupt_result_files(client, monkeypatch, tmp_path):
+    import app.main as main_module
+
+    (tmp_path / "results").mkdir()
+    (tmp_path / "results" / "study.json").write_text("not json", encoding="utf-8")
+    (tmp_path / "results" / "eval.json").write_text("{broken", encoding="utf-8")
+    monkeypatch.setattr(main_module, "_ROOT", tmp_path)
+    resp = client.get("/evidence")
+    assert resp.status_code == 200
+    assert "Data Not Generated Yet" in resp.get_data(as_text=True)
+
+
 def test_layout_has_mobile_metadata_favicon_footer_and_menu(client, seeded):
     resp = client.get("/")
     body = resp.get_data(as_text=True)
@@ -145,23 +174,44 @@ def test_refresh_offline_sample_updates_cache(client, app_config, tmp_path):
     assert list(Path(app_config["cache"]["raw_dir"]).glob("*.json"))
 
 
+def test_refresh_offline_sample_rebuilds_cards_without_provider(
+    client, app_config, seeded, tmp_path
+):
+    app_config["cache"]["raw_dir"] = str(tmp_path / "raw")
+    app_config["cache"]["manifest"] = str(tmp_path / "raw" / "manifest.json")
+    resp = client.post("/refresh", data={"mode": "mock"}, follow_redirects=True)
+    assert resp.status_code == 200
+    body = resp.get_data(as_text=True)
+    assert "card rebuild failed" not in body.lower()
+
+
 def test_card_filter_is_user_visible(client, seeded):
-    resp = client.get("/card/seed-org?q=rural&verdict=CHECK&sort=close")
+    resp = client.get("/card/seed-org?q=rural&verdict=CHECK&sort=close&backend=mock")
     assert resp.status_code == 200
     body = resp.get_data(as_text=True)
     assert "Showing" in body
     assert 'value="rural"' in body
     assert "Closing date" in body
+    assert 'name="backend" value="mock"' in body
 
 
 def test_card_page_renders(client, seeded):
-    resp = client.get("/card/seed-org")
+    resp = client.get("/card/seed-org?backend=mock")
     assert resp.status_code == 200
     assert resp.mimetype == "text/html"
     body = resp.get_data(as_text=True)
     assert "Seed Org" in body
     assert "Confirm in the original notice." in body
     assert "Record a correction" in body
+    assert "/static/style.css" in body
+    assert "/static/app.js" in body
+    assert 'aria-controls="site-nav"' in body
+
+
+def test_run_summary_card_links_keep_selected_backend(client, seeded):
+    resp = client.post("/run", data={"profile_id": "seed-org", "backend": "mock"})
+    assert resp.status_code == 200
+    assert "backend=mock" in resp.get_data(as_text=True)
 
 
 def test_card_unknown_profile_is_404(client, seeded):

@@ -101,4 +101,19 @@
       <button type="submit" class="btn btn-primary">Save correction</button>
     </form>
   </div>
+
+  <!-- Standard Site Footer -->
+  <footer class="site-footer" style="margin-top: 48px;">
+    <div class="footer-links">
+      <a href="{{ url_for('main.dashboard') }}">Cards</a>
+      <a href="{{ url_for('main.evidence') }}">Evidence</a>
+      <a href="{{ url_for('main.stack') }}">Stack</a>
+      <a href="{{ url_for('main.profiles') }}">Profiles</a>
+      <a href="{{ url_for('main.new_profile') }}">Create a profile</a>
+      <a href="https://www.grants.gov/" target="_blank" rel="noopener noreferrer">Grants.gov</a>
+      {% if support_email %}<a href="mailto:{{ support_email }}">{{ support_email }}</a>{% endif %}
+      {% if support_phone %}<a href="tel:{{ support_phone }}">{{ support_phone }}</a>{% endif %}
+    </div>
+    <div>&copy; {{ current_year }} Grant Fine Print. The fine print, under a magnifier. Screening aid only; confirm in the original notice.</div>
+  </footer>
 </div>

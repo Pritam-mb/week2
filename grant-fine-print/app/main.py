@@ -91,7 +91,12 @@ def _opportunities(config: dict[str, Any]) -> list[Any]:
     if str(get(config, "storage.backend", "filesystem")).lower() == "postgres":
         from src.storage import PostgresStore
 
-        return PostgresStore().current_opportunities()
+        try:
+            return PostgresStore().current_opportunities()
+        except Exception:
+            # Pages should remain usable when the optional database is down.
+            # The diagnostics page reports the degraded connection separately.
+            return []
     return load_opportunities(get(config, "cache.raw_dir") or "data/raw")
 
 
@@ -233,6 +238,7 @@ def dashboard():
         pull_date=str(manifest.get("pull_date") or ""),
         pull_stats=manifest,
         backends=BACKENDS,
+        default_backend=_default_backend(config),
     )
 
 
@@ -264,7 +270,10 @@ def refresh():
         try:
             result = run_pipeline(
                 config,
-                backend_name=_default_backend(config),
+                # Selecting the offline sample is an explicit opt-in to the
+                # deterministic backend; do not require production provider
+                # credentials just to preview the sample in the UI.
+                backend_name="mock" if mode == "mock" else _default_backend(config),
                 apply_corrections=True,
                 write_cards=True,
                 opportunities=opportunities,
@@ -379,7 +388,9 @@ def run_now():
         {
             "profile_id": Path(path).stem,
             "path": path,
-            "url": url_for("main.card", profile_id=Path(path).stem),
+            "url": url_for(
+                "main.card", profile_id=Path(path).stem, backend=backend
+            ),
         }
         for path in result["cards"]
     ]
@@ -404,13 +415,20 @@ def card(profile_id: str):
     if profile is None:
         abort(404)
 
-    result = run_pipeline(
-        config,
-        profile_ids=[profile.id],
-        backend_name=_default_backend(config),
-        apply_corrections=True,
-        write_cards=False,
-    )
+    backend = request.args.get("backend", "").strip() or _default_backend(config)
+    if backend not in BACKENDS:
+        backend = _default_backend(config)
+    try:
+        result = run_pipeline(
+            config,
+            profile_ids=[profile.id],
+            backend_name=backend,
+            apply_corrections=True,
+            write_cards=False,
+        )
+    except (RuntimeError, ValueError) as exc:
+        flash(str(exc), "error")
+        return redirect(url_for("main.dashboard"))
     raw_dir = get(config, "cache.raw_dir") or "data/raw"
     opp_by_id = {opp.id: opp for opp in _opportunities(config)}
     out_dir = get(config, "card.output_dir") or "results/cards"
@@ -488,7 +506,7 @@ def card(profile_id: str):
         "card_header.html",
         profile=profile,
         profiles=profiles,
-        filter_state={"q": query, "verdict": verdict, "sort": sort},
+        filter_state={"q": query, "verdict": verdict, "sort": sort, "backend": backend},
         n_total=len(all_rows),
         n_visible=len(visible_rows),
         focus_keywords=profile.focus_keywords,
@@ -503,21 +521,32 @@ def card(profile_id: str):
         corrections=entries,
         summary=corrections_summary(mine),
         opportunity_ids=sorted(opp_by_id),
-        filter_state={"q": query, "verdict": verdict, "sort": sort},
+        filter_state={"q": query, "verdict": verdict, "sort": sort, "backend": backend},
         n_total=len(all_rows),
         n_visible=len(visible_rows),
         focus_keywords=profile.focus_keywords,
     )
 
+    # The generated card is a standalone printable document. Add the shared
+    # application assets so its filters, theme toggle, correction workflow and
+    # responsive navigation work just like the rest of the app.
+    assets = (
+        f'<link rel="stylesheet" href="{url_for("static", filename="tokens.css")}?v=2">\n'
+        f'<link rel="stylesheet" href="{url_for("static", filename="style.css")}?v=2">\n'
+        f'<script src="{url_for("static", filename="app.js")}?v=2" defer></script>\n'
+    )
+    if "</head>" in page:
+        page = page.replace("</head>", assets + "</head>", 1)
+
     if '<div class="header">' in page:
         page = page.replace('<div class="header">', top_bar + '\n<div class="header">', 1)
     elif "<body>" in page:
-        page = page.replace("<body>", "<body>\n" + top_bar, 1)
+        page = page.replace("<body>", '<body class="card-view-page">\n<div class="page-container card-page-container">\n' + top_bar, 1)
 
     if "</body>" in page:
-        page = page.replace("</body>", panel + "\n</body>", 1)
+        page = page.replace("</body>", panel + "\n</div>\n</body>", 1)
     else:
-        page += panel
+        page += panel + "\n</div>"
     return Response(page, mimetype="text/html")
 
 
@@ -531,6 +560,8 @@ def evidence():
     if study_file.exists():
         try:
             study = json.loads(study_file.read_text(encoding="utf-8"))
+            if not isinstance(study, dict) or not isinstance(study.get("b"), dict):
+                raise ValueError("study result has an unexpected shape")
             mtime = os.path.getmtime(study_file)
             study_generated_at = datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M:%S")
         except Exception:
@@ -541,6 +572,12 @@ def evidence():
     if eval_file.exists():
         try:
             eval_data = json.loads(eval_file.read_text(encoding="utf-8"))
+            systems = eval_data.get("systems") if isinstance(eval_data, dict) else None
+            if not isinstance(systems, dict) or not all(
+                isinstance(systems.get(name), dict)
+                for name in ("code_only", "prompted", "fine_tuned")
+            ):
+                raise ValueError("evaluation result has an unexpected shape")
             mtime = os.path.getmtime(eval_file)
             eval_generated_at = datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M:%S")
         except Exception:
@@ -619,7 +656,8 @@ def stack():
         "has_serpapi_key": bool(os.environ.get("SERPAPI_KEY")),
         "raw_dir": raw_dir,
         "n_opportunities": len(opportunities),
-        "pull_date": str(manifest.get("pull_date") or "2026-10-17"),
+        "pull_date": str(manifest.get("pull_date") or "not recorded"),
+        "cache_status": "SYNCED" if manifest.get("pull_date") else "NOT AVAILABLE",
         "profiles_dir": _profiles_dir(config),
         "n_profiles": len(profile_list),
         "corrections_path": get(config, "corrections_path") or DEFAULT_CORRECTIONS_PATH,
@@ -641,6 +679,8 @@ def profiles():
         "profiles.html",
         active_tab="profiles",
         profiles=profile_list,
+        backends=BACKENDS,
+        default_backend=_default_backend(config),
     )
 
 

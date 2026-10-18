@@ -15,6 +15,7 @@
   </div>
 
   {# ==================== SECTION 1: STUDY FINDINGS ==================== #}
+  {% if study %}
   {% call dc.data_card(
     id="card-study",
     eyebrow="Section 1 · Opportunity Catalog Audit",
@@ -32,7 +33,7 @@
     <!-- Chart Container -->
     <div class="chart-container">
       <svg id="chart-study" class="chart-svg" viewBox="0 0 860 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="study-chart-title study-chart-desc">
-        <title id="study-chart-title">Breakdown of 528 Grants.gov Opportunities</title>
+        <title id="study-chart-title">Breakdown of {{ study.total }} Grants.gov Opportunities</title>
         <desc id="study-chart-desc">Stacked bar charts comparing Code 25 'Others' only versus categorized grants, and permissive sample grants containing hidden disqualifiers.</desc>
 
         <defs>
@@ -169,9 +170,21 @@
     </details>
     {% endif %}
   {% endcall %}
+  {% else %}
+  {% call dc.data_card(
+    id="card-study",
+    eyebrow="Section 1 · Opportunity Catalog Audit",
+    title="Free-Text Eligibility Concealment",
+    takeaway_html="Study results are not available yet. Generate the catalog audit to populate this proof sheet.",
+    source_path="results/study.json",
+    generated_at=study_generated_at,
+    empty_command="python -m src.study --raw-dir data/raw --out results/study.json"
+  ) %}{% endcall %}
+  {% endif %}
 
 
   {# ==================== SECTION 2: SYSTEMS EVALUATION ==================== #}
+  {% if eval_data %}
   {% call dc.data_card(
     id="card-eval",
     eyebrow="Section 2 · Extraction Systems Benchmark",
@@ -180,13 +193,21 @@
     download_id="chart-systems",
     download_filename="systems-evaluation-comparison",
     source_path="results/eval.json",
-    pull_date=study.pull_date if study else "2026-10-17",
+    pull_date=study.pull_date if study else "not recorded",
     evaluated_count=eval_data.systems.prompted.n_labels ~ " test pairs",
     generated_at=eval_generated_at,
     empty_command="python -m src.evaluate --eval-file data/eval/benchmark_pairs.json --out results/eval.json" if not eval_data else None
   ) %}
     {% if eval_data %}
     <div class="chart-container">
+      {% set code_missed_pct = eval_data.systems.code_only.missed_grant_rate.rate * 100 %}
+      {% set prompted_missed_pct = eval_data.systems.prompted.missed_grant_rate.rate * 100 %}
+      {% set fine_missed_pct = eval_data.systems.fine_tuned.missed_grant_rate.rate * 100 %}
+      {% set prompted_quote_pct = eval_data.systems.prompted.quote_validity.rate * 100 %}
+      {% set fine_quote_pct = eval_data.systems.fine_tuned.quote_validity.rate * 100 %}
+      {% set code_accuracy_pct = eval_data.systems.code_only.accuracy.rate * 100 %}
+      {% set prompted_accuracy_pct = eval_data.systems.prompted.accuracy.rate * 100 %}
+      {% set fine_accuracy_pct = eval_data.systems.fine_tuned.accuracy.rate * 100 %}
       <svg id="chart-systems" class="chart-svg" viewBox="0 0 860 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="systems-chart-title systems-chart-desc">
         <title id="systems-chart-title">Comparison of Candidate Eligibility Systems</title>
         <desc id="systems-chart-desc">Grouped metrics showing Missed Grant Rate, Quote Validity, and Exact Match Accuracy for Code Only, Prompted, and Fine-Tuned systems.</desc>
@@ -194,7 +215,7 @@
         <rect width="860" height="250" fill="var(--paper, #F4EFE3)" rx="4" stroke="var(--ink, #221C14)" stroke-width="1.5"/>
 
         <text x="28" y="32" font-family="var(--font-ui)" font-size="14" font-weight="600" fill="var(--ink, #221C14)">
-          Comparative Metrics &middot; 125 Hand-Labelled Test Pairs (Commit 2f90797)
+          Comparative Metrics &middot; {{ eval_data.systems.prompted.n_labels }} Hand-Labelled Test Pairs (Commit 2f90797)
         </text>
 
         <!-- Metric Group 1: Missed Grant Rate (Lower is better) -->
@@ -203,19 +224,19 @@
             Missed-Grant Rate (Lower is Better)
           </text>
           
-          <!-- Code Only (0.0%) -->
-          <rect x="0" y="20" width="50" height="4" fill="var(--eligible)" stroke="var(--ink)" stroke-width="1.5"/>
-          <text x="25" y="42" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">0.0%</text>
+          <!-- Code Only -->
+          <rect x="0" y="20" width="50" height="{{ 4 + code_missed_pct * 1.1 }}" fill="var(--eligible)" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="25" y="42" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">{{ code_missed_pct|round(1) }}%</text>
           <text x="25" y="60" font-family="var(--font-ui)" font-size="11" fill="var(--ink-soft)" text-anchor="middle">Code Only</text>
 
-          <!-- Prompted (60.6%) -->
-          <rect x="75" y="20" width="50" height="72" fill="var(--not)" stroke="var(--ink)" stroke-width="1.5"/>
-          <text x="100" y="108" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">60.6%</text>
+          <!-- Prompted -->
+          <rect x="75" y="20" width="50" height="{{ 4 + prompted_missed_pct * 1.1 }}" fill="var(--not)" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="100" y="108" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">{{ prompted_missed_pct|round(1) }}%</text>
           <text x="100" y="126" font-family="var(--font-ui)" font-size="11" fill="var(--ink-soft)" text-anchor="middle">Prompted</text>
 
-          <!-- Fine-Tuned (6.1%) -->
-          <rect x="150" y="20" width="50" height="10" fill="var(--eligible)" stroke="var(--ink)" stroke-width="1.5"/>
-          <text x="175" y="48" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">6.1%</text>
+          <!-- Fine-Tuned -->
+          <rect x="150" y="20" width="50" height="{{ 4 + fine_missed_pct * 1.1 }}" fill="var(--eligible)" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="175" y="48" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">{{ fine_missed_pct|round(1) }}%</text>
           <text x="175" y="66" font-family="var(--font-ui)" font-size="11" fill="var(--ink-soft)" text-anchor="middle">Fine-Tuned</text>
         </g>
 
@@ -230,14 +251,14 @@
           <text x="25" y="42" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink-soft)" text-anchor="middle">&mdash;</text>
           <text x="25" y="60" font-family="var(--font-ui)" font-size="11" fill="var(--ink-soft)" text-anchor="middle">Code Only</text>
 
-          <!-- Prompted (98.9%) -->
-          <rect x="75" y="20" width="50" height="110" fill="var(--check)" stroke="var(--ink)" stroke-width="1.5"/>
-          <text x="100" y="146" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">98.9%</text>
+          <!-- Prompted -->
+          <rect x="75" y="20" width="50" height="{{ 4 + prompted_quote_pct * 1.1 }}" fill="var(--check)" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="100" y="146" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">{{ prompted_quote_pct|round(1) }}%</text>
           <text x="100" y="164" font-family="var(--font-ui)" font-size="11" fill="var(--ink-soft)" text-anchor="middle">Prompted</text>
 
-          <!-- Fine-Tuned (100.0%) -->
-          <rect x="150" y="20" width="50" height="112" fill="var(--eligible)" stroke="var(--ink)" stroke-width="1.5"/>
-          <text x="175" y="148" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">100.0%</text>
+          <!-- Fine-Tuned -->
+          <rect x="150" y="20" width="50" height="{{ 4 + fine_quote_pct * 1.1 }}" fill="var(--eligible)" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="175" y="148" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">{{ fine_quote_pct|round(1) }}%</text>
           <text x="175" y="166" font-family="var(--font-ui)" font-size="11" fill="var(--ink-soft)" text-anchor="middle">Fine-Tuned</text>
         </g>
 
@@ -247,26 +268,26 @@
             Exact Accuracy (Exact Match)
           </text>
 
-          <!-- Code Only (56.0%) -->
-          <rect x="0" y="20" width="50" height="65" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1.5"/>
-          <text x="25" y="102" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">56.0%</text>
+          <!-- Code Only -->
+          <rect x="0" y="20" width="50" height="{{ 4 + code_accuracy_pct * 1.1 }}" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="25" y="102" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">{{ code_accuracy_pct|round(1) }}%</text>
           <text x="25" y="120" font-family="var(--font-ui)" font-size="11" fill="var(--ink-soft)" text-anchor="middle">Code Only</text>
 
-          <!-- Prompted (37.6%) -->
-          <rect x="75" y="20" width="50" height="44" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1.5"/>
-          <text x="100" y="80" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">37.6%</text>
+          <!-- Prompted -->
+          <rect x="75" y="20" width="50" height="{{ 4 + prompted_accuracy_pct * 1.1 }}" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="100" y="80" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">{{ prompted_accuracy_pct|round(1) }}%</text>
           <text x="100" y="98" font-family="var(--font-ui)" font-size="11" fill="var(--ink-soft)" text-anchor="middle">Prompted</text>
 
-          <!-- Fine-Tuned (23.2%) -->
-          <rect x="150" y="20" width="50" height="28" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1.5"/>
-          <text x="175" y="64" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">23.2%</text>
+          <!-- Fine-Tuned -->
+          <rect x="150" y="20" width="50" height="{{ 4 + fine_accuracy_pct * 1.1 }}" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="175" y="64" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="var(--ink)" text-anchor="middle">{{ fine_accuracy_pct|round(1) }}%</text>
           <text x="175" y="82" font-family="var(--font-ui)" font-size="11" fill="var(--ink-soft)" text-anchor="middle">Fine-Tuned</text>
         </g>
       </svg>
 
       <div class="bar-caption-row">
-        <span>Missed Grant Rate: Code-only <strong>0 of 33 (0.0%)</strong> &middot; Prompted <strong>20 of 33 (60.6%)</strong> &middot; Fine-tuned <strong>2 of 33 (6.1%)</strong></span>
-        <span>Quote Validity: Fine-tuned <strong>18 of 18 (100.0%)</strong> <span class="small-sample-chip">small sample</span> ({{ format_wilson_ci(18, 18) }})</span>
+         <span>Missed Grant Rate: Code-only <strong>{{ eval_data.systems.code_only.missed_grant_rate.k }} of {{ eval_data.systems.code_only.missed_grant_rate.n }} ({{ code_missed_pct|round(1) }}%)</strong> &middot; Prompted <strong>{{ eval_data.systems.prompted.missed_grant_rate.k }} of {{ eval_data.systems.prompted.missed_grant_rate.n }} ({{ prompted_missed_pct|round(1) }}%)</strong> &middot; Fine-tuned <strong>{{ eval_data.systems.fine_tuned.missed_grant_rate.k }} of {{ eval_data.systems.fine_tuned.missed_grant_rate.n }} ({{ fine_missed_pct|round(1) }}%)</strong></span>
+         <span>Quote Validity: Fine-tuned <strong>{{ eval_data.systems.fine_tuned.quote_validity.k }} of {{ eval_data.systems.fine_tuned.quote_validity.n }} ({{ fine_quote_pct|round(1) }}%)</strong> <span class="small-sample-chip">small sample</span> ({{ format_wilson_ci(eval_data.systems.fine_tuned.quote_validity.k, eval_data.systems.fine_tuned.quote_validity.n) }})</span>
       </div>
     </div>
 
@@ -281,6 +302,18 @@
     </details>
     {% endif %}
   {% endcall %}
+  {% else %}
+  {% call dc.data_card(
+    id="card-eval",
+    eyebrow="Section 2 · Extraction Systems Benchmark",
+    title="Comparative Systems Performance",
+    takeaway_html="Evaluation results are not available yet. Run the benchmark to populate this proof sheet.",
+    source_path="results/eval.json",
+    pull_date=study.pull_date if study else "not recorded",
+    generated_at=eval_generated_at,
+    empty_command="python -m src.eval"
+  ) %}{% endcall %}
+  {% endif %}
 
 
   {# ==================== SECTION 3: CONFUSION MATRICES ==================== #}
@@ -291,7 +324,7 @@
     title="Confusion Matrices (Ground Truth vs. System Output)",
     takeaway_html="Code-only never flags CHECK for ambiguous fine print (0 CHECK verdicts for complex terms). Prompted generates <strong>20 false NOT_ELIGIBLE</strong> errors on truly eligible grants. Fine-tuned routes <strong>53 ambiguous opportunities safely to CHECK</strong>, preventing premature exclusion while preserving human oversight.",
     source_path="results/eval.json",
-    pull_date=study.pull_date if study else "2026-10-17",
+     pull_date=study.pull_date if study else "not recorded",
     evaluated_count=eval_data.systems.prompted.n_labels ~ " test pairs",
     generated_at=eval_generated_at
   ) %}
@@ -302,16 +335,18 @@
         <table class="matrix-table" role="table" aria-label="Confusion matrix for {{ name }}">
           <thead>
             <tr>
-              <th scope="col">True \ Pred</th>
-              <th scope="col">ELIGIBLE</th>
-              <th scope="col">NOT_ELIGIBLE</th>
-              <th scope="col">CHECK</th>
+              <th scope="col" class="th-axis">True \ Pred</th>
+              <th scope="col" class="th-col-pred">ELIGIBLE</th>
+              <th scope="col" class="th-col-pred">NOT<br>ELIGIBLE</th>
+              <th scope="col" class="th-col-pred">CHECK</th>
             </tr>
           </thead>
           <tbody>
             {% for true_v in ["ELIGIBLE", "NOT_ELIGIBLE", "CHECK"] %}
             <tr>
-              <th scope="row">{{ true_v }}</th>
+              <th scope="row" class="th-row-label">
+                {% if true_v == "NOT_ELIGIBLE" %}NOT<br>ELIGIBLE{% else %}{{ true_v }}{% endif %}
+              </th>
               {% for pred_v in ["ELIGIBLE", "NOT_ELIGIBLE", "CHECK"] %}
                 {% set count = sys.confusion_matrix[true_v][pred_v] if sys.confusion_matrix[true_v] else 0 %}
                 {% set is_diag = true_v == pred_v %}
@@ -332,16 +367,16 @@
 
 
   {# ==================== SECTION 4: LATENCY DISTRIBUTION ==================== #}
-  {% if eval_data %}
+  {% if eval_data and eval_data.systems.fine_tuned.latency_ms.median_ms is not none and eval_data.systems.fine_tuned.latency_ms.p95_ms is not none %}
   {% call dc.data_card(
     id="card-latency",
     eyebrow="Section 4 · Inference Latency",
     title="Inference Latency Profile",
-    takeaway_html="Fine-tuned LoRA provides predictable GPU execution with a median latency of <strong>" ~ eval_data.systems.fine_tuned.latency_ms.median_ms|round(0)|int ~ "ms (2.27s)</strong> and 95th percentile of <strong>" ~ eval_data.systems.fine_tuned.latency_ms.p95_ms|round(0)|int ~ "ms (7.25s)</strong>, executing full substring boundary checking with zero token drift.",
+    takeaway_html="Fine-tuned LoRA provides predictable GPU execution with a median latency of <strong>" ~ eval_data.systems.fine_tuned.latency_ms.median_ms|round(0)|int ~ "ms (" ~ ((eval_data.systems.fine_tuned.latency_ms.median_ms / 1000)|round(2)) ~ "s)</strong> and 95th percentile of <strong>" ~ eval_data.systems.fine_tuned.latency_ms.p95_ms|round(0)|int ~ "ms (" ~ ((eval_data.systems.fine_tuned.latency_ms.p95_ms / 1000)|round(2)) ~ "s)</strong>, executing full substring boundary checking with zero token drift.",
     download_id="chart-latency",
     download_filename="system-inference-latency",
     source_path="results/eval.json",
-    pull_date=study.pull_date if study else "2026-10-17",
+     pull_date=study.pull_date if study else "not recorded",
     evaluated_count=eval_data.systems.fine_tuned.latency_ms.n ~ " inferences",
     generated_at=eval_generated_at
   ) %}
@@ -382,12 +417,12 @@
           {% if eval_data.systems.fine_tuned.latency_ms.median_ms %}
           <rect x="0" y="15" width="220" height="24" fill="var(--check, #C98A12)" stroke="var(--ink, #221C14)" stroke-width="1.5"/>
           <text x="12" y="31" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="#FFF8F0">
-            Median: {{ eval_data.systems.fine_tuned.latency_ms.median_ms|round(0)|int }} ms (2.27s)
+            Median: {{ eval_data.systems.fine_tuned.latency_ms.median_ms|round(0)|int }} ms ({{ (eval_data.systems.fine_tuned.latency_ms.median_ms / 1000)|round(2) }}s)
           </text>
 
           <rect x="0" y="45" width="340" height="24" fill="var(--not, #A93B2B)" stroke="var(--ink, #221C14)" stroke-width="1.5"/>
           <text x="12" y="61" font-family="var(--font-ui)" font-size="12" font-weight="500" fill="#FFF8F0">
-            P95: {{ eval_data.systems.fine_tuned.latency_ms.p95_ms|round(0)|int }} ms (7.25s)
+            P95: {{ eval_data.systems.fine_tuned.latency_ms.p95_ms|round(0)|int }} ms ({{ (eval_data.systems.fine_tuned.latency_ms.p95_ms / 1000)|round(2) }}s)
           </text>
           {% else %}
           <text x="0" y="30" font-family="var(--font-ui)" font-size="12" fill="var(--ink-soft)">
@@ -399,7 +434,7 @@
 
       <div class="bar-caption-row">
         <span>Prompted API: Median {{ eval_data.systems.prompted.latency_ms.median_ms|round(1) }} ms &middot; P95 {{ eval_data.systems.prompted.latency_ms.p95_ms|round(1) }} ms</span>
-        <span>Fine-Tuned LoRA: Median {{ eval_data.systems.fine_tuned.latency_ms.median_ms|round(0)|int }} ms (2.27s) &middot; P95 {{ eval_data.systems.fine_tuned.latency_ms.p95_ms|round(0)|int }} ms (7.25s)</span>
+        <span>Fine-Tuned LoRA: Median {{ eval_data.systems.fine_tuned.latency_ms.median_ms|round(0)|int }} ms ({{ (eval_data.systems.fine_tuned.latency_ms.median_ms / 1000)|round(2) }}s) &middot; P95 {{ eval_data.systems.fine_tuned.latency_ms.p95_ms|round(0)|int }} ms ({{ (eval_data.systems.fine_tuned.latency_ms.p95_ms / 1000)|round(2) }}s)</span>
       </div>
     </div>
   {% endcall %}

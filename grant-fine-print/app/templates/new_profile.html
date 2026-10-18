@@ -2,36 +2,61 @@
 {% block title %}New profile — Grant Fine Print{% endblock %}
 {% block meta_description %}Create a client profile to screen Grants.gov opportunities against its eligibility details.{% endblock %}
 {% block content %}
-<h2>Create a profile</h2>
+<main class="profile-form-page" aria-labelledby="new-profile-title">
+<div class="evidence-header">
+  <span class="brand-tag">Client Repository</span>
+  <h1 id="new-profile-title">Create a profile</h1>
+  <p class="muted">Capture the client facts used for deterministic eligibility checks. Unknown details stay in CHECK for human review.</p>
+</div>
 {% if errors %}
-<ul class="flash error">
+<ul id="profile-errors" class="flash error" role="alert" aria-label="Profile form errors">
   {% for e in errors %}<li>{{ e }}</li>{% endfor %}
 </ul>
 {% endif %}
-<form method="post" action="{{ url_for('main.new_profile') }}">
-  <label>Name <input type="text" name="name" value="{{ form.get('name', '') }}" required></label>
-  <label>Organization type
-    <select name="org_type">
+<form method="post" action="{{ url_for('main.new_profile') }}" class="profile-form">
+  <div class="form-field">
+    <label for="profile-name">Name</label>
+    <input class="paper-input" id="profile-name" type="text" name="name" value="{{ form.get('name', '') }}" required {% if errors %}aria-describedby="profile-errors"{% endif %}>
+  </div>
+  <div class="form-field">
+    <label for="profile-org-type">Organization type</label>
+    <select class="paper-select" id="profile-org-type" name="org_type" required {% if errors %}aria-describedby="profile-errors"{% endif %}>
+      <option value="" disabled {% if not form.get('org_type') %}selected{% endif %}>Choose organization type</option>
       {% for t in org_types %}
       <option value="{{ t }}" {% if form.get('org_type') == t %}selected{% endif %}>{{ t }}</option>
       {% endfor %}
     </select>
-  </label>
-  <label><input type="checkbox" name="us_based" {% if form.get('us_based', True) %}checked{% endif %}> US-based</label>
-  <label>State <input type="text" name="state" value="{{ form.get('state', '') }}"></label>
-  <label>Size band
-    <select name="size_band">
+  </div>
+  <div class="form-field form-checkbox">
+    <input id="profile-us-based" type="checkbox" name="us_based" {% if form.get('us_based', True) %}checked{% endif %}>
+    <label for="profile-us-based">US-based</label>
+  </div>
+  <div class="form-field">
+    <label for="profile-state">State</label>
+    <input class="paper-input" id="profile-state" type="text" name="state" value="{{ form.get('state', '') }}" maxlength="2" placeholder="e.g. KY">
+  </div>
+  <div class="form-field">
+    <label for="profile-size-band">Size band</label>
+    <select class="paper-select" id="profile-size-band" name="size_band">
       <option value="" {% if not form.get('size_band') %}selected{% endif %}>(unknown)</option>
       {% for s in size_bands %}
       <option value="{{ s }}" {% if form.get('size_band') == s %}selected{% endif %}>{{ s }}</option>
       {% endfor %}
     </select>
-  </label>
-  <label>Focus keywords (comma-separated)
-    <input type="text" name="focus_keywords" value="{{ form.get('focus_keywords', '') }}">
-  </label>
-  <label>Notes <textarea name="notes" rows="4">{{ form.get('notes', '') }}</textarea></label>
-  <button class="btn" type="submit">Create profile</button>
+  </div>
+  <div class="form-field">
+    <label for="profile-focus">Focus keywords <span class="muted">(comma-separated)</span></label>
+    <input class="paper-input" id="profile-focus" type="text" name="focus_keywords" value="{{ form.get('focus_keywords', '') }}" placeholder="e.g. rural health, housing">
+  </div>
+  <div class="form-field">
+    <label for="profile-notes">Notes <span class="muted">(optional)</span></label>
+    <textarea class="paper-input" id="profile-notes" name="notes" rows="4" placeholder="Facts a human reviewer should keep in mind">{{ form.get('notes', '') }}</textarea>
+  </div>
+  <div class="form-actions">
+    <button class="btn btn-primary" type="submit">Create profile</button>
+    <a class="btn btn-outline" href="{{ url_for('main.profiles') }}">Cancel</a>
+  </div>
 </form>
 <p><a href="{{ url_for('main.dashboard') }}">Back to dashboard</a></p>
+</main>
 {% endblock %}

@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:24px; margin-bottom:32px;">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap:24px; margin-bottom:32px;">
     <!-- Refresh the source card -->
     <div class="paper-box refresh-box" style="background:var(--paper-card); border:1.5px solid var(--ink); box-shadow:var(--shadow-card); padding:20px; border-radius:var(--radius-sm);">
       <h2 style="font-family:var(--font-display); font-size:18px; font-weight:600; margin-top:0; margin-bottom:8px; color:var(--ink);">Refresh the source</h2>
@@ -54,8 +54,8 @@
 
       <form method="post" action="{{ url_for('main.run_now') }}">
         <div style="margin-bottom:12px;">
-          <label style="display:block; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:var(--tracking-caps); margin-bottom:4px;">Profile</label>
-          <select name="profile_id" class="paper-select" style="width:100%;">
+           <label for="run-profile" style="display:block; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:var(--tracking-caps); margin-bottom:4px;">Profile</label>
+           <select id="run-profile" name="profile_id" class="paper-select" style="width:100%;">
             <option value="">All profiles</option>
             {% for p in profiles %}
             <option value="{{ p.id }}">{{ p.name }} ({{ p.id }})</option>
@@ -64,9 +64,9 @@
         </div>
 
         <div style="margin-bottom:16px;">
-          <label style="display:block; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:var(--tracking-caps); margin-bottom:4px;">Backend</label>
-          <select name="backend" class="paper-select" style="width:100%;">
-            {% for b in backends %}<option value="{{ b }}">{{ b }}</option>{% endfor %}
+           <label for="run-backend" style="display:block; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:var(--tracking-caps); margin-bottom:4px;">Backend</label>
+           <select id="run-backend" name="backend" class="paper-select" style="width:100%;">
+             {% for b in backends %}<option value="{{ b }}" {% if b == default_backend %}selected{% endif %}>{{ b }}</option>{% endfor %}
           </select>
         </div>
 
