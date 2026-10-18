@@ -99,7 +99,7 @@ I tested Grant Fine Print with constructed client profiles based on real-world g
 - **Tinker:** Trained the LoRA adapter on Qwen3.5-4B (`grant-fine-print-sft`) and powered the live inference extraction pipeline, demonstrating a massive reduction in false disqualifications compared to the prompted base model.
 - **Tiger Data:** Live Timescale PostgreSQL database storing 5 relational tables (`raw_snapshots`, `manifests`, `profiles`, `eval_runs`, `corrections`) with a GIN index on notice text (`to_tsvector`), delivering full-text searches across hundreds of notices in ~12ms.
 - **SerpApi:** Integrated automated link recovery that discovers and resolves missing official `grants.gov` notice URLs, restricted strictly to official government domains. Search snippets are never used as eligibility evidence.
-- **Deployment:** Packaged with Docker and a Render Blueprint (`render.yaml`) for web and worker services, while running locally with a Flask interface.
+- **Render:** Live production deployment at [https://grant-fine-print.onrender.com/](https://grant-fine-print.onrender.com/) via Render Blueprint (`render.yaml`), running Gunicorn and connected directly to the Tiger Data Timescale PostgreSQL database.
 
 ## Limits
 
@@ -112,7 +112,8 @@ I tested Grant Fine Print with constructed client profiles based on real-world g
 
 ## Try it
 
-Code: {% github [YOUR-USERNAME/grant-fine-print] %}
+- **Live Deployed App:** [https://grant-fine-print.onrender.com/](https://grant-fine-print.onrender.com/)
+- **Repository:** {% github Pritam-mb/week2 %}
 
 ```powershell
 # Run the local pipeline
@@ -132,5 +133,6 @@ See the repository README for instructions on running live extraction with Tinke
 - **Best Use of Tinker:** Demonstrated how LoRA fine-tuning of Qwen3.5-4B turned an aggressive prompted base model (20 of 33 missed grants) into a precision extraction engine (2 of 33 missed grants, 18 of 18 verified quotes, and 0 of 65 false eligibility errors).
 - **Best Use of Tiger Data:** Built a live PostgreSQL persistence layer across 5 tables with GIN full-text search indexing, handling snapshot caching, client profiles, and human correction logs at 12ms query latencies.
 - **Best Use of SerpApi:** Automated official government link recovery with a strict security and truth boundary that prevents external search snippets from corrupting decision logic.
+- **Best Use of Render:** Deployed live as a production web application at [https://grant-fine-print.onrender.com/](https://grant-fine-print.onrender.com/) using a Render Blueprint (`render.yaml`), serving Gunicorn connected to Timescale PostgreSQL with real-time audit cards.
 
 Data from Grants.gov. Base model: Qwen/Qwen3.5-4B (Apache 2.0 license).
