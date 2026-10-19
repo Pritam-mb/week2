@@ -37,6 +37,7 @@ from flask import (  # noqa: E402
     redirect,
     render_template,
     request,
+    send_from_directory,
     url_for,
 )
 
@@ -71,6 +72,38 @@ DEFAULT_PROFILES_DIR = "data/profiles"
 DEFAULT_CORRECTIONS_PATH = "data/corrections/corrections.json"
 
 bp = Blueprint("main", __name__)
+proof_bp = Blueprint("proof", __name__, url_prefix="/proof")
+
+
+@proof_bp.route("")
+def public_proof_redirect():
+    return redirect(url_for("proof.public_proof"), code=308)
+
+
+@proof_bp.route("/")
+def public_proof():
+    """Serve the prebuilt, already-escaped proof page without rendering it."""
+    return send_from_directory(
+        _ROOT / "reports" / "proof_pack", "index.html", mimetype="text/html"
+    )
+
+
+@proof_bp.route("/<path:artifact>")
+def public_proof_artifact(artifact: str):
+    # Request paths are lookup keys only, never filesystem paths. Hero assets
+    # have their own source directory rather than a general docs/repo route.
+    allowed = {
+        "PROOF.md": ("reports/proof_pack", "PROOF.md", "text/plain"),
+        "examples.json": ("reports/proof_pack", "examples.json", "application/json"),
+        "provenance.json": ("reports/proof_pack", "provenance.json", "application/json"),
+        "hero.png": ("docs/images", "btod-hero.png", "image/png"),
+        "hero.svg": ("docs/images", "btod-hero.svg", "image/svg+xml"),
+    }
+    target = allowed.get(artifact)
+    if target is None:
+        abort(404)
+    directory, filename, mimetype = target
+    return send_from_directory(_ROOT / directory, filename, mimetype=mimetype)
 
 
 def _cfg() -> dict[str, Any]:
@@ -757,6 +790,10 @@ def inject_site_context() -> dict[str, Any]:
 
 @bp.app_errorhandler(404)
 def page_not_found(error: Any):
+    # Missing/invalid public artifacts must not render app templates or load
+    # their context data, including when routing itself produced the 404.
+    if request.path == "/proof" or request.path.startswith("/proof/"):
+        return Response("Not found.\n", status=404, mimetype="text/plain")
     return render_template("404.html"), 404
 
 
@@ -779,6 +816,7 @@ def create_app(config: Optional[dict[str, Any]] = None) -> Flask:
     app.jinja_env.globals["format_wilson_ci"] = format_wilson_ci
     app.jinja_env.globals["wilson_ci"] = wilson_ci
     app.register_blueprint(bp)
+    app.register_blueprint(proof_bp)
 
     @app.context_processor
     def _inject_watermark():

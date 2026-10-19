@@ -3,8 +3,7 @@
 For a single opportunity this reads the free-text eligibility text and
 synopsis and returns a list of :class:`~src.models.Condition` objects, each
 carrying a verbatim quote copied from the source. Results are cached on disk
-by a prefix of the normalised-text hash, so the model is only called once per
-distinct text.
+by a SHA256 fingerprint of the full text hash, prompts and backend settings.
 
 Backends share one protocol: ``extract(prompt: str) -> str`` returning the raw
 assistant text (expected to be JSON). ``MockBackend`` is a deterministic,
@@ -15,11 +14,13 @@ they are sliced out of the source text it is handed.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
 import tempfile
 from typing import Any, Protocol
+from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 import requests
 
@@ -251,15 +252,31 @@ class OpenAICompatibleBackend:
         if self.provider.lower() == "tinker":
             payload["reasoning_effort"] = self.reasoning_effort
             payload["separate_reasoning"] = self.separate_reasoning
-        response = requests.post(
-            self._endpoint(),
-            json=payload,
-            headers=headers,
-            timeout=self.timeout,
-        )
-        response.raise_for_status()
-        data = response.json()
-        return data["choices"][0]["message"]["content"]
+        try:
+            response = requests.post(
+                self._endpoint(),
+                json=payload,
+                headers=headers,
+                timeout=self.timeout,
+            )
+            response.raise_for_status()
+        except requests.RequestException:
+            # Request exceptions may contain credential-bearing URLs or bodies.
+            raise ValueError("Extraction backend request failed") from None
+        try:
+            data = response.json()
+        except ValueError:
+            raise ValueError("Extraction backend returned malformed JSON") from None
+        try:
+            choice = data["choices"][0]
+            if choice.get("finish_reason") == "length":
+                raise ValueError("Extraction backend output was truncated (finish_reason=length)")
+            content = choice["message"]["content"]
+        except (KeyError, IndexError, TypeError, AttributeError):
+            raise ValueError("Extraction backend returned an invalid response schema") from None
+        if not isinstance(content, str) or not content.strip():
+            raise ValueError("Extraction backend returned empty or non-string message.content")
+        return content
 
 
 class FineTunedBackend(OpenAICompatibleBackend):
@@ -352,6 +369,49 @@ def parse_conditions(raw: str) -> list[Condition]:
     return conditions
 
 
+def _validate_conditions(data: Any) -> list[Condition]:
+    """Validate the complete extraction schema; never salvage partial rows."""
+    if not isinstance(data, dict) or set(data) != {"conditions"}:
+        raise ValueError("Invalid extraction schema: expected a conditions object")
+    if not isinstance(data["conditions"], list):
+        raise ValueError("Invalid extraction schema: conditions must be a list")
+    fields = {"type", "polarity", "value", "quote"}
+    conditions: list[Condition] = []
+    for row in data["conditions"]:
+        if (
+            not isinstance(row, dict)
+            or set(row) != fields
+            or any(not isinstance(row[key], str) or not row[key].strip() for key in fields)
+        ):
+            raise ValueError("Invalid extraction schema: malformed condition row")
+        try:
+            conditions.append(Condition.from_dict(row))
+        except (TypeError, ValueError):
+            raise ValueError("Invalid extraction schema: invalid condition enum") from None
+    return conditions
+
+
+def _strict_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("Duplicate JSON key")
+        result[key] = value
+    return result
+
+
+def _parse_conditions_strict(raw: str) -> list[Condition]:
+    if not isinstance(raw, str) or not raw.strip():
+        raise ValueError("Extraction output must be a non-empty string")
+    if raw.strip().startswith("```") and not raw.strip().endswith("```"):
+        raise ValueError("Extraction output has an incomplete markdown fence")
+    try:
+        data = json.loads(_strip_fences(raw), object_pairs_hook=_strict_json_object)
+    except ValueError:
+        raise ValueError("Extraction output is malformed or truncated JSON") from None
+    return _validate_conditions(data)
+
+
 def _build_prompt(opportunity: Opportunity) -> str:
     return (
         EXTRACTION_PROMPT.replace("__OPP_ID__", opportunity.id or opportunity.opp_number)
@@ -361,43 +421,123 @@ def _build_prompt(opportunity: Opportunity) -> str:
     )
 
 
+_CACHE_VERSION = "extract-sha256-v2"
+_BACKEND_IDENTITY_FIELDS = (
+    "base_model", "model", "model_name", "model_id", "provider",
+    "provider_base_url", "base_url", "endpoint", "timeout", "max_tokens",
+    "temperature", "reasoning_effort", "separate_reasoning", "settings",
+    "top_p", "seed", "frequency_penalty", "presence_penalty", "stop",
+    "model_kwargs", "generation_config", "options", "source_text",
+)
+
+
+def _secret_key(key: str) -> bool:
+    key = key.lower().replace("-", "_")
+    return key in {
+        "api_key", "apikey", "key", "token", "access_token", "auth_token",
+        "password", "passwd", "secret", "client_secret", "authorization",
+        "credentials", "username", "user", "headers",
+    } or key.endswith(("_api_key", "_password", "_secret", "_token"))
+
+
+def _identity_value(value: Any) -> Any:
+    """Keep JSON settings, excluding secrets and URL authentication material.
+
+    This value is only ever hashed, never written to cache or diagnostics.
+    """
+    if isinstance(value, dict):
+        return {
+            key: _identity_value(item)
+            for key, item in value.items()
+            if isinstance(key, str) and not _secret_key(key)
+        }
+    if isinstance(value, (list, tuple)):
+        return [_identity_value(item) for item in value]
+    if isinstance(value, str) and "://" in value:
+        try:
+            url = urlsplit(value)
+            return urlunsplit((
+                url.scheme,
+                url.netloc.rsplit("@", 1)[-1],
+                url.path,
+                urlencode([(key, item) for key, item in parse_qsl(url.query, keep_blank_values=True)
+                           if not _secret_key(key)]),
+                "",
+            ))
+        except ValueError:
+            raise ValueError("Invalid backend URL in extraction cache identity") from None
+    return value
+
+
+def _cache_fingerprint(opportunity: Opportunity, backend: Backend, prompt: str) -> str:
+    # Explicit settings avoid transient counters, responses and diagnostics on
+    # custom backends. A backend implementing only extract() still caches.
+    settings = {
+        name: _identity_value(getattr(backend, name))
+        for name in _BACKEND_IDENTITY_FIELDS
+        if hasattr(backend, name) and not callable(getattr(backend, name))
+    }
+    identity = {
+        "version": _CACHE_VERSION,
+        "hash": opportunity.text_hash,
+        "prompt": prompt,
+        "system": EXTRACTION_SYSTEM,
+        "backend": f"{type(backend).__module__}.{type(backend).__qualname__}",
+        "settings": settings,
+    }
+    try:
+        encoded = json.dumps(identity, sort_keys=True, ensure_ascii=False, allow_nan=False)
+    except (TypeError, ValueError):
+        raise ValueError("Extraction backend cache settings must be JSON-compatible") from None
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
 def extract_conditions(
     opportunity: Opportunity, backend: Backend, config: dict[str, Any]
 ) -> list[Condition]:
-    """Extract conditions for one opportunity, caching by backend + text hash.
+    """Extract conditions, caching by full text, prompts and backend identity.
 
     The cache holds the model's raw output after schema validation only:
     quotes are NOT filtered here, because quote validity must be measurable
     *before* code enforcement (PRD 8.5). Dropping non-verbatim quotes is the
     verifier's job (src.verify), downstream in the pipeline.
 
-    The cache key includes the backend class name, so a mock run can never
-    poison a prompted or fine-tuned cache for the same text.
+    Only complete, schema-valid output is cached. Legacy entries are ignored;
+    full hashes and fingerprints are checked before trusting a cache hit.
     """
     cache_dir = get(config, "extract.cache_dir") or os.path.join(
         tempfile.gettempdir(), "grant_fine_print_extract"
     )
-    backend_name = type(backend).__name__
-    hash_len = int(get(config, "cache.hash_prefix_length", default=12))
-    cache_key = opportunity.text_hash[:hash_len]
-    cache_path = os.path.join(cache_dir, backend_name, f"{cache_key}.json")
+    prompt = _build_prompt(opportunity)
+    fingerprint = _cache_fingerprint(opportunity, backend, prompt)
+    cache_path = os.path.join(cache_dir, _CACHE_VERSION, f"{fingerprint}.json")
 
     if os.path.exists(cache_path):
-        cached = read_json(cache_path)
-        if isinstance(cached, dict):
-            return parse_conditions(json.dumps(cached.get("conditions", cached)))
+        try:
+            with open(cache_path, encoding="utf-8") as stream:
+                cached = json.load(stream, object_pairs_hook=_strict_json_object)
+        except (OSError, ValueError, UnicodeError):
+            cached = None  # Corrupt/duplicate-key JSON is a miss, not trusted output.
+        if (
+            isinstance(cached, dict)
+            and cached.get("version") == _CACHE_VERSION
+            and cached.get("hash") == opportunity.text_hash
+            and cached.get("fingerprint") == fingerprint
+        ):
+            try:
+                return _validate_conditions({"conditions": cached.get("conditions")})
+            except ValueError:
+                pass  # A corrupt cache is a miss, never an empty extraction.
 
-    prompt = _build_prompt(opportunity)
     raw = backend.extract(prompt)
-    candidates = parse_conditions(raw)
+    candidates = _parse_conditions_strict(raw)
 
     write_json(
         cache_path,
         {
+            "version": _CACHE_VERSION,
             "hash": opportunity.text_hash,
-            "cache_key": cache_key,
-            "backend": backend_name,
-            "opportunity_id": opportunity.id,
+            "fingerprint": fingerprint,
             "conditions": [c.to_dict() for c in candidates],
         },
     )

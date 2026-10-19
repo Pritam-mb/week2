@@ -24,6 +24,26 @@
         "n": 125,
         "rate": 0.56
       },
+      "automatic_decision_coverage": {
+        "k": 77,
+        "n": 125,
+        "rate": 0.616
+      },
+      "automatic_decision_accuracy": {
+        "k": 53,
+        "n": 77,
+        "rate": 0.6883116883116883
+      },
+      "disqualified_to_eligible_error": {
+        "k": 14,
+        "n": 65,
+        "rate": 0.2153846153846154
+      },
+      "negative_to_eligible_error": {
+        "k": 19,
+        "n": 92,
+        "rate": 0.20652173913043478
+      },
       "confusion_matrix": {
         "ELIGIBLE": {
           "ELIGIBLE": 25,
@@ -85,6 +105,26 @@
         "n": 125,
         "rate": 0.232
       },
+      "automatic_decision_coverage": {
+        "k": 24,
+        "n": 125,
+        "rate": 0.192
+      },
+      "automatic_decision_accuracy": {
+        "k": 12,
+        "n": 24,
+        "rate": 0.5
+      },
+      "disqualified_to_eligible_error": {
+        "k": 0,
+        "n": 65,
+        "rate": 0.0
+      },
+      "negative_to_eligible_error": {
+        "k": 6,
+        "n": 92,
+        "rate": 0.06521739130434782
+      },
       "confusion_matrix": {
         "ELIGIBLE": {
           "ELIGIBLE": 0,
@@ -145,6 +185,26 @@
         "k": 47,
         "n": 125,
         "rate": 0.376
+      },
+      "automatic_decision_coverage": {
+        "k": 61,
+        "n": 125,
+        "rate": 0.488
+      },
+      "automatic_decision_accuracy": {
+        "k": 30,
+        "n": 61,
+        "rate": 0.4918032786885246
+      },
+      "disqualified_to_eligible_error": {
+        "k": 1,
+        "n": 65,
+        "rate": 0.015384615384615385
+      },
+      "negative_to_eligible_error": {
+        "k": 7,
+        "n": 92,
+        "rate": 0.07608695652173914
       },
       "confusion_matrix": {
         "ELIGIBLE": {

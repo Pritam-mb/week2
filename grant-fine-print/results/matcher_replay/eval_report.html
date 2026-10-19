@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Grant Fine Print — eval report</title>
+<style>
+body { font-family: Georgia, serif; margin: 2rem auto; max-width: 60rem;
+        padding: 0 1rem; color: #222; }
+h1 { border-bottom: 2px solid #333; padding-bottom: .25rem; }
+h2 { margin-top: 2rem; }
+.chart { margin: 1rem 0; }
+.chart-row { display: flex; align-items: center; margin: .35rem 0; }
+.sys-label { width: 10rem; font-family: monospace; }
+.bar { display: inline-block; height: 1.1rem; min-width: 2px;
+        vertical-align: middle; }
+.bar-label { margin-left: .5rem; font-family: monospace; }
+table { border-collapse: collapse; margin-top: 1rem; width: 100%; }
+th, td { border: 1px solid #999; padding: .3rem .5rem; text-align: left;
+          font-size: .9rem; }
+th { background: #eee; }
+.headline { background: #f4f4f4; border: 1px solid #ccc; padding: .75rem 1rem; }
+</style>
+</head>
+<body>
+<h1>Grant Fine Print — system comparison</h1>
+<p>Metrics per PRD section 8.5, computed by <code>src/eval.py</code>.
+Every metric is reported as raw &ldquo;k of N&rdquo; counts.</p>
+
+<div class="headline">
+<p><strong>Best missed-grant rate:</strong>
+code_only —
+0 of 33 (0.0%)</p>
+<p><strong>Best tradeoff</strong> (lowest missed-grant rate + human-read
+share): code_only — score 0.384
+(0 of 33 (0.0%) missed grants,
+48 of 125 (38.4%) human reads)</p>
+</div>
+
+<h2>Missed-grant rate (lower is better)</h2>
+<div class="chart">
+<div class="chart-row"><span class="sys-label">code_only</span><span class="bar" style="width:0.0%;background:#b03a2e"></span><span class="bar-label">0 of 33</span></div>
+<div class="chart-row"><span class="sys-label">original_fine_tuned</span><span class="bar" style="width:6.1%;background:#b03a2e"></span><span class="bar-label">2 of 33</span></div>
+<div class="chart-row"><span class="sys-label">original_prompted</span><span class="bar" style="width:60.6%;background:#b03a2e"></span><span class="bar-label">20 of 33</span></div>
+<div class="chart-row"><span class="sys-label">replay_fine_tuned</span><span class="bar" style="width:6.1%;background:#b03a2e"></span><span class="bar-label">2 of 33</span></div>
+<div class="chart-row"><span class="sys-label">replay_prompted</span><span class="bar" style="width:6.1%;background:#b03a2e"></span><span class="bar-label">2 of 33</span></div>
+</div>
+<h2>Human-read share</h2>
+<div class="chart">
+<div class="chart-row"><span class="sys-label">code_only</span><span class="bar" style="width:38.4%;background:#2e6da4"></span><span class="bar-label">48 of 125</span></div>
+<div class="chart-row"><span class="sys-label">original_fine_tuned</span><span class="bar" style="width:80.8%;background:#2e6da4"></span><span class="bar-label">101 of 125</span></div>
+<div class="chart-row"><span class="sys-label">original_prompted</span><span class="bar" style="width:51.2%;background:#2e6da4"></span><span class="bar-label">64 of 125</span></div>
+<div class="chart-row"><span class="sys-label">replay_fine_tuned</span><span class="bar" style="width:93.6%;background:#2e6da4"></span><span class="bar-label">117 of 125</span></div>
+<div class="chart-row"><span class="sys-label">replay_prompted</span><span class="bar" style="width:86.4%;background:#2e6da4"></span><span class="bar-label">108 of 125</span></div>
+</div>
+
+<h2>All metrics</h2>
+<table>
+<tr><th>system</th><th>n_pairs</th><th>n_labels</th><th>missed_grant_rate</th>
+<th>soft_miss</th><th>human_read_share</th><th>accuracy</th>
+<th>auto coverage</th><th>auto accuracy</th><th>disqualified → eligible</th>
+<th>negative → eligible</th>
+<th>quote_validity</th><th>quote_correctness</th><th>latency</th>
+<th>cost/1k opps</th></tr>
+<tr><td>code_only</td><td>125</td><td>125</td><td>0 of 33 (0.0%)</td><td>5 of 27 (18.5%)</td><td>48 of 125 (38.4%)</td><td>70 of 125 (56.0%)</td><td>77 of 125 (61.6%)</td><td>53 of 77 (68.8%)</td><td>14 of 65 (21.5%)</td><td>19 of 92 (20.7%)</td><td>0 of 0</td><td>0 of 33 (0.0%)</td><td>n/a</td><td>n/a</td></tr><tr><td>original_fine_tuned</td><td>125</td><td>125</td><td>2 of 33 (6.1%)</td><td>4 of 27 (14.8%)</td><td>101 of 125 (80.8%)</td><td>29 of 125 (23.2%)</td><td>24 of 125 (19.2%)</td><td>12 of 24 (50.0%)</td><td>0 of 65 (0.0%)</td><td>6 of 92 (6.5%)</td><td>18 of 18 (100.0%)</td><td>5 of 18 (27.8%)</td><td>median 2268.13 ms, p95 7254.15 ms</td><td>n/a</td></tr><tr><td>original_prompted</td><td>125</td><td>125</td><td>20 of 33 (60.6%)</td><td>4 of 27 (14.8%)</td><td>64 of 125 (51.2%)</td><td>47 of 125 (37.6%)</td><td>61 of 125 (48.8%)</td><td>30 of 61 (49.2%)</td><td>1 of 65 (1.5%)</td><td>7 of 92 (7.6%)</td><td>94 of 95 (98.9%)</td><td>13 of 54 (24.1%)</td><td>median 3.352 ms, p95 5.524 ms</td><td>n/a</td></tr><tr><td>replay_fine_tuned</td><td>125</td><td>125</td><td>2 of 33 (6.1%)</td><td>1 of 27 (3.7%)</td><td>117 of 125 (93.6%)</td><td>31 of 125 (24.8%)</td><td>8 of 125 (6.4%)</td><td>5 of 8 (62.5%)</td><td>0 of 65 (0.0%)</td><td>0 of 92 (0.0%)</td><td>10 of 10 (100.0%)</td><td>0 of 8 (0.0%)</td><td>n/a</td><td>n/a</td></tr><tr><td>replay_prompted</td><td>125</td><td>125</td><td>2 of 33 (6.1%)</td><td>1 of 27 (3.7%)</td><td>108 of 125 (86.4%)</td><td>40 of 125 (32.0%)</td><td>17 of 125 (13.6%)</td><td>14 of 17 (82.4%)</td><td>0 of 65 (0.0%)</td><td>0 of 92 (0.0%)</td><td>21 of 21 (100.0%)</td><td>6 of 17 (35.3%)</td><td>n/a</td><td>n/a</td></tr>
+</table>
+
+<h2>Metric definitions</h2>
+<ul>
+<li><strong>missed_grant_rate</strong> — true ELIGIBLE predicted
+NOT_ELIGIBLE, k of N_eligible.</li>
+<li><strong>soft_miss</strong> — true CHECK predicted NOT_ELIGIBLE,
+k of N_check.</li>
+<li><strong>human_read_share</strong> — pairs predicted CHECK, k of N.</li>
+<li><strong>accuracy</strong> — three-way agreement, k of N.</li>
+<li><strong>automatic_decision_coverage</strong> — pairs not sent to CHECK, k of N.</li>
+<li><strong>automatic_decision_accuracy</strong> — correct non-CHECK decisions among automatic decisions, k of N.</li>
+<li><strong>disqualified_to_eligible_error</strong> — true NOT_ELIGIBLE pairs predicted ELIGIBLE, k of N_NOT_ELIGIBLE.</li>
+<li><strong>negative_to_eligible_error</strong> — true NOT_ELIGIBLE or CHECK pairs predicted ELIGIBLE, k of N_negative.</li>
+<li><strong>quote_validity</strong> — proposed disqualifier quotes that are
+verbatim substrings of the opportunity source_text, k of N_quotes.</li>
+<li><strong>quote_correctness</strong> — NOT_ELIGIBLE predictions whose
+quote equals the label&rsquo;s disqualifying_sentence (normalised),
+k of N_noteligible.</li>
+<li><strong>latency</strong> — median and p95 of latency_ms per row.</li>
+</ul>
+</body>
+</html>

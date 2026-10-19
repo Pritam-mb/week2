@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "generation_command": "python -B -m src.submission_hero --pack reports/proof_pack --bundle results/evidence --replay results/source_semantics --output-dir docs/images --renderer pillow",
+  "generation_cwd": "project root",
+  "python_version": "3.11.9",
+  "artifact_kind": "generated proof card, not a live application screenshot",
+  "dimensions": {
+    "width": 1600,
+    "height": 840
+  },
+  "hero": {
+    "opportunity_id": "360446",
+    "profile_id": "p_nonus",
+    "profile": {
+      "id": "p_nonus",
+      "name": "Meridian Health Trust",
+      "org_type": "nonprofit",
+      "us_based": false,
+      "state": "",
+      "size_band": "medium",
+      "focus_keywords": [
+        "global health",
+        "public health"
+      ],
+      "notes": "Constructed profile: non-US (United Kingdom) non-profit."
+    },
+    "baseline_system": "code_only",
+    "baseline_verdict": "ELIGIBLE",
+    "baseline_display": "LIKELY ELIGIBLE",
+    "replay_system": "replay_fine_tuned",
+    "replay_verdict": "NOT_ELIGIBLE",
+    "replay_display": "NOT ELIGIBLE",
+    "exact_quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+    "full_source_sha256": "5e960b317bc0403943e405668cf00b9d285a278960dc1c9819e6a80c62a25efb"
+  },
+  "visible_scope": "Offline development replay · 3 pairs / one rule family · 120/125 CHECK",
+  "limits": "Reused development set; single-author labels; constructed profiles. Pairs share notices and profiles and are not independent observations. No generalization claim or causal fine-tuning improvement estimate is supported. Cached backend names do not authenticate model/checkpoint identity. No inference was rerun. Software re-checks quote presence against the full bundled source and interprets only the chosen restriction; the full source is NOT semantically adjudicated by software. Hashes establish consistency, not external authenticity.",
+  "inference_rerun": false,
+  "full_source_semantically_adjudicated_by_software": false,
+  "verification": {
+    "verify_pack": true,
+    "collect_proof_equal": true,
+    "exact_quote_substring": true,
+    "inputs_unchanged": true,
+    "svg_equals_stdlib_render": true
+  },
+  "svg_update_command": "python -B -m src.submission_hero --pack reports/proof_pack --bundle results/evidence --replay results/source_semantics --output-dir docs/images --renderer pillow --print-svg",
+  "svg_update_method": "Apply printed XML with apply_patch; generator checks equality",
+  "renderer": {
+    "name": "Pillow",
+    "version": "10.4.0",
+    "png_created": true,
+    "method": "restricted SVG rect/line/text rasterizer; 2x supersampling",
+    "fonts_sha256": {
+      "arial.ttf": "b3658eadae55e682b5f69eb64c439c1ecc8f196c0bb8d4756d145d13bc86476a",
+      "arialbd.ttf": "e8f4e3baf6cc35fed6fcce3a540e8b39e8f6cda1d22a28f2ec8f526fef7a43f5",
+      "consola.ttf": "cf00b507b3286870cc5064ebd0633c303f70b491a4af25eec2d32df413db0179",
+      "georgia.ttf": "38dffcaf1fac89492f7c56c600a14daf36ae42f7c21985cd4134ae113124a58f"
+    }
+  },
+  "input_sha256": {
+    "reports/proof_pack/PROOF.md": "91d2a6c633ff04fea452457e1c0822e66c3ba9ee1b829e27a87a455fd438a006",
+    "reports/proof_pack/examples.json": "0dfa6852da98fd252188d27b4c9a7ef07e057ab4d3de3111a1a77dcfceb5952b",
+    "reports/proof_pack/index.html": "74c8055beee8bc3cef5eabf9715dd8a05a085168814de96734e402be37b206aa",
+    "reports/proof_pack/provenance.json": "db20ce3ee4ecca6e8a3382d7060545b5ba54d81c1f8052875c89d13fc29a4b64",
+    "results/evidence/EVIDENCE.md": "f34a59d9222dafecc699454c36b3964d9b928754f42ef031c9689cf0eb32544d",
+    "results/evidence/data/labels.csv": "8e98cc6f24c4c5edcf9d0b2d616409681eac28d22946599fa63ed21157190757",
+    "results/evidence/data/profiles/p_forprofit.json": "cf92e3f9cd0f566b8d78791c00049bdde24c00405ce8e2f2160772cfa16b891f",
+    "results/evidence/data/profiles/p_nonprofit.json": "cb81bd47aa9d2ffe45582dc7ea8ee5790e58d669a6e95a3be1531d9eef13a908",
+    "results/evidence/data/profiles/p_nonus.json": "2df5a51fccf9e07696176cdacd253ac7c5f10925a41bf50a90855871a101a9e8",
+    "results/evidence/data/profiles/p_tribal.json": "2e367e64228361031236a74f730ad991c569aae61fcaeeaf60d68e75c317327e",
+    "results/evidence/data/profiles/p_university.json": "85a054dfdc92181b7c1710938550ea277c9c669b90584a3a289a7859083258e2",
+    "results/evidence/data/rubric.md": "a9658b8c9ec2a72cd74cc081bc839b51273735b78ed13c4f46e6a0078fadee9b",
+    "results/evidence/data/source_text.json": "7abbec5d0b37306f903b448db0dcfc1ef56315fa2e99a88e60134310ad3c3f60",
+    "results/evidence/data/test_sample.csv": "1f7fc76d1338084e2a935df03a4a8eecc4ae520b375745e7a835a9b4a21c9896",
+    "results/evidence/eval.json": "acd1ce85b5cf65ba67eb5bf51837c9969d13ccb9057cf563e4b03f4932796556",
+    "results/evidence/eval_config.json": "e3566b3a06430868d71e9287dfd6c6c520a3da027aabea01951d407ee131dc2f",
+    "results/evidence/eval_report.html": "1b4b24db68ec24d2b2d94b60ff0a5b8a2b54cfd33e1702dce6e772366c42eb32",
+    "results/evidence/examples.json": "dce4a36404faf1de85eeaa7cf71f0bdfbd2c0a4de8db85aff56d20a90013b32d",
+    "results/evidence/predictions/code_only.jsonl": "98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2",
+    "results/evidence/predictions/fine_tuned.jsonl": "3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e",
+    "results/evidence/predictions/prompted.jsonl": "a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753",
+    "results/evidence/provenance.json": "b9bf23f22bda851801ffd2fdc89cbfaae16712a25ceb84176089c72f8bb1c519",
+    "results/evidence/src/__init__.py": "83032444178071ce1bb98290f46196e3a22203c0e0a4ef617a7758ae06d303d2",
+    "results/evidence/src/eval.py": "c59108929831fd5b1e4886b32d5b3f634b25a8c6f6c1d5e7ccee15efae32ffc8",
+    "results/evidence/src/evidence_bundle.py": "eb838ea2aed629fc7859c4d255fc9abef8a75f53845d2980823455f41c46dbe9",
+    "results/evidence/src/models.py": "975342073809cd59d115798022cae08074924db3c0f5c50f0a750adbc16c5686",
+    "results/evidence/src/verify.py": "676c339cc7fa38f622c8ae5444fdceb26a09d54a9e40cadc801ea872e126d337",
+    "results/source_semantics/REPLAY.md": "a335ffcb0a320f18c15498943f95a4c09fc03c9de43f516edd8859f47946ad8f",
+    "results/source_semantics/comparison.json": "02948bf6989401bf1f906b937c526c69d2b1680dfa6a04514216af0552a25af6",
+    "results/source_semantics/conditions_snapshot.json": "b27d6bcbad16aacadf8e04355fc110b8bc492d5a4bb71d57a2c05fe5dfc8aef6",
+    "results/source_semantics/eval.json": "1dd6e095a299472f66c6c754600770bd85d47f0d8e1116f2b4b632934cd6eeaa",
+    "results/source_semantics/eval_report.html": "83943f015d658b8fec32b438299b4a9719fa51e749092292e5e8ffdd2a310f2a",
+    "results/source_semantics/predictions/code_only.jsonl": "98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2",
+    "results/source_semantics/predictions/original_fine_tuned.jsonl": "3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e",
+    "results/source_semantics/predictions/original_prompted.jsonl": "a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753",
+    "results/source_semantics/predictions/replay_fine_tuned.jsonl": "0ca5472bc797fa7849062381c17dd1a03a73c0697c76d6370442cbc5bba6ad45",
+    "results/source_semantics/predictions/replay_prompted.jsonl": "3d93648a42d7989b704006588a213408de14a27e013e2edbee00ef8ff0827b27",
+    "results/source_semantics/provenance.json": "6d187cd303bc78215c8e95400dc3cf85602b271e1febb3f8832735e7d0d4c197"
+  },
+  "code_sha256": {
+    "src/eval.py": "c59108929831fd5b1e4886b32d5b3f634b25a8c6f6c1d5e7ccee15efae32ffc8",
+    "src/evidence_bundle.py": "22f0f09023ed53f786761453e790364d8b1da3bbc3bf4dabc555c90366e47f0c",
+    "src/match.py": "f1db08a5a495bd3f5e06aa908a22948ef448bf6867a69c2a20e7408f5f481435",
+    "src/matcher_replay.py": "0f7fd28098df594b7501bd1a4dc5412fe6e66fc659d0cf04bdfee4dfe72b4075",
+    "src/models.py": "6d401b681e98f48d7ce1daf41b9fc6dedb29856d830a47ea01d4ef579247a31b",
+    "src/proof_pack.py": "0fd54b6b21997db6ae23bf2e1cbf680a77d1684e02a8b9c36cef5ff9d9ed2cfb",
+    "src/source_rules.py": "7e0f94c88032d1e3891ff57ae7bd5031a0db383d7a74d2ebbf759d10741a25cb",
+    "src/submission_hero.py": "8a658f59b226b988b259b64997e91609c827c57203846a2a964df5992e6453e1",
+    "src/verify.py": "676c339cc7fa38f622c8ae5444fdceb26a09d54a9e40cadc801ea872e126d337",
+    "tests/test_submission_hero.py": "4f42b8a7da4a5320fc1de0b13e1ecc54443d5d621e985336155467d1b9fbca6f"
+  },
+  "hash_scope": "Input payloads and manifests; output SVG/PNG, excluding this sidecar.",
+  "files": {
+    "btod-hero.svg": {
+      "sha256": "b486e53705c4678e8f5548dda5ae161158747003cc48568ba06cd053b75f1d5f",
+      "bytes": 4888
+    },
+    "btod-hero.png": {
+      "sha256": "266c99514aca615204b12aa8ed376747ae9ed0655b5e9e5c18be2258965d000f",
+      "bytes": 252243
+    }
+  }
+}

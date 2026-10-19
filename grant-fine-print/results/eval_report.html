@@ -53,9 +53,11 @@ share): code_only — score 0.384
 <table>
 <tr><th>system</th><th>n_pairs</th><th>n_labels</th><th>missed_grant_rate</th>
 <th>soft_miss</th><th>human_read_share</th><th>accuracy</th>
+<th>auto coverage</th><th>auto accuracy</th><th>disqualified → eligible</th>
+<th>negative → eligible</th>
 <th>quote_validity</th><th>quote_correctness</th><th>latency</th>
 <th>cost/1k opps</th></tr>
-<tr><td>code_only</td><td>125</td><td>125</td><td>0 of 33 (0.0%)</td><td>5 of 27 (18.5%)</td><td>48 of 125 (38.4%)</td><td>70 of 125 (56.0%)</td><td>0 of 0</td><td>0 of 33 (0.0%)</td><td>n/a</td><td>n/a</td></tr><tr><td>fine_tuned</td><td>125</td><td>125</td><td>2 of 33 (6.1%)</td><td>4 of 27 (14.8%)</td><td>101 of 125 (80.8%)</td><td>29 of 125 (23.2%)</td><td>18 of 18 (100.0%)</td><td>5 of 18 (27.8%)</td><td>median 2268.13 ms, p95 7254.15 ms</td><td>n/a</td></tr><tr><td>prompted</td><td>125</td><td>125</td><td>20 of 33 (60.6%)</td><td>4 of 27 (14.8%)</td><td>64 of 125 (51.2%)</td><td>47 of 125 (37.6%)</td><td>94 of 95 (98.9%)</td><td>13 of 54 (24.1%)</td><td>median 3.352 ms, p95 5.524 ms</td><td>n/a</td></tr>
+<tr><td>code_only</td><td>125</td><td>125</td><td>0 of 33 (0.0%)</td><td>5 of 27 (18.5%)</td><td>48 of 125 (38.4%)</td><td>70 of 125 (56.0%)</td><td>77 of 125 (61.6%)</td><td>53 of 77 (68.8%)</td><td>14 of 65 (21.5%)</td><td>19 of 92 (20.7%)</td><td>0 of 0</td><td>0 of 33 (0.0%)</td><td>n/a</td><td>n/a</td></tr><tr><td>fine_tuned</td><td>125</td><td>125</td><td>2 of 33 (6.1%)</td><td>4 of 27 (14.8%)</td><td>101 of 125 (80.8%)</td><td>29 of 125 (23.2%)</td><td>24 of 125 (19.2%)</td><td>12 of 24 (50.0%)</td><td>0 of 65 (0.0%)</td><td>6 of 92 (6.5%)</td><td>18 of 18 (100.0%)</td><td>5 of 18 (27.8%)</td><td>median 2268.13 ms, p95 7254.15 ms</td><td>n/a</td></tr><tr><td>prompted</td><td>125</td><td>125</td><td>20 of 33 (60.6%)</td><td>4 of 27 (14.8%)</td><td>64 of 125 (51.2%)</td><td>47 of 125 (37.6%)</td><td>61 of 125 (48.8%)</td><td>30 of 61 (49.2%)</td><td>1 of 65 (1.5%)</td><td>7 of 92 (7.6%)</td><td>94 of 95 (98.9%)</td><td>13 of 54 (24.1%)</td><td>median 3.352 ms, p95 5.524 ms</td><td>n/a</td></tr>
 </table>
 
 <h2>Metric definitions</h2>
@@ -66,6 +68,10 @@ NOT_ELIGIBLE, k of N_eligible.</li>
 k of N_check.</li>
 <li><strong>human_read_share</strong> — pairs predicted CHECK, k of N.</li>
 <li><strong>accuracy</strong> — three-way agreement, k of N.</li>
+<li><strong>automatic_decision_coverage</strong> — pairs not sent to CHECK, k of N.</li>
+<li><strong>automatic_decision_accuracy</strong> — correct non-CHECK decisions among automatic decisions, k of N.</li>
+<li><strong>disqualified_to_eligible_error</strong> — true NOT_ELIGIBLE pairs predicted ELIGIBLE, k of N_NOT_ELIGIBLE.</li>
+<li><strong>negative_to_eligible_error</strong> — true NOT_ELIGIBLE or CHECK pairs predicted ELIGIBLE, k of N_negative.</li>
 <li><strong>quote_validity</strong> — proposed disqualifier quotes that are
 verbatim substrings of the opportunity source_text, k of N_quotes.</li>
 <li><strong>quote_correctness</strong> — NOT_ELIGIBLE predictions whose

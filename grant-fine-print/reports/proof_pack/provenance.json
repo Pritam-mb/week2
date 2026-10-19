@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "generation_command": "python -B -m src.proof_pack --bundle results/evidence --replay results/source_semantics --output reports/proof_pack --hero-id 360446",
+  "generation_cwd": "project root",
+  "inference_rerun": false,
+  "full_source_semantically_adjudicated_by_software": false,
+  "inputs_unchanged_verified": true,
+  "json_roundtrip_verified": true,
+  "input_manifests_sha256": {
+    "results/evidence/provenance.json": "b9bf23f22bda851801ffd2fdc89cbfaae16712a25ceb84176089c72f8bb1c519",
+    "results/source_semantics/provenance.json": "6d187cd303bc78215c8e95400dc3cf85602b271e1febb3f8832735e7d0d4c197"
+  },
+  "code_sha256": {
+    "src/__init__.py": "83032444178071ce1bb98290f46196e3a22203c0e0a4ef617a7758ae06d303d2",
+    "src/eval.py": "c59108929831fd5b1e4886b32d5b3f634b25a8c6f6c1d5e7ccee15efae32ffc8",
+    "src/evidence_bundle.py": "22f0f09023ed53f786761453e790364d8b1da3bbc3bf4dabc555c90366e47f0c",
+    "src/match.py": "f1db08a5a495bd3f5e06aa908a22948ef448bf6867a69c2a20e7408f5f481435",
+    "src/matcher_replay.py": "0f7fd28098df594b7501bd1a4dc5412fe6e66fc659d0cf04bdfee4dfe72b4075",
+    "src/models.py": "6d401b681e98f48d7ce1daf41b9fc6dedb29856d830a47ea01d4ef579247a31b",
+    "src/proof_pack.py": "0fd54b6b21997db6ae23bf2e1cbf680a77d1684e02a8b9c36cef5ff9d9ed2cfb",
+    "src/source_rules.py": "7e0f94c88032d1e3891ff57ae7bd5031a0db383d7a74d2ebbf759d10741a25cb",
+    "src/verify.py": "676c339cc7fa38f622c8ae5444fdceb26a09d54a9e40cadc801ea872e126d337",
+    "tests/test_proof_pack.py": "44e0a963aa5b5f707e88b0becc46afe5ec83209119f19efd0c1a4a5647b10ebd"
+  },
+  "final_replay_code_sha256": {
+    "src/match.py": "f1db08a5a495bd3f5e06aa908a22948ef448bf6867a69c2a20e7408f5f481435",
+    "src/models.py": "6d401b681e98f48d7ce1daf41b9fc6dedb29856d830a47ea01d4ef579247a31b",
+    "src/verify.py": "676c339cc7fa38f622c8ae5444fdceb26a09d54a9e40cadc801ea872e126d337",
+    "src/eval.py": "c59108929831fd5b1e4886b32d5b3f634b25a8c6f6c1d5e7ccee15efae32ffc8",
+    "src/matcher_replay.py": "0f7fd28098df594b7501bd1a4dc5412fe6e66fc659d0cf04bdfee4dfe72b4075",
+    "src/evidence_bundle.py": "22f0f09023ed53f786761453e790364d8b1da3bbc3bf4dabc555c90366e47f0c",
+    "src/source_rules.py": "7e0f94c88032d1e3891ff57ae7bd5031a0db383d7a74d2ebbf759d10741a25cb"
+  },
+  "hash_scope": "All output payload files except this manifest itself.",
+  "files": {
+    "examples.json": {
+      "sha256": "0dfa6852da98fd252188d27b4c9a7ef07e057ab4d3de3111a1a77dcfceb5952b",
+      "bytes": 61940
+    },
+    "index.html": {
+      "sha256": "74c8055beee8bc3cef5eabf9715dd8a05a085168814de96734e402be37b206aa",
+      "bytes": 33620
+    },
+    "PROOF.md": {
+      "sha256": "91d2a6c633ff04fea452457e1c0822e66c3ba9ee1b829e27a87a455fd438a006",
+      "bytes": 4735
+    }
+  }
+}

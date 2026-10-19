@@ -1,0 +1,1208 @@
+{
+  "schema_version": 1,
+  "evidence_provenance_sha256": "b9bf23f22bda851801ffd2fdc89cbfaae16712a25ceb84176089c72f8bb1c519",
+  "sources": {
+    "2fc7083c5a41262de16907398d043ee5ff702763148bcf4fa3ad25bb39e5c621": {
+      "opportunity_id": "328026",
+      "source_sha256": "8661b622460b6e840c179b2097486f358463737b8e85d162a815a2be21afbcb4",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations",
+              "quote": "Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations."
+            }
+          ],
+          "conditions_sha256": "d1bb14ecb04861b9fc354ce997e50ca100d89602420e62bafd2df59101ee9ba0"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations",
+              "quote": "Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations."
+            }
+          ],
+          "conditions_sha256": "d1bb14ecb04861b9fc354ce997e50ca100d89602420e62bafd2df59101ee9ba0"
+        }
+      }
+    },
+    "769db1f4077c6938195d6d70965d9b7efdb8cc720d95375f3ac3da618b9b0172": {
+      "opportunity_id": "342747",
+      "source_sha256": "d1c2a65c895244f62a63ba498749decf9a90966591aa502a4d37a35aba461583",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "required",
+              "value": "citizen, national, or lawful permanent resident (Green Card Holder) of the United States",
+              "quote": "The proposer is a citizen, national, or lawful permanent resident (Green Card Holder) of the United States."
+            },
+            {
+              "type": "size",
+              "polarity": "required",
+              "value": "earned the doctoral degree in an appropriate scientific field within five (5) years prior to the proposal submission deadline or will complete the doctoral degree by 1 October following the proposal deadline",
+              "quote": "The proposer has earned the doctoral degree in an appropriate scientific field within five (5) years prior to the proposal submission deadline or will complete the doctoral degree by 1 October following the proposal deadline."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "U.S. institutions of higher education, NSF-funded centers, facilities, or institutes, U.S. non-profit organizations with research and educational missions, or International sites that are operated by U.S. organizations eligible for NSF funding",
+              "quote": "Prospective Fellows may propose to hold the fellowship at: U.S. institutions of higher education, NSF-funded centers, facilities, or institutes, U.S. non-profit organizations with research and educational missions, or International sites that are operated by U.S. organizations eligible for NSF funding, such as the Atacama Large Millimeter/submillimeter Array, Cerro Tololo InterAmerican Observatory, or Gemini South."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "National centers, facilities, sites, or institutes funded by other federal agencies, such as NASA or the U.S. Department of Energy",
+              "quote": "National centers, facilities, sites, or institutes funded by other federal agencies, such as NASA or the U.S. Department of Energy, are ineligible as host institutions for the NSF AAPF Program."
+            }
+          ],
+          "conditions_sha256": "7fccc5a5d55e29736d775e483b3d2216201e5638c9d6be1083a440add4d88a40"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "required",
+              "value": "citizen, national, or lawful permanent resident (Green Card Holder) of the United States",
+              "quote": "The proposer is a citizen, national, or lawful permanent resident (Green Card Holder) of the United States."
+            }
+          ],
+          "conditions_sha256": "b63bc417589293fcf72d10fced885f06db6d91d154e619f7eef5075fda705359"
+        }
+      }
+    },
+    "c44532a6e7d11269c46859ad008b74fae02c9bb192a8c693292bc9ed376466e8": {
+      "opportunity_id": "345938",
+      "source_sha256": "0c3bbeeb9468e6700e5c385d0ef2932dd383bf5fac679327579b716c1b33d275",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "industry, non-profit institutions, institutions of higher education, state and/or local educational agencies, or consortia of such institutions and/or industry",
+              "quote": "Eligible applicants include: industry, non-profit institutions, institutions of higher education, state and/or local educational agencies, or consortia of such institutions and/or industry."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign entities",
+              "quote": "Foreign entities will not be considered."
+            }
+          ],
+          "conditions_sha256": "3e77f1202a3237dbb6a1b1349356b19e7bd5e33fff18495a7b1e1a64d4e89289"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "industry, non-profit institutions, institutions of higher education, state and/or local educational agencies, or consortia of such institutions and/or industry",
+              "quote": "Eligible applicants include: industry, non-profit institutions, institutions of higher education, state and/or local educational agencies, or consortia of such institutions and/or industry."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign entities",
+              "quote": "Foreign entities will not be considered."
+            }
+          ],
+          "conditions_sha256": "3e77f1202a3237dbb6a1b1349356b19e7bd5e33fff18495a7b1e1a64d4e89289"
+        }
+      }
+    },
+    "7801ae7baec809244667b99245c0143f277df6e8d69cf3f5e8010e68519860b2": {
+      "opportunity_id": "347680",
+      "source_sha256": "a04d3dc22f9857f28471bb6365a48a4a2d59fa7918bf8bd8838eb07d6c1f4126",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Non-profit, non-academic organizations",
+              "quote": "Non-profit, non-academic organizations: Independent museums, observatories, research laboratories, professional societies and similar organizations located in the U.S. that are directly associated with educational or research activities."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "located in the U.S.",
+              "quote": "Non-profit, non-academic organizations: Independent museums, observatories, research laboratories, professional societies and similar organizations located in the U.S. that are directly associated with educational or research activities."
+            },
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Institutions of Higher Education (IHEs)",
+              "quote": "Institutions of Higher Education (IHEs): Two- and four-year IHEs (including community colleges) accredited in, and having a campus located in the US, acting on behalf of their faculty members."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "accredited in, and having a campus located in the US",
+              "quote": "Institutions of Higher Education (IHEs): Two- and four-year IHEs (including community colleges) accredited in, and having a campus located in the US, acting on behalf of their faculty members."
+            }
+          ],
+          "conditions_sha256": "23e6f9b51915d39f88ed3a270c7d46c71f8d2df0b617fffeb4eed8801f7834a6"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Non-profit, non-academic organizations: Independent museums, observatories, research laboratories, professional societies and similar organizations located in the U.S. that are directly associated with educational or research activities.",
+              "quote": "-Non-profit, non-academic organizations: Independent museums, observatories, research laboratories, professional societies and similar organizations located in the U.S. that are directly associated with educational or research activities."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "located in the U.S.",
+              "quote": "-Non-profit, non-academic organizations: Independent museums, observatories, research laboratories, professional societies and similar organizations located in the U.S. that are directly associated with educational or research activities."
+            },
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Institutions of Higher Education (IHEs): Two- and four-year IHEs (including community colleges) accredited in, and having a campus located in the US, acting on behalf of their faculty members.",
+              "quote": "-Institutions of Higher Education (IHEs): Two- and four-year IHEs (including community colleges) accredited in, and having a campus located in the US, acting on behalf of their faculty members."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "having a campus located in the US",
+              "quote": "-Institutions of Higher Education (IHEs): Two- and four-year IHEs (including community colleges) accredited in, and having a campus located in the US, acting on behalf of their faculty members."
+            }
+          ],
+          "conditions_sha256": "131bd8ae24fda53dd406a06e7c0605f26f5768233cd42e156d2545d569460329"
+        }
+      }
+    },
+    "6c57bb636caea202f3a33c141290ab3d35c67657181d75d56b4accb2d2edcdf6": {
+      "opportunity_id": "351947",
+      "source_sha256": "e193b96c702ff66acf918d9360b2d328b47faa9aa33b485311f486635e80ecb7",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Non-profit, non-academic organizations",
+              "quote": "-Non-profit, non-academic organizations: Independent museums, observatories, research laboratories, professional societies and similar organizations located in the U.S. that are directly associated with educational or research activities."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "located in the U.S.",
+              "quote": "-Non-profit, non-academic organizations: Independent museums, observatories, research laboratories, professional societies and similar organizations located in the U.S. that are directly associated with educational or research activities."
+            },
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Institutions of Higher Education (IHEs)",
+              "quote": "-Institutions of Higher Education (IHEs): Two- and four-year IHEs (including community colleges) accredited in, and having a campus located in the US, acting on behalf of their faculty members."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "having a campus located in the US",
+              "quote": "-Institutions of Higher Education (IHEs): Two- and four-year IHEs (including community colleges) accredited in, and having a campus located in the US, acting on behalf of their faculty members."
+            },
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Tribal Nations",
+              "quote": "- Tribal Nations: An American Indian or Alaska Native tribe, band, nation, pueblo, village, or community that the Secretary of the Interior acknowledges as a federally recognized tribe pursuant to the Federally Recognized Indian Tribe List Act of 1994, 25 U.S.C. &sect;&sect; 5130-5131."
+            }
+          ],
+          "conditions_sha256": "5acc70c357ce83400f4caba6060468c46de127c5b8b7782276cdc9fec057e6d7"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Non-profit, non-academic organizations: Independent museums, observatories, research laboratories, professional societies and similar organizations located in the U.S. that are directly associated with educational or research activities.",
+              "quote": "-Non-profit, non-academic organizations: Independent museums, observatories, research laboratories, professional societies and similar organizations located in the U.S. that are directly associated with educational or research activities."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "In the U.S.",
+              "quote": "-Non-profit, non-academic organizations: Independent museums, observatories, research laboratories, professional societies and similar organizations located in the U.S. that are directly associated with educational or research activities."
+            },
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Institutions of Higher Education (IHEs): Two- and four-year IHEs (including community colleges) accredited in, and having a campus located in the US, acting on behalf of their faculty members.",
+              "quote": "-Institutions of Higher Education (IHEs): Two- and four-year IHEs (including community colleges) accredited in, and having a campus located in the US, acting on behalf of their faculty members."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "In the US",
+              "quote": "-Institutions of Higher Education (IHEs): Two- and four-year IHEs (including community colleges) accredited in, and having a campus located in the US, acting on behalf of their faculty members."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "required",
+              "value": "An American Indian or Alaska Native tribe, band, nation, pueblo, village, or community that the Secretary of the Interior acknowledges as a federally recognized tribe pursuant to the Federally Recognized Indian Tribe List Act of 1994, 25 U.S.C. &sect;&sect; 5130-5131.",
+              "quote": "- Tribal Nations: An American Indian or Alaska Native tribe, band, nation, pueblo, village, or community that the Secretary of the Interior acknowledges as a federally recognized tribe pursuant to the Federally Recognized Indian Tribe List Act of 1994, 25 U.S.C. &sect;&sect; 5130-5131."
+            }
+          ],
+          "conditions_sha256": "1328be8d61755b323fddd08201e850010c25b2ee2f3a7441145c2413e1219dc0"
+        }
+      }
+    },
+    "c36f212920cfdb6357718458080e365335f5a9e43ac3d13fc8debde0b7c11bab": {
+      "opportunity_id": "356309",
+      "source_sha256": "18c1173418c7e93268aaba839db50baeb07e73f38d0a778c2b77990033fd08ce",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "federally recognized American Indian/Alaska Native (AI/AN) Tribes, tribal colleges or universities, Tribal health programs, or Tribal organizations",
+              "quote": "The purpose of the Tribal Undergraduate to Graduate Research Training and Leadership Experiences (TURTLE) program is to fund federally recognized American Indian/Alaska Native (AI/AN) Tribes, tribal colleges or universities, Tribal health programs, or Tribal organizations (collectively termed, eligible Tribal Entities) to identify and develop a pool of scientists to conduct research on AI/AN health and health disparities."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Institutions)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply"
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "other",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "4389b4c7262eb4a90d8a9600c6f88d347690bc40477413c3bf4a59220a3dfa65"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Institutions)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply"
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply"
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "75e32b3a2cce7432136b0b735dc1a3ef6554dc489ab08a54d90bbea1ff3809a4"
+        }
+      }
+    },
+    "e5fdd55fb5c40e1f6be7a12a5ce41a4016c249e8f86a8c1a66f77751a02bbedb": {
+      "opportunity_id": "357836",
+      "source_sha256": "abfbfc0bf7138c78346008dcb303e5f808fef3a8c3ee15e5524e9e6fb7983747",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Institutions)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply."
+            },
+            {
+              "type": "org_type",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "conditions_sha256": "82d61061f707019122d2f1dc7cc1e529d4cbb21208fe6eb754581d8346a67b97"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Institutions)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "conditions_sha256": "eece8895eb496e780ef5272b6d71c53b955ce1ed50f53c1100a9c4b526f8e52d"
+        }
+      }
+    },
+    "7d22588481b2dd4d5eda11b9d5af44d46787ba9eb9465994815086cea84e62a2": {
+      "opportunity_id": "358411",
+      "source_sha256": "e74f7c58aea4e45e36f335b29af9d5467a76fdb382e15b305eb8e709a980d8e9",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "accredited to ISO 17025 in at least one human or animal food testing method applicable to the discipline for which they are applying",
+              "quote": "Applicant organizations applying for product testing tracks must be accredited to ISO 17025 in at least one human or animal food testing method applicable to the discipline for which they are applying."
+            },
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "accredited to ISO 17025 or have a quality system that ensures quality assurance and quality control of laboratory testing",
+              "quote": "Applicant organizations applying for tracks other than product testing must be accredited to ISO 17025 or have a quality system that ensures quality assurance and quality control of laboratory testing including but not limited to: validated methods, document control, training programs, and analyst competency requirements."
+            },
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "have a valid 20.88 agreement with FDA prior to the time of application",
+              "quote": "Applicant organizations applying to any track other than Whole Genome Sequencing must have a valid 20.88 agreement with FDA prior to the time of application."
+            }
+          ],
+          "conditions_sha256": "03cc56cf589ccb0c98d22c60b3d7471deb46e8f1d53a13305285828a2d19b5d6"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "accredited to ISO 17025 in at least one human or animal food testing method applicable to the discipline for which they are applying",
+              "quote": "Applicant organizations applying for product testing tracks must be accredited to ISO 17025 in at least one human or animal food testing method applicable to the discipline for which they are applying."
+            },
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "accredited to ISO 17025 or have a quality system that ensures quality assurance and quality control of laboratory testing including but not limited to: validated methods, document control, training programs, and analyst competency requirements",
+              "quote": "Applicant organizations applying for tracks other than product testing must be accredited to ISO 17025 or have a quality system that ensures quality assurance and quality control of laboratory testing including but not limited to: validated methods, document control, training programs, and analyst competency requirements."
+            },
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "have a valid 20.88 agreement with FDA prior to the time of application",
+              "quote": "Applicant organizations applying to any track other than Whole Genome Sequencing must have a valid 20.88 agreement with FDA prior to the time of application."
+            }
+          ],
+          "conditions_sha256": "15c43e23355e7c9f278a6f9776cb1d440943ba6c7f45584b2eb61ca90df5f013"
+        }
+      }
+    },
+    "da28db1674bc02d6e8e21ed76650fae2a7ec64078509a60ac3f42069932922da": {
+      "opportunity_id": "358934",
+      "source_sha256": "7c6c185e58027addfcf9e7126b8cb9533526226d7cf7e788e0bc2c34139fe4a0",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "cee24561a55ee796e7fbac62717dd77fe2cdadb39a3b6920928af347c8146a99"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "e40ae27c7d26819a4551591c9cf50bf02164e29cdcb6d5cd82d31e7025dcb215"
+        }
+      }
+    },
+    "c901291b8334c4a4053e29e51179e60d03c197e72554b7d837fb7021f497651b": {
+      "opportunity_id": "359650",
+      "source_sha256": "814582cd585c27d2c05decf72549af1596ecf877cdd2df10d519a0e091895d51",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "accredited institutes of higher education",
+              "quote": "Based on 42 USC 9660(a)(3) eligible applicants are limited to accredited institutes of higher education."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organization)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "679595cc5c1ff525a0282f57b20ffdf2b425e76c1ea8397f3b3879281ad511e6"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "accredited institutes of higher education",
+              "quote": "Based on 42 USC 9660(a)(3) eligible applicants are limited to accredited institutes of higher education."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organization)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "679595cc5c1ff525a0282f57b20ffdf2b425e76c1ea8397f3b3879281ad511e6"
+        }
+      }
+    },
+    "449ee9bd1db124569ab0da0cbd55d7f4af9410d46387c81f60d4c0f112d360af": {
+      "opportunity_id": "359671",
+      "source_sha256": "100a686af651947ca53e53c8e71f408e8f9d9f3b984e1cf94a41d74821a2e1a7",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "required",
+              "value": "United States small business concerns (SBCs)",
+              "quote": "Only United States small business concerns (SBCs), as defined by the Small Business Administration (SBA)(sbir.gov/apply) are eligible to submit applications for this opportunity."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign Organizations/International Collaborations",
+              "quote": "Foreign Organizations/International Collaborations:Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "conditions_sha256": "b91c1c94e96e878c157a8cd10d77b2667a42f2789eba7c30c8b68ba3d11c17d3"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "required",
+              "value": "United States small business concerns (SBCs)",
+              "quote": "Only United States small business concerns (SBCs), as defined by the Small Business Administration (SBA)(sbir.gov/apply) are eligible to submit applications for this opportunity."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "conditions_sha256": "98708ef09ee15b4fde1694bef817e886c7380e965316653489d5c527f9349ed8"
+        }
+      }
+    },
+    "5f8f404b0945aa00a69b994b5beb10468890a6baaf1ea4c53cad0b67cfc0a4fa": {
+      "opportunity_id": "359676",
+      "source_sha256": "6f1828f7b66c8647d11077949f736fdf20cf576bd05b3a17878beac5ad0248b9",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "fellow programs recognized by the Accreditation Council for Graduate Medical Education (ACGME) may be included in the proposed program",
+              "quote": "Only fellowship programs recognized by the Accreditation Council for Graduate Medical Education (ACGME) may be included in the proposed program."
+            },
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "dental specialties approved by the Council on Dental Education and Licensure of the American Dental Association may be included in the proposed program",
+              "quote": "For Dental Specialty postgraduate programs, only dental specialties approved by the Council on Dental Education and Licensure of the American Dental Association may be included in the proposed program."
+            },
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "veterinary specialties approved by the American Veterinary Medical Association may be included in the proposed program",
+              "quote": "For veterinary specialties, only veterinary specialties approved by the American Veterinary Medical Association may be included in the proposed program."
+            },
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "overall structure of research and clinical activities outlined in the application is consistent with participant eligibility for certification or endorsement and oversight by a Board recognized by the American Board of Medical Specialties (ABMS)",
+              "quote": "Evidence is required that the overall structure of research and clinical activities outlined in the application is consistent with participant eligibility for certification or endorsement and oversight by a Board recognized by the American Board of Medical Specialties (ABMS), or for dentists, meets the requirements for National Certifying Boards for Dental Specialists established by the Commission on Dental Accreditation (CODA) requirements, or for veterinarians, meets the requirements as recognized by the American Board of Veterinary Specialties (ABVS)."
+            }
+          ],
+          "conditions_sha256": "c8e8c4cf96ff24082682b2f11c38e85dbaa8e3eabfdf4a028d9e16b0cf66c143"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "fellowship programs recognized by the Accreditation Council for Graduate Medical Education (ACGME) or dental specialties approved by the Council on Dental Education and Licensure of the American Dental Association or veterinary specialties approved by the American Veterinary Medical Association",
+              "quote": "Only fellowship programs recognized by the Accreditation Council for Graduate Medical Education (ACGME) may be included in the proposed program. For Dental Specialty postgraduate programs, only dental specialties approved by the Council on Dental Education and Licensure of the American Dental Association may be included in the proposed program. For veterinary specialties, only veterinary specialties approved by the American Veterinary Medical Association may be included in the proposed program."
+            }
+          ],
+          "conditions_sha256": "49dd74ac0a3ca9e84f1520bfee601ad1013c15639f2bd024fcda8647badd14d0"
+        }
+      }
+    },
+    "f243c5d7fb8cc00f23e27c0ae7323e64f773fa6a65dace1bde8e44a1c5525ea5": {
+      "opportunity_id": "359701",
+      "source_sha256": "101b33228d33ee01e9ccd9f446e50e91c5b34036c25b316d10f104e51d4e9dfd",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "e5a1f8acbb04c08c6e8f29a7d2bc5f5f6288c1d82974eb41656fe07d10015ff2"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "cee24561a55ee796e7fbac62717dd77fe2cdadb39a3b6920928af347c8146a99"
+        }
+      }
+    },
+    "9bb5bfea4694ccdf9195f18c2bf3334595b44e13353ae9ab5910f5636a3f6024": {
+      "opportunity_id": "359861",
+      "source_sha256": "796c355b254d6990d26d03a458a36b5b874babc07a3e3f0da71264cb2efd3c65",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "baccalaureate degree-granting organization",
+              "quote": "All applications must include a baccalaureate degree-granting organization."
+            },
+            {
+              "type": "prior_award_or_status",
+              "polarity": "required",
+              "value": "NIH Research Project Grant (RPG) funding averaging less than $50 million in total costs (direct and F&A/indirect) per year over the last three fiscal years (FY)",
+              "quote": "Applicant organizations must enroll undergraduates and (2) have received NIH Research Project Grant (RPG) funding averaging less than $50 million in total costs (direct and F&A/indirect) per year over the last three fiscal years (FY)."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Institutions)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "conditions_sha256": "6e302dfc03dccc5c6bf384df73ed63f0b3ba5ee99da3ef21842cd047c03fc741"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "other",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Institutions)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply."
+            },
+            {
+              "type": "other",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "conditions_sha256": "53ea9b01f01db737a60dd9af428f29f44988ee4d205434c2f0bebdd2d972165f"
+        }
+      }
+    },
+    "8de2bbc53dce540034616d3a4fc5901b94cb60626c9d99b5857123115e114155": {
+      "opportunity_id": "360446",
+      "source_sha256": "5e960b317bc0403943e405668cf00b9d285a278960dc1c9819e6a80c62a25efb",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "conditions_sha256": "2c91c396b874b72eecf192153f54cebfd5f0533289b1489ccc86c2e5c783f2e9"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "conditions_sha256": "175e2d6ff385f8f234a78a279c5f90b6380500c4b01238a0dbf60a425a8ec958"
+        }
+      }
+    },
+    "ef93e83b02faffd49c75e488f82063b7b624c9bc661f4e561e27f40f6bba44c5": {
+      "opportunity_id": "360541",
+      "source_sha256": "cb6aa586049c0ee96a774682e031869e32a1ceaa527898414607e29a233cb615",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organization)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "405901750ec92a397028b90c22f1be367055b7e86a50f92e3720390dc70b6622"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organization)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "addd83fc91db82d4464b42d81d08ec0ff36addc3d9dcb77217e1d4cc0bd7dae4"
+        }
+      }
+    },
+    "5dd650b4bb6723c5b9e501196298a474c1a1a0e7878f990c40eb12412d512e82": {
+      "opportunity_id": "360627",
+      "source_sha256": "66a139a29213765b6bfca18dd89321817ac049b68969fed8b6ac0b75ce6bb1dc",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "partnership_required",
+              "polarity": "required",
+              "value": "Data Coordinating Center for the POWERS consortium",
+              "quote": "This NOFO invites a single source application from the Data Coordinating Center for the POWERS consortium."
+            }
+          ],
+          "conditions_sha256": "d20603e9d4fdfb57fc9a4c95667202e1049edb683e0ae9d88f770ee99189288a"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "other",
+              "polarity": "required",
+              "value": "Data Coordinating Center for the POWERS consortium",
+              "quote": "This NOFO invites a single source application from the Data Coordinating Center for the POWERS consortium."
+            }
+          ],
+          "conditions_sha256": "4a19438b1010fbd8bc1d748905d127da8a8faceb0cd0a1613972db0d1283038b"
+        }
+      }
+    },
+    "4965e5c2f76b492ac55bdff7dd83d6f0fae9eb47a51fa45d64e3678e8d3d930f": {
+      "opportunity_id": "360753",
+      "source_sha256": "51396dbd346ad6c90a6fa368e15854372e6f6d4f4d8d6f2a8bfeb38f10a1e91d",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Institutions)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "other",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the HHS Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "cd8ecf6887bd9b3e48800d20b7715fba1685b5ff18634a9bef9bcce36470f6b7"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Institutions)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the HHS Grants Policy Statement, are not allowed."
+            }
+          ],
+          "conditions_sha256": "287089cbae330d55da3d0ecfbd243048f1be0c40a393bdd82fa5ad5dcc9f5ee6"
+        }
+      }
+    },
+    "f448291c61f1b5ec24e5dcf639ea494d828cb67de4ccdd11c140d6cee0efa9c9": {
+      "opportunity_id": "362480",
+      "source_sha256": "67bda823bd6f36ee80077d85a1064a5f5eb98174bfebd1c0641fece04ad54575",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Lead State Agency (or Agencies) as determined by the Governor of each Highlands State",
+              "quote": "Only the Lead State Agency (or Agencies) as determined by the Governor of each Highlands State may be the applicant for funding under the Highlands Conservation Act Grant Program."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "Connecticut, New Jersey, New York, and Pennsylvania",
+              "quote": "In FY 2026, $9,173,450 in Base funding is available for grants to Connecticut, New Jersey, New York, and Pennsylvania."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "Highlands Region",
+              "quote": "All or part of the funds received by the Lead State Agency may be subawarded to a County or Municipality within the Highlands Region, or to another State Conservation Agency."
+            }
+          ],
+          "conditions_sha256": "08445c203cb384bc492feef6a139a0c0a04039a60b756c5b9c9a086012b9e5e4"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Lead State Agency as determined by the Governor of each Highlands State",
+              "quote": "Only the Lead State Agency (or Agencies) as determined by the Governor of each Highlands State may be the applicant for funding under the Highlands Conservation Act Grant Program."
+            }
+          ],
+          "conditions_sha256": "4a8abdf072af5c0990a710fd9b75a8d7bced9b6fa38eee1a29795c50687b8857"
+        }
+      }
+    },
+    "3f2ee72346e1b0a013d4717c3388301f42497fc8be0b393e835b0b04dd76b9cf": {
+      "opportunity_id": "363764",
+      "source_sha256": "ff9f8964d7d16445ba8b590e3a9e5721ea74f658f9e099fed66b896841977827",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "member of an engineering department",
+              "quote": "At least one (co) PI must be a member of an engineering department"
+            },
+            {
+              "type": "prior_award_or_status",
+              "polarity": "excluded",
+              "value": "received engineering education or professional formation funding through EEC in the last three years",
+              "quote": "At least one (co) PI must be a member of an engineering department AND not have received engineering education or professional formation funding through EEC in the last three years"
+            },
+            {
+              "type": "prior_award_or_status",
+              "polarity": "excluded",
+              "value": "established researchers in engineering education or other social science fields",
+              "quote": "PFE: RIEF is not intended for established researchers in engineering education or other social science fields to initiate new projects"
+            },
+            {
+              "type": "prior_award_or_status",
+              "polarity": "excluded",
+              "value": "researchers with expertise in social science or education research",
+              "quote": "The program is not intended to create an additional funding channel for researchers with expertise in social science or education research"
+            }
+          ],
+          "conditions_sha256": "41d7a75f8b2d44dd67b42bd849eb8d2485e1c4823ca3ae8493add9609d6d611c"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "engineering department",
+              "quote": "At least one (co) PI must be a member of an engineering department"
+            },
+            {
+              "type": "prior_award_or_status",
+              "polarity": "excluded",
+              "value": "engineering education or professional formation funding through EEC in the last three years",
+              "quote": "At least one (co) PI must be a member of an engineering department AND not have received engineering education or professional formation funding through EEC in the last three years"
+            }
+          ],
+          "conditions_sha256": "5b1cfa0d105b45063794517648d2eea30235f13654c385d0d0fbf964c1ae1c8f"
+        }
+      }
+    },
+    "e9adbd59082bec4a2b698ec255482ff471977e004f1ac96090df1f16d28cea28": {
+      "opportunity_id": "363906",
+      "source_sha256": "e2187b498baef8eb8fc553f77aa256a5118db301ec84903d46d953d9d50eed2b",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "U.S. institutions of higher education (universities) with degree-granting programs in science and/or engineering, including DoW institutions of higher education",
+              "quote": "This MURI competition is open only to, and proposals are to be submitted only by, U.S. institutions of higher education (universities) with degree-granting programs in science and/or engineering, including DoW institutions of higher education."
+            },
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "University Affiliated Research Center (UARC)",
+              "quote": "To the extent that it is a part of a U.S. institution of higher education and is not designated as a Federally Funded Research and Development Center (FFRDC), a University Affiliated Research Center (UARC) is eligible to submit a proposal to this MURI competition and/or receive MURI funds."
+            },
+            {
+              "type": "org_type",
+              "polarity": "excluded",
+              "value": "industry, DoW laboratories, FFRDCs, and foreign entities",
+              "quote": "Ineligible organizations (e.g., industry, DoW laboratories, FFRDCs, and foreign entities) may collaborate on the research but may not receive MURI funds directly or via subaward."
+            }
+          ],
+          "conditions_sha256": "9f3236ef554985910abaf59d9dc13cfb999c35ba645b5fa7c51ebc13ee9f40e9"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "U.S. institutions of higher education (universities) with degree-granting programs in science and/or engineering, including DoW institutions of higher education",
+              "quote": "This MURI competition is open only to, and proposals are to be submitted only by, U.S. institutions of higher education (universities) with degree-granting programs in science and/or engineering, including DoW institutions of higher education."
+            },
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "University Affiliated Research Center (UARC)",
+              "quote": "To the extent that it is a part of a U.S. institution of higher education and is not designated as a Federally Funded Research and Development Center (FFRDC), a University Affiliated Research Center (UARC) is eligible to submit a proposal to this MURI competition and/or receive MURI funds."
+            },
+            {
+              "type": "org_type",
+              "polarity": "excluded",
+              "value": "industry, DoW laboratories, FFRDCs, and foreign entities",
+              "quote": "Ineligible organizations (e.g., industry, DoW laboratories, FFRDCs, and foreign entities) may collaborate on the research but may not receive MURI funds directly or via subaward."
+            }
+          ],
+          "conditions_sha256": "9f3236ef554985910abaf59d9dc13cfb999c35ba645b5fa7c51ebc13ee9f40e9"
+        }
+      }
+    },
+    "1e55989dc6540dafce16f7aa32cf14431eed493d92aa69102d1a9cc2287ab3dd": {
+      "opportunity_id": "363912",
+      "source_sha256": "354a20b6fe0a0efe13980c30fc5f828aa5a41bb06959dcbdb642be665647a272",
+      "systems": {
+        "prompted": {
+          "conditions": [],
+          "conditions_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "fine_tuned": {
+          "conditions": [],
+          "conditions_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      }
+    },
+    "9bc74020a7809d5be199a8aaddc7aa2681ed8feeb6cea9f34ccfb568762a5a02": {
+      "opportunity_id": "363985",
+      "source_sha256": "8ff9b30500e995e0fba0e73cb7692d15c75a133a5f1364b2b106a08af27ebff3",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "State, local and tribal governments, other public entities, educational institutions, and private nonprofit organizations",
+              "quote": "the eligible applicants are State, local and tribal governments, other public entities, educational institutions, and private nonprofit organizations"
+            },
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "State, local and tribal governments, other public entities, educational institutions, and private nonprofit organizations",
+              "quote": "Eligible recipients are State, local and tribal governments, other public entities, educational institutions, and private nonprofit organizations"
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "foreign entities or projects conducted outside the United States",
+              "quote": "This program does not provide funding to foreign entities or for projects conducted outside the United States."
+            }
+          ],
+          "conditions_sha256": "f145f5012037f19672e5f08fe632128899c8f4111e97e71718a9d8d1481f4de6"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "State, local and tribal governments, other public entities, educational institutions, and private nonprofit organizations",
+              "quote": "Eligible recipients are State, local and tribal governments, other public entities, educational institutions, and private nonprofit organizations."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign Entities or Projects",
+              "quote": "Foreign Entities or Projects: This program does not provide funding to foreign entities or for projects conducted outside the United States."
+            }
+          ],
+          "conditions_sha256": "c7d63e3a4518a5e8e8a5277caf985159a1e280454c3041aba1897b026b2699fa"
+        }
+      }
+    },
+    "dedf14fbb7bcb68fbacf032c9e44b97d150deb2e5afa1c2f275855a492e2f34a": {
+      "opportunity_id": "364012",
+      "source_sha256": "9d9283a24b762a4d6997a79cf0dd17ff414337e04c632bc189eccf4de00e90aa",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Water Resources Research Institutes established under the Water Resources Research Act of 1984",
+              "quote": "Only Water Resources Research Institutes established under the Water Resources Research Act of 1984 are eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "universities in each of the 50 states, the District of Columbia, Puerto Rico, the U.S. Virgin Islands, and Guam",
+              "quote": "These Institutes are located at universities in each of the 50 states, the District of Columbia, Puerto Rico, the U.S. Virgin Islands, and Guam."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "Federated States of Micronesia and the Commonwealth of the Northern Mariana Islands",
+              "quote": "The Institute in Guam also serves the Federated States of Micronesia and the Commonwealth of the Northern Mariana Islands."
+            },
+            {
+              "type": "location",
+              "polarity": "required",
+              "value": "American Samoa",
+              "quote": "The Institute in Hawaii also serves American Samoa."
+            },
+            {
+              "type": "other",
+              "polarity": "excluded",
+              "value": "research on health effects involving human subjects",
+              "quote": "Applications for research on health effects involving human subjects."
+            },
+            {
+              "type": "other",
+              "polarity": "excluded",
+              "value": "research involving oceanography (estuarine research applications are acceptable)",
+              "quote": "Applications for research involving oceanography (estuarine research applications are acceptable)."
+            },
+            {
+              "type": "other",
+              "polarity": "excluded",
+              "value": "research that do not meet program objectives as outlined",
+              "quote": "Applications for research that do not meet program objectives as outlined."
+            },
+            {
+              "type": "prior_award_or_status",
+              "polarity": "excluded",
+              "value": "Institute or Center that has not met reporting requirements on a previous award by the USGS",
+              "quote": "Applications submitted by an Institute or Center that has not met reporting requirements on a previous award by the USGS."
+            }
+          ],
+          "conditions_sha256": "0a602402765d66dd29dd20cd7ac9924b1a18acfdada72446819c7798899d36f8"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "Water Resources Research Institutes established under the Water Resources Research Act of 1984",
+              "quote": "Only Water Resources Research Institutes established under the Water Resources Research Act of 1984 are eligible to apply."
+            }
+          ],
+          "conditions_sha256": "118700c4bce3866e5ce30d2c4746a24d2c3672fee4a3d83a72ba87cf5922f411"
+        }
+      }
+    },
+    "421457c36b900027aba4c423c020e2583e7f5041e5a7bcd2ff8c2b252bf1556c": {
+      "opportunity_id": "58617",
+      "source_sha256": "4beeca5fde185c8d6f4d233656bc8adff417d0b5f9af1c315f50ee6e92258309",
+      "systems": {
+        "prompted": {
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "State and Tribal Governments",
+              "quote": "ONLY STATE AND TRIBAL GOVERNMENTS MAY APPLY."
+            },
+            {
+              "type": "org_type",
+              "polarity": "excluded",
+              "value": "Private organization, religious, non-profit, or individual",
+              "quote": "NO PRIVATE ORGANIZATION, RELIGIOUS, NON-PROFIT, OR INDIVIDUAL IS QUALIFIED TO APPLY."
+            }
+          ],
+          "conditions_sha256": "3440e0bb49beba2028ca46a76303df34d90c5429826297a0e6c6a65464123e3c"
+        },
+        "fine_tuned": {
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "required",
+              "value": "State and Tribal Governments",
+              "quote": "ONLY STATE AND TRIBAL GOVERNMENTS MAY APPLY."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Private organization, religious, non-profit, or individual",
+              "quote": "\"NO PRIVATE ORGANIZATION, RELIGIOUS, NON-PROFIT, OR INDIVIDUAL IS QUALIFIED TO APPLY.\""
+            }
+          ],
+          "conditions_sha256": "b586aaa7748e1309f635229aa03cfa63f5d23876fa1c26fff2b9d8b38a8974d6"
+        }
+      }
+    }
+  }
+}

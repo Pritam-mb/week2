@@ -167,6 +167,8 @@ class VerdictRow:
     proposed_disqualifier_quotes: list[str] = field(default_factory=list)
     # Extraction latency for this opportunity in milliseconds, when known.
     latency_ms: Optional[float] = None
+    # Human-readable explanations for rules that need review (not source quotes).
+    check_reasons: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -175,8 +177,33 @@ class VerdictRow:
             "verdict": self.verdict.value,
             "disqualifying_quotes": self.disqualifying_quotes,
             "check_quotes": self.check_quotes,
+            "check_reasons": self.check_reasons,
             "conditions": [c.to_dict() for c in self.conditions],
             "override": self.override,
             "proposed_disqualifier_quotes": self.proposed_disqualifier_quotes,
             "latency_ms": self.latency_ms,
         }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> "VerdictRow":
+        """Read current rows and older rows without review reasons or metadata."""
+        try:
+            verdict = Verdict(data.get("verdict", Verdict.CHECK.value))
+        except ValueError:
+            verdict = Verdict.CHECK
+        return cls(
+            opportunity_id=data.get("opportunity_id", ""),
+            profile_id=data.get("profile_id", ""),
+            verdict=verdict,
+            disqualifying_quotes=list(data.get("disqualifying_quotes") or []),
+            check_quotes=list(data.get("check_quotes") or []),
+            check_reasons=list(data.get("check_reasons") or []),
+            conditions=[
+                Condition.from_dict(c)
+                for c in data.get("conditions", []) or []
+                if isinstance(c, dict)
+            ],
+            override=data.get("override"),
+            proposed_disqualifier_quotes=list(data.get("proposed_disqualifier_quotes") or []),
+            latency_ms=data.get("latency_ms"),
+        )

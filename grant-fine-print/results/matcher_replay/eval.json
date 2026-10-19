@@ -1,0 +1,433 @@
+{
+  "systems": {
+    "code_only": {
+      "n_pairs": 125,
+      "n_labels": 125,
+      "missing_pairs": [],
+      "missed_grant_rate": {
+        "k": 0,
+        "n": 33,
+        "rate": 0.0
+      },
+      "soft_miss": {
+        "k": 5,
+        "n": 27,
+        "rate": 0.18518518518518517
+      },
+      "human_read_share": {
+        "k": 48,
+        "n": 125,
+        "rate": 0.384
+      },
+      "accuracy": {
+        "k": 70,
+        "n": 125,
+        "rate": 0.56
+      },
+      "automatic_decision_coverage": {
+        "k": 77,
+        "n": 125,
+        "rate": 0.616
+      },
+      "automatic_decision_accuracy": {
+        "k": 53,
+        "n": 77,
+        "rate": 0.6883116883116883
+      },
+      "disqualified_to_eligible_error": {
+        "k": 14,
+        "n": 65,
+        "rate": 0.2153846153846154
+      },
+      "negative_to_eligible_error": {
+        "k": 19,
+        "n": 92,
+        "rate": 0.20652173913043478
+      },
+      "confusion_matrix": {
+        "ELIGIBLE": {
+          "ELIGIBLE": 25,
+          "NOT_ELIGIBLE": 0,
+          "CHECK": 8
+        },
+        "NOT_ELIGIBLE": {
+          "ELIGIBLE": 14,
+          "NOT_ELIGIBLE": 28,
+          "CHECK": 23
+        },
+        "CHECK": {
+          "ELIGIBLE": 5,
+          "NOT_ELIGIBLE": 5,
+          "CHECK": 17
+        }
+      },
+      "quote_validity": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "quote_correctness": {
+        "k": 0,
+        "n": 33,
+        "rate": 0.0
+      },
+      "latency_ms": {
+        "median_ms": null,
+        "p95_ms": null,
+        "note": "latency_ms absent from predictions; latency not computed"
+      },
+      "cost": {
+        "cost_per_1000_opportunities": null,
+        "note": "no list price in config; cost not computed"
+      }
+    },
+    "original_fine_tuned": {
+      "n_pairs": 125,
+      "n_labels": 125,
+      "missing_pairs": [],
+      "missed_grant_rate": {
+        "k": 2,
+        "n": 33,
+        "rate": 0.06060606060606061
+      },
+      "soft_miss": {
+        "k": 4,
+        "n": 27,
+        "rate": 0.14814814814814814
+      },
+      "human_read_share": {
+        "k": 101,
+        "n": 125,
+        "rate": 0.808
+      },
+      "accuracy": {
+        "k": 29,
+        "n": 125,
+        "rate": 0.232
+      },
+      "automatic_decision_coverage": {
+        "k": 24,
+        "n": 125,
+        "rate": 0.192
+      },
+      "automatic_decision_accuracy": {
+        "k": 12,
+        "n": 24,
+        "rate": 0.5
+      },
+      "disqualified_to_eligible_error": {
+        "k": 0,
+        "n": 65,
+        "rate": 0.0
+      },
+      "negative_to_eligible_error": {
+        "k": 6,
+        "n": 92,
+        "rate": 0.06521739130434782
+      },
+      "confusion_matrix": {
+        "ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 2,
+          "CHECK": 31
+        },
+        "NOT_ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 12,
+          "CHECK": 53
+        },
+        "CHECK": {
+          "ELIGIBLE": 6,
+          "NOT_ELIGIBLE": 4,
+          "CHECK": 17
+        }
+      },
+      "quote_validity": {
+        "k": 18,
+        "n": 18,
+        "rate": 1.0
+      },
+      "quote_correctness": {
+        "k": 5,
+        "n": 18,
+        "rate": 0.2777777777777778
+      },
+      "latency_ms": {
+        "median_ms": 2268.128,
+        "p95_ms": 7254.15,
+        "n": 125
+      },
+      "cost": {
+        "cost_per_1000_opportunities": null,
+        "note": "no list price in config; cost not computed"
+      }
+    },
+    "original_prompted": {
+      "n_pairs": 125,
+      "n_labels": 125,
+      "missing_pairs": [],
+      "missed_grant_rate": {
+        "k": 20,
+        "n": 33,
+        "rate": 0.6060606060606061
+      },
+      "soft_miss": {
+        "k": 4,
+        "n": 27,
+        "rate": 0.14814814814814814
+      },
+      "human_read_share": {
+        "k": 64,
+        "n": 125,
+        "rate": 0.512
+      },
+      "accuracy": {
+        "k": 47,
+        "n": 125,
+        "rate": 0.376
+      },
+      "automatic_decision_coverage": {
+        "k": 61,
+        "n": 125,
+        "rate": 0.488
+      },
+      "automatic_decision_accuracy": {
+        "k": 30,
+        "n": 61,
+        "rate": 0.4918032786885246
+      },
+      "disqualified_to_eligible_error": {
+        "k": 1,
+        "n": 65,
+        "rate": 0.015384615384615385
+      },
+      "negative_to_eligible_error": {
+        "k": 7,
+        "n": 92,
+        "rate": 0.07608695652173914
+      },
+      "confusion_matrix": {
+        "ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 20,
+          "CHECK": 13
+        },
+        "NOT_ELIGIBLE": {
+          "ELIGIBLE": 1,
+          "NOT_ELIGIBLE": 30,
+          "CHECK": 34
+        },
+        "CHECK": {
+          "ELIGIBLE": 6,
+          "NOT_ELIGIBLE": 4,
+          "CHECK": 17
+        }
+      },
+      "quote_validity": {
+        "k": 94,
+        "n": 95,
+        "rate": 0.9894736842105263
+      },
+      "quote_correctness": {
+        "k": 13,
+        "n": 54,
+        "rate": 0.24074074074074073
+      },
+      "latency_ms": {
+        "median_ms": 3.352,
+        "p95_ms": 5.524,
+        "n": 125
+      },
+      "cost": {
+        "cost_per_1000_opportunities": null,
+        "note": "no list price in config; cost not computed"
+      }
+    },
+    "replay_fine_tuned": {
+      "n_pairs": 125,
+      "n_labels": 125,
+      "missing_pairs": [],
+      "missed_grant_rate": {
+        "k": 2,
+        "n": 33,
+        "rate": 0.06060606060606061
+      },
+      "soft_miss": {
+        "k": 1,
+        "n": 27,
+        "rate": 0.037037037037037035
+      },
+      "human_read_share": {
+        "k": 117,
+        "n": 125,
+        "rate": 0.936
+      },
+      "accuracy": {
+        "k": 31,
+        "n": 125,
+        "rate": 0.248
+      },
+      "automatic_decision_coverage": {
+        "k": 8,
+        "n": 125,
+        "rate": 0.064
+      },
+      "automatic_decision_accuracy": {
+        "k": 5,
+        "n": 8,
+        "rate": 0.625
+      },
+      "disqualified_to_eligible_error": {
+        "k": 0,
+        "n": 65,
+        "rate": 0.0
+      },
+      "negative_to_eligible_error": {
+        "k": 0,
+        "n": 92,
+        "rate": 0.0
+      },
+      "confusion_matrix": {
+        "ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 2,
+          "CHECK": 31
+        },
+        "NOT_ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 5,
+          "CHECK": 60
+        },
+        "CHECK": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 1,
+          "CHECK": 26
+        }
+      },
+      "quote_validity": {
+        "k": 10,
+        "n": 10,
+        "rate": 1.0
+      },
+      "quote_correctness": {
+        "k": 0,
+        "n": 8,
+        "rate": 0.0
+      },
+      "latency_ms": {
+        "median_ms": null,
+        "p95_ms": null,
+        "note": "latency_ms absent from predictions; latency not computed"
+      },
+      "cost": {
+        "cost_per_1000_opportunities": null,
+        "note": "no list price in config; cost not computed"
+      }
+    },
+    "replay_prompted": {
+      "n_pairs": 125,
+      "n_labels": 125,
+      "missing_pairs": [],
+      "missed_grant_rate": {
+        "k": 2,
+        "n": 33,
+        "rate": 0.06060606060606061
+      },
+      "soft_miss": {
+        "k": 1,
+        "n": 27,
+        "rate": 0.037037037037037035
+      },
+      "human_read_share": {
+        "k": 108,
+        "n": 125,
+        "rate": 0.864
+      },
+      "accuracy": {
+        "k": 40,
+        "n": 125,
+        "rate": 0.32
+      },
+      "automatic_decision_coverage": {
+        "k": 17,
+        "n": 125,
+        "rate": 0.136
+      },
+      "automatic_decision_accuracy": {
+        "k": 14,
+        "n": 17,
+        "rate": 0.8235294117647058
+      },
+      "disqualified_to_eligible_error": {
+        "k": 0,
+        "n": 65,
+        "rate": 0.0
+      },
+      "negative_to_eligible_error": {
+        "k": 0,
+        "n": 92,
+        "rate": 0.0
+      },
+      "confusion_matrix": {
+        "ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 2,
+          "CHECK": 31
+        },
+        "NOT_ELIGIBLE": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 14,
+          "CHECK": 51
+        },
+        "CHECK": {
+          "ELIGIBLE": 0,
+          "NOT_ELIGIBLE": 1,
+          "CHECK": 26
+        }
+      },
+      "quote_validity": {
+        "k": 21,
+        "n": 21,
+        "rate": 1.0
+      },
+      "quote_correctness": {
+        "k": 6,
+        "n": 17,
+        "rate": 0.35294117647058826
+      },
+      "latency_ms": {
+        "median_ms": null,
+        "p95_ms": null,
+        "note": "latency_ms absent from predictions; latency not computed"
+      },
+      "cost": {
+        "cost_per_1000_opportunities": null,
+        "note": "no list price in config; cost not computed"
+      }
+    }
+  },
+  "comparison": {
+    "best_missed_grant": {
+      "system": "code_only",
+      "missed_grant_rate": {
+        "k": 0,
+        "n": 33,
+        "rate": 0.0
+      }
+    },
+    "best_tradeoff": {
+      "system": "code_only",
+      "tradeoff_score": 0.384,
+      "missed_grant_rate": {
+        "k": 0,
+        "n": 33,
+        "rate": 0.0
+      },
+      "human_read_share": {
+        "k": 48,
+        "n": 125,
+        "rate": 0.384
+      }
+    }
+  }
+}

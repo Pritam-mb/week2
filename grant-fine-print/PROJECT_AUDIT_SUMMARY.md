@@ -1,125 +1,157 @@
-# Grant Fine Print — Comprehensive Project Audit & Operational Summary
+# Grant Fine Print — implementation and submission handoff
 
-**Generated Date**: October 18, 2026  
-**Repository**: [grant-fine-print](file:///d:/week2/grant-fine-print)  
-**Branch**: `main`  
-**Live Web Server**: `http://127.0.0.1:8000` (PID active)  
-**Test Suite**: 58 / 58 passing (`python -m pytest -q`)
+Updated: 2026-10-19. This is local implementation status, not a claim that remote
+services or the Render deployment were revalidated during this work.
 
----
+## Goal and state
 
-## 1. Executive Summary
+Improve correctness and judge-verifiable evidence within the submission window,
+then provide an updated unpublished `DEVTO_SUBMISSION.md`. Original benchmark
+predictions remain separate from current-matcher diagnostics.
 
-**Grant Fine Print** is an automated grant intelligence pipeline and interactive card dashboard built for freelance grant writers and consultants. The system continuously ingests federal notices of funding opportunities from Grants.gov, extracts unstructured applicant requirements using LLMs, verifies quotes with character-for-character exactness against source texts, deterministically matches eligibility against client profiles, and renders one-page decision cards.
+Implemented:
+- Conservative matching for ambiguous alternative lists; whole-phrase organization
+  recognition; U.S./non-U.S. exclusion polarity; empty extraction becomes CHECK.
+- Explicit escaped CHECK reasons on client cards, with backward-compatible rows.
+- Full source/prompt/model/settings cache fingerprints; legacy caches are ignored.
+- Strict extraction schema and truncated-output handling: invalid results fail
+  visibly rather than masquerading as successful empty extraction.
+- Portable, key-free evidence bundle with original predictions, labels/source text,
+  profiles, examples, evaluator, and SHA256 manifest.
+- Separate offline current-matcher replay from an allowlisted condition snapshot.
+- Submission and app evidence page distinguish historical results from replay.
 
-This document provides a transparent, no-fluff audit of:
-1. **What is done and 100% original / live** (no mocks or stubs).
-2. **What is hardcoded, heuristic, or static** (rules, dictionaries, and constraints).
-3. **What is left / pending** (roadmap, future scaling, and production deployment).
+No new fine-tune or remote inference was run. Model-assisted training targets
+contain semantic errors; more epochs on them are not a defensible improvement.
+Future configuration aligns Qwen3.5 with reasoning-disabled rendering, but this
+does not alter the recorded historical checkpoint.
 
----
+## Earlier measured results (archived; current follow-up below)
 
-## 2. What is DONE & 100% Original (No Mocks, Genuine Live Systems)
+25 notices × five constructed profiles; 125 pairs with single-author labels.
+The dataset has now seen diagnostic reuse: it is not an untouched holdout.
 
-| Component | Status | Source File | Description |
-| :--- | :---: | :--- | :--- |
-| **Grants.gov API Pull** | **Live** | [src/pull.py](file:///d:/week2/grant-fine-print/src/pull.py) | Ingests live federal opportunities via REST `search2` and legacy detail endpoints; 528 real snapshots cached. |
-| **Tinker Remote Inference** | **Live** | [src/extract.py:OpenAICompatibleBackend](file:///d:/week2/grant-fine-print/src/extract.py#L190-L264) | Calls Thinking Machines Tinker API (`Qwen/Qwen3.5-4B`) with `reasoning_effort: false` and `separate_reasoning: false`. |
-| **Tinker LoRA Fine-Tuning** | **Live** | [src/train.py](file:///d:/week2/grant-fine-print/src/train.py) | Cloud GPU LoRA training pipeline (`ServiceClient.create_lora_training_client`) trained for 3 epochs (75 optimizer steps) converging to loss `0.0039 - 0.029`. |
-| **Active SFT Sampler Weights** | **Live** | [results/tinker_sampler_checkpoint.json](file:///d:/week2/grant-fine-print/results/tinker_sampler_checkpoint.json) | Checkpoint `tinker://146167b6-6a85-54ec-bc00-f0489e3f207d:train:0/sampler_weights/grant-fine-print-sft` loaded directly by [FineTunedBackend](file:///d:/week2/grant-fine-print/src/extract.py#L265-L315). |
-| **Verbatim Quote Verification** | **Live** | [src/verify.py](file:///d:/week2/grant-fine-print/src/verify.py) | Mathematical character-for-character substring checker. Guarantees 0% hallucinated quotes can trigger a `NOT_ELIGIBLE` decision. |
-| **Tiger Data Persistence** | **Live** | [src/storage.py](file:///d:/week2/grant-fine-print/src/storage.py) | Connected to Timescale Cloud PostgreSQL (`DATABASE_URL`). Manages 5 tables, GIN full-text search indexes (`to_tsvector`), and profiles. |
-| **SerpApi Discovery** | **Live** | [src/discovery.py](file:///d:/week2/grant-fine-print/src/discovery.py) | Uses live `SERPAPI_KEY` to search Google for official Grants.gov pages for opportunities missing links, and validates HTTPS `.grants.gov` domains. |
-| **SerpApi Integration** | **Live** | [src/pipeline.py](file:///d:/week2/grant-fine-print/src/pipeline.py), [app/main.py](file:///d:/week2/grant-fine-print/app/main.py) | Wired into CLI (`python -m src.pipeline --discover`) and web app (`POST /discover/<opportunity_id>`). |
-| **Parallel Extraction Engine** | **Live** | [src/pipeline.py:run_model_system](file:///d:/week2/grant-fine-print/src/pipeline.py#L114-L140) | Multi-threaded `ThreadPoolExecutor(max_workers=8)` cuts inference latency by up to 8x. |
-| **Interactive Web Application** | **Live** | [app/main.py](file:///d:/week2/grant-fine-print/app/main.py) | Running at `http://127.0.0.1:8000`: supports live filtering, full-text search, sorting, human corrections (`/correct`), and print views. |
-| **Test Suite** | **Live** | [tests/](file:///d:/week2/grant-fine-print/tests) | 58 unit and integration tests passing 100% in ~35 seconds. |
+| System | Eligible wrongly rejected | Disqualified called eligible | CHECK | Correct automatic decisions |
+|---|---:|---:|---:|---:|
+| Original code-only | 0/33 | 14/65 | 48/125 | 53/77 |
+| Original prompted | 20/33 | 1/65 | 64/125 | 30/61 |
+| Original fine-tuned | 2/33 | 0/65 | 101/125 | 12/24 |
+| Prompted cache + hardened matcher | 2/33 | 0/65 | 108/125 | 14/17 |
+| Fine-tuned cache + hardened matcher | 2/33 | 0/65 | 117/125 | 5/8 |
 
----
+Replay is not new inference, authenticated checkpoint evidence, or a causal
+fine-tuning result. Source-substring validity does not establish rule semantics.
+That earlier fine-tuned replay's exact labelled-quote agreement was 0/8: there is still substantial
+work before automatic decisions should be trusted.
 
-## 3. What is Hardcoded, Heuristic, or Static
+## Files and decisions
 
-To prevent AI hallucinations from causing false grant disqualifications, the matching engine uses deterministic rules and explicit bounds:
+- `src/match.py`, `src/models.py`, `src/cards.py`: matcher correctness and review reasons.
+- `src/extract.py`: strict output/cache parsing, duplicate-key rejection, full cache identity.
+- `src/eval.py`: automatic coverage/accuracy and broader false-eligibility metrics.
+- `src/evidence_bundle.py`, `results/evidence/`: immutable original-output evidence.
+- `src/matcher_replay.py`, `results/matcher_replay/`: current-code diagnostic, no provider calls.
+- `app/templates/evidence.html`: historical-result warning and mixed-cache timing caveats.
+- `config.yaml`: Qwen3.5 default matches recorded deployment choice; future training
+  renderer disables thinking to match serving. No new checkpoint was created.
+- `DEVTO_SUBMISSION.md`, both READMEs, `docs/DEMO_OFFLINE.md`: accurate presentation
+  and safe verification instructions instead of overwriting evidence with mock runs.
+- New safety, matching, review-reason, bundle, and replay tests plus existing test additions.
 
-### 3.1. Keyword Dictionary Mapping ([src/match.py:ORG_TYPE_KEYWORDS](file:///d:/week2/grant-fine-print/src/match.py#L50-L64))
-- **What is hardcoded**: Free-text condition phrases are mapped to federal applicant categories using an explicit string tuple list:
-  ```python
-  ORG_TYPE_KEYWORDS = [
-      ("nonprofit_501c3", ["501(c)(3)", "charitable", "nonprofit"]),
-      ("for_profit", ["for-profit", "commercial organization", "company"]),
-      ("small_business", ["small business"]),
-      ("public_state_university", ["public", "state university"]),
-      ("private_university", ["private", "institution of higher education", "university"]),
-      ("federally_recognized_tribal_government", ["federally recognized", "tribal government"]),
-      ("native_american_tribal_organization", ["tribal", "native american", "indian tribe"]),
-      ("state_government", ["state government", "state agency"]),
-      ("county_government", ["county"]),
-      ("city_or_township_government", ["city", "township", "municipal"]),
-      ("individual", ["individual", "sole proprietor"]),
-  ]
-  ```
-- **Consequence**: If an agency uses unusual wording (e.g., *"regional development authority"* or *"school board"*), the matcher cannot classify it (`None`) and conservatively marks it `unknown`, forcing a manual human `CHECK`.
+An independent code review found two integration gaps: current rows' `check_reasons`
+were absent from the bundle allowlist, and duplicate JSON keys bypassed strict cache
+validation. Both were fixed and covered with regression tests.
 
-### 3.2. Applicant-Type Code Mapping ([src/match.py:PROFILE_TO_CODES](file:///d:/week2/grant-fine-print/src/match.py#L23-L47))
-- **What is hardcoded**: Profile organization categories map to a static set of Grants.gov applicant code strings (e.g., `nonprofit` ➜ `{"nonprofit_501c3", "nonprofit_non_501c3", "others"}`).
+## Actual checks
 
-### 3.3. Evaluable Condition Dimensions ([src/match.py:evaluate_condition](file:///d:/week2/grant-fine-print/src/match.py#L74-L120))
-- **What is hardcoded**: Deterministic plain code evaluates **only 3 dimensions**:
-  1. `org_type`: via keyword dictionary.
-  2. `location`: simple binary regex for U.S. (`["u.s.", "united states", "domestic"]`) vs Non-U.S. (`["foreign", "outside the u.s"]`). Specific state restrictions (e.g. "must reside in Kentucky") are not parsed.
-  3. `size`: simple check for presence of `"small business"`.
-- **Consequence**: The other 5 condition types (`citizenship_or_residency`, `partnership_required`, `cost_share`, `prior_award_or_status`, and `other`) are hardcoded to return `"unknown"`. They automatically produce a `CHECK` verdict displaying the exact sentence for the grant writer to read.
+From `D:\week2\grant-fine-print` (base HEAD `3b0ce1f`, branch `main`, local edits):
 
-### 3.4. Offline Mock Rules ([src/extract.py:_MOCK_RULES](file:///d:/week2/grant-fine-print/src/extract.py#L92-L114))
-- **What is hardcoded**: 19 regular expressions used exclusively when the CLI flag `--backend mock` is explicitly invoked.
-- **Safety check**: In production (`--backend prompted` or `--backend fine_tuned`), this dictionary is never touched.
+- **Tests passed:** `$env:PYTHON_DOTENV_DISABLED = '1'; & "D:\week2\.venv\Scripts\python.exe" -B -m pytest -q -p no:cacheprovider`
+  → **378 passed in 32.51s**. No live-model quality claim follows from this.
+- **Original bundle passed:** `python -B -S -m src.evidence_bundle verify --bundle results/evidence`.
+- **Snapshot replay passed:** `python -B -S -m src.matcher_replay --bundle results/evidence --snapshot results/matcher_replay/conditions_snapshot.json --output <fresh-directory>`;
+  exercised in an approved temporary directory and reproduced the reported counts.
+- **Diff check passed:** `git diff --check` (Git emits line-ending notices).
+- **Build/typecheck/lint:** no separate project commands run; not claimed passed.
+- **Remote training, live inference, deployment, customer pilot, second annotator:** not run.
 
-### 3.5. Default Seed Profiles ([data/profiles/](file:///d:/week2/grant-fine-print/data/profiles))
-- **What is static**: 5 pre-configured JSON profiles (`p_nonprofit`, `p_for_profit`, `p_university`, `p_tribal`, `p_small_business`). New profiles can be created dynamically through the web form at `/profiles/new`.
+## Before publishing
 
----
+1. Review `DEVTO_SUBMISSION.md`; it remains `published: false`. If the challenge
+   requires an agent-session embed, add the actual share link; no link was invented.
+2. Commit/push the intended code and public evidence bundle only when authorized.
+   The new GitHub evidence links will not resolve remotely until files are pushed.
+3. Deploy and smoke-check the Render app before changing the post's local/not-deployed
+   wording. Legacy extraction caches are intentionally cold under the new fingerprint,
+   so live screening can trigger new billable calls; plan the subset and spend first.
+4. Next substantive model step: independently correct training semantics, preserve
+   non-overlapping development/holdout notices, then run paired fresh inference.
 
-## 4. What is Left / Limitations & Roadmap
+No process was started or stopped for a preview. Nothing was committed, pushed,
+deployed, or published in this session.
 
-### 4.1. Training Dataset Scale (SFT Dataset)
-- **Current state**: The fine-tuned LoRA checkpoint was trained on 100 reviewed examples for 3 epochs.
-- **Result**: Missed-grant rate dropped from 54.5% to **6.1%**, and quote validity is **100%**.
-- **What is left**: Expanding the training set from 100 to 300–500 reviewed examples from the remaining 400+ non-test opportunities will push overall classification accuracy higher than the base model (currently 23.2% vs 37.6% base, because the fine-tuned model is very conservative and prefers human `CHECK`).
+## Follow-up: bounded source semantics and shorter submission
 
-### 4.2. Cold-Start Full Corpus Extraction Latency
-- **Current state**: With 8 concurrent threads, extracting 25 opportunities takes ~6 seconds, and 500 opportunities takes ~2–3 minutes over the network API.
-- **What is left**: In production, caching into PostgreSQL and local disk eliminates repeated requests. An automated background worker (Celery/RQ) could pre-warm the cache overnight upon every new Grants.gov daily XML release.
+The user asked to proceed with useful narrow improvements rather than more prose.
+`src/source_rules.py` was implemented against synthetic cases without benchmark
+access. It recognizes complete supported source sentences, not keyword hits, and
+can resolve organizational foreign-entity exclusions classified as citizenship.
+It treats supported complete applicant alternatives as a union, rejects mismatched
+metadata, and leaves components/individual citizenship/qualifiers for review.
 
-### 4.3. Cloud Cron Deployment (Render.com)
-- **Current state**: [render.yaml](file:///d:/week2/grant-fine-print/render.yaml) is configured with web service and a Monday 06:00 UTC sync cron job.
-- **What is left**: The cron job currently only executes when hosted on Render.com with an active worker service; on a local Windows machine, weekly syncs require manual execution (`python -m src.pull`) or Windows Task Scheduler.
+Integration audit exposed remaining keyword-only rejection paths: a positive IHE
+branch was treated as exclusive, its campus location was applied to a nonprofit,
+and a waiver-qualified exclusion could fall back to keywords. Automatic conflicts
+now require the bounded source interpreter; fallback keyword conflicts become CHECK.
+Existing regression assertions were updated to reflect this intentionally narrower
+contract, with new synthetic adversarial tests.
 
-### 4.4. Advanced State & Numerical Eligibility Matching
-- **Current state**: State-specific grants (e.g., "must be located in Ohio") fall through to `CHECK`.
-- **What is left**: Adding an automated 50-state parser to `src/match.py` to evaluate state-level eligibility against `profile.state`.
+### Current artifacts and observed result
 
----
+- `results/source_semantics/`: latest replay, with `source_rules.py` in code hashes.
+- `reports/proof_pack/PROOF.md`, `examples.json`, `index.html`, `provenance.json`:
+  all qualifying catches, a traceable browser preview, and the honest failure.
+- `src/proof_pack.py`, `tests/test_proof_pack.py`: validated public-input generator.
+- `DEVTO_SUBMISSION.md`: shorter draft led by a real BTOD baseline-miss catch.
+- READMEs and evidence-page warning point to the current diagnostic.
+- `results/matcher_replay/` remains the earlier archived diagnostic; transient
+  follow-up outputs were removed, not substituted for its historical record.
 
-## 5. Verification Log & Key Commands
+Current fine-tuned-cache replay: **five automatic rejections, all agreeing with author
+labels; 120/125 CHECK; no ELIGIBLE predictions; 4/5 exact labelled-sentence agreement**.
+Three rejections (359701, 360446, 360541 against p_nonus) correct code-only ELIGIBLE
+decisions using relevant verified foreign-organization exclusions. All three are
+the same profile and rule family; they do not demonstrate broad generalization.
+Prompted-cache replay also has five label-correct rejections and 120 CHECKs; a
+contradictory eligibility list in its 358934 source remains an ambiguity. The
+source grammar does not semantically adjudicate the full notice.
 
-- **Run Web Server**:
-  ```powershell
-  python -m app.main
-  ```
-- **Run Fast Pytest Suite**:
-  ```powershell
-  python -m pytest -q
-  ```
-- **Run Discovery on Any Opportunity (via SerpApi)**:
-  ```powershell
-  curl.exe -X POST http://127.0.0.1:8000/discover/103313
-  ```
-- **Run Benchmark Evaluation (All 3 Systems)**:
-  ```powershell
-  python -m src.pipeline --ids-file data/labels/test_labels.csv
-  python -m src.eval
-  ```
-- **Inspect PostgreSQL Records**:
-  ```powershell
-  python -m src.storage search --query "tribal health" --limit 3
-  ```
+No fine-tuning or remote inference was run. This is reused development data,
+single-author labels, constructed profiles, and unauthenticated legacy model identity.
+The fine-tuned catch is a **matcher-enabled use of an existing extraction**, not a
+training gain. Low automation remains unsolved.
+
+Correction to the prior draft: 328026 extraction was **not empty**. It extracted
+one mixed applicant list and omitted the no-applications status sentence. Its current
+CHECK reason is grouping ambiguity, not detected closure. The post and proof pack
+now state that accurately.
+
+Next publication step is still authorized commit/push and deployment verification;
+none has been done. An actual agent-session URL must be supplied if required.
+
+### Follow-up verification and preview
+
+- Full suite: `$env:PYTHON_DOTENV_DISABLED = '1'; & "D:\week2\.venv\Scripts\python.exe" -B -m pytest -q -p no:cacheprovider`
+  → **893 passed in 48.61s** (supersedes the earlier 378-test run).
+- Original portable evidence verification passed again.
+- Re-generated the proof pack to an approved temporary directory with
+  `python -B -S -m src.proof_pack --bundle results/evidence --replay results/source_semantics --output <fresh-directory> --hero-id 360446`:
+  5 automatic/120 CHECK, three qualifying catches, all input/code hashes valid.
+- `git diff --check` initially found Markdown hard-break trailing spaces in the
+  short summary; these were replaced with explicit line breaks and rechecked.
+- Static preview started on **http://localhost:8765/**, serving only
+  `reports/proof_pack/`, process **20536** at launch. HTTP smoke check returned
+  **200**, with offline banner and hero 360446 present. This is not the Flask app
+  or remote model inference. Inspect with `Get-Process -Id 20536` if still running.
+- No fresh training, remote inference, external user validation, deployment, commit,
+  push, or publication occurred. Lint/typecheck/build commands were not run.

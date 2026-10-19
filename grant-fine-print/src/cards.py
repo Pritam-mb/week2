@@ -17,7 +17,7 @@ from typing import Any, Optional
 from .config import get as cfg_get
 from .config import load_config
 from .io_utils import load_opportunities, load_profiles, write_text
-from .models import Condition, Opportunity, Profile, Verdict, VerdictRow
+from .models import Opportunity, Profile, Verdict, VerdictRow
 
 BRAND = "Grant Fine Print"
 CONFIRM_LINE = "Confirm in the original notice."
@@ -233,14 +233,19 @@ def _row_html(row: VerdictRow, opp: Optional[Opportunity]) -> str:
                 '<p class="muted">No verbatim disqualifying sentence recorded.</p>'
             )
     elif _verdict_of(row) == Verdict.CHECK:
+        reasons = row.check_reasons or [
+            "Review the original notice against the profile; no automatic review reason was recorded."
+        ]
+        for reason in reasons:
+            parts.append(
+                f'<p class="read-this check-reason"><span class="label">Why CHECK:</span> {_esc(reason)}</p>'
+            )
         quotes = row.check_quotes or []
         if quotes:
             for quote in quotes:
                 parts.append(
                     f'<p class="read-this"><span class="label">Read:</span> <mark class="marker-quote">{_esc(quote)}</mark></p>'
                 )
-        else:
-            parts.append('<p class="muted">No sentence to read recorded.</p>')
 
     if opp and (opp.source_text or opp.eligibility_text) and quotes:
         source_raw = opp.source_text or opp.eligibility_text or ""
@@ -293,26 +298,7 @@ def rows_to_verdictrows(data: Any) -> list[VerdictRow]:
             continue
         if not isinstance(item, dict):
             continue
-        conditions = [
-            Condition.from_dict(c)
-            for c in item.get("conditions", []) or []
-            if isinstance(c, dict)
-        ]
-        try:
-            verdict = Verdict(item.get("verdict", Verdict.CHECK.value))
-        except ValueError:
-            verdict = Verdict.CHECK
-        out.append(
-            VerdictRow(
-                opportunity_id=item.get("opportunity_id", ""),
-                profile_id=item.get("profile_id", ""),
-                verdict=verdict,
-                disqualifying_quotes=list(item.get("disqualifying_quotes") or []),
-                check_quotes=list(item.get("check_quotes") or []),
-                conditions=conditions,
-                override=item.get("override"),
-            )
-        )
+        out.append(VerdictRow.from_dict(item))
     return out
 
 

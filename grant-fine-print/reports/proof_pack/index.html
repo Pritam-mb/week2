@@ -1,0 +1,612 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grant Fine Print · Offline proof pack</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6f8;color:#172635;font:16px/1.6 system-ui,sans-serif}main{max-width:1060px;margin:auto;padding:32px 20px}header,section{background:white;border:1px solid #dce3e9;border-radius:12px;padding:24px;margin-bottom:22px}.banner{color:#793f04;font-weight:700}h1,h2,h3{line-height:1.25}h1{margin-top:8px}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid #dce3e9}th{background:#eff4f8}blockquote{margin:16px 0;padding:12px 18px;border-left:4px solid #287267;background:#f0f8f6}code,pre{font-size:.85em;overflow-wrap:anywhere}pre{white-space:pre-wrap;background:#f4f6f8;padding:14px}summary{cursor:pointer;font-weight:600}.muted{color:#52616e}.hash{font-size:.8em}a{color:#145a91}</style></head><body><main><header>
+<p class="banner">Offline development evidence preview—not live inference</p><h1>Grant Fine Print</h1>
+<h2>FINAL fine-tuned replay: 5/125 automatic, 120 CHECK, 5/5 automatic label agreement.</h2><p>The code-only baseline has greater automatic coverage: 77/125 automatic, 48 CHECK; 53/77 automatic label agreement. Agreement on a small automatic subset must be read alongside abstention.</p>
+<p class="muted">FINAL replay: <code>results/source_semantics</code></p>
+<a href="PROOF.md">Proof notes</a> · <a href="examples.json">Structured evidence</a> · <a href="provenance.json">Hashes and command</a></header>
+<section><h2>hero: 360446 / p_nonus</h2>
+<p>Meridian Health Trust · nonprofit · U.S.-based: False</p>
+<div class="scroll"><table><thead><tr><th>Original label</th><th>Code-only baseline</th><th>Original fine-tuned</th><th>CURRENT FINAL fine-tuned</th></tr></thead><tbody><tr>
+<td><strong>NOT_ELIGIBLE</strong></td>
+<td><strong>ELIGIBLE</strong></td>
+<td><strong>CHECK</strong></td>
+<td><strong>NOT_ELIGIBLE</strong></td>
+</tr></tbody></table></div>
+<h3>Verified restriction</h3>
+<blockquote>Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.</blockquote>
+<p>Quote present in full source. Interpreter: <b>conflict</b>. Membership in quoted group: <b>True</b> (derived from interpreter result and polarity).</p>
+<details><summary>Prediction conditions and relevant quotes</summary>
+<pre>{
+  &quot;code_only&quot;: {
+    &quot;verdict&quot;: &quot;ELIGIBLE&quot;,
+    &quot;conditions&quot;: [],
+    &quot;disqualifying_quotes&quot;: [],
+    &quot;check_quotes&quot;: [],
+    &quot;check_reasons&quot;: [],
+    &quot;proposed_disqualifier_quotes&quot;: []
+  },
+  &quot;original_fine_tuned&quot;: {
+    &quot;verdict&quot;: &quot;CHECK&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;citizenship_or_residency&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations)&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;citizenship_or_residency&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [],
+    &quot;check_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;,
+      &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+    ],
+    &quot;check_reasons&quot;: [],
+    &quot;proposed_disqualifier_quotes&quot;: []
+  },
+  &quot;original_prompted&quot;: {
+    &quot;verdict&quot;: &quot;NOT_ELIGIBLE&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;location&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations)&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;location&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;,
+      &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+    ],
+    &quot;check_quotes&quot;: [],
+    &quot;check_reasons&quot;: [],
+    &quot;proposed_disqualifier_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;,
+      &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+    ]
+  },
+  &quot;replay_fine_tuned&quot;: {
+    &quot;verdict&quot;: &quot;NOT_ELIGIBLE&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;citizenship_or_residency&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations)&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;citizenship_or_residency&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+    ],
+    &quot;check_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+    ],
+    &quot;check_reasons&quot;: [
+      &quot;The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice.&quot;
+    ],
+    &quot;proposed_disqualifier_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+    ]
+  },
+  &quot;replay_prompted&quot;: {
+    &quot;verdict&quot;: &quot;NOT_ELIGIBLE&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;location&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations)&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;location&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+    ],
+    &quot;check_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+    ],
+    &quot;check_reasons&quot;: [
+      &quot;The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice.&quot;
+    ],
+    &quot;proposed_disqualifier_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+    ]
+  }
+}</pre></details>
+<details><summary>Original label and full-source hash pointers</summary>
+<pre>{
+  &quot;label&quot;: {
+    &quot;true_verdict&quot;: &quot;NOT_ELIGIBLE&quot;,
+    &quot;disqualifying_sentence&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+  },
+  &quot;source&quot;: {
+    &quot;path&quot;: &quot;results/evidence/data/source_text.json&quot;,
+    &quot;key&quot;: &quot;360446&quot;,
+    &quot;full_source_sha256&quot;: &quot;5e960b317bc0403943e405668cf00b9d285a278960dc1c9819e6a80c62a25efb&quot;,
+    &quot;normalized_source_sha256&quot;: &quot;8de2bbc53dce540034616d3a4fc5901b94cb60626c9d99b5857123115e114155&quot;,
+    &quot;file_sha256&quot;: &quot;7abbec5d0b37306f903b448db0dcfc1ef56315fa2e99a88e60134310ad3c3f60&quot;,
+    &quot;full_source_semantically_adjudicated_by_software&quot;: false
+  },
+  &quot;label_pointer&quot;: {
+    &quot;path&quot;: &quot;results/evidence/data/labels.csv&quot;,
+    &quot;pair&quot;: [
+      &quot;360446&quot;,
+      &quot;p_nonus&quot;
+    ],
+    &quot;sha256&quot;: &quot;8e98cc6f24c4c5edcf9d0b2d616409681eac28d22946599fa63ed21157190757&quot;
+  },
+  &quot;profile_pointer&quot;: {
+    &quot;path&quot;: &quot;results/evidence/data/profiles/p_nonus.json&quot;,
+    &quot;sha256&quot;: &quot;2df5a51fccf9e07696176cdacd253ac7c5f10925a41bf50a90855871a101a9e8&quot;
+  },
+  &quot;prediction_pointers&quot;: {
+    &quot;code_only&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/code_only.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;360446&quot;,
+        &quot;p_nonus&quot;
+      ],
+      &quot;sha256&quot;: &quot;98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2&quot;
+    },
+    &quot;original_fine_tuned&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/original_fine_tuned.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;360446&quot;,
+        &quot;p_nonus&quot;
+      ],
+      &quot;sha256&quot;: &quot;3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e&quot;
+    },
+    &quot;original_prompted&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/original_prompted.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;360446&quot;,
+        &quot;p_nonus&quot;
+      ],
+      &quot;sha256&quot;: &quot;a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753&quot;
+    },
+    &quot;replay_fine_tuned&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/replay_fine_tuned.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;360446&quot;,
+        &quot;p_nonus&quot;
+      ],
+      &quot;sha256&quot;: &quot;0ca5472bc797fa7849062381c17dd1a03a73c0697c76d6370442cbc5bba6ad45&quot;
+    },
+    &quot;replay_prompted&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/replay_prompted.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;360446&quot;,
+        &quot;p_nonus&quot;
+      ],
+      &quot;sha256&quot;: &quot;3d93648a42d7989b704006588a213408de14a27e013e2edbee00ef8ff0827b27&quot;
+    }
+  }
+}</pre>
+</details></section>
+<section><h2>another_catch: 359701 / p_nonus</h2>
+<p>Meridian Health Trust · nonprofit · U.S.-based: False</p>
+<div class="scroll"><table><thead><tr><th>Original label</th><th>Code-only baseline</th><th>Original fine-tuned</th><th>CURRENT FINAL fine-tuned</th></tr></thead><tbody><tr>
+<td><strong>NOT_ELIGIBLE</strong></td>
+<td><strong>ELIGIBLE</strong></td>
+<td><strong>CHECK</strong></td>
+<td><strong>NOT_ELIGIBLE</strong></td>
+</tr></tbody></table></div>
+<h3>Verified restriction</h3>
+<blockquote>Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.</blockquote>
+<p>Quote present in full source. Interpreter: <b>conflict</b>. Membership in quoted group: <b>True</b> (derived from interpreter result and polarity).</p>
+<details><summary>Prediction conditions and relevant quotes</summary>
+<pre>{
+  &quot;code_only&quot;: {
+    &quot;verdict&quot;: &quot;ELIGIBLE&quot;,
+    &quot;conditions&quot;: [],
+    &quot;disqualifying_quotes&quot;: [],
+    &quot;check_quotes&quot;: [],
+    &quot;check_reasons&quot;: [],
+    &quot;proposed_disqualifier_quotes&quot;: []
+  },
+  &quot;original_fine_tuned&quot;: {
+    &quot;verdict&quot;: &quot;CHECK&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;citizenship_or_residency&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations)&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;citizenship_or_residency&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;citizenship_or_residency&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Foreign components&quot;,
+        &quot;quote&quot;: &quot;Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [],
+    &quot;check_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;,
+      &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;,
+      &quot;Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.&quot;
+    ],
+    &quot;check_reasons&quot;: [],
+    &quot;proposed_disqualifier_quotes&quot;: []
+  },
+  &quot;original_prompted&quot;: {
+    &quot;verdict&quot;: &quot;NOT_ELIGIBLE&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;location&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations)&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;location&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;location&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Foreign components&quot;,
+        &quot;quote&quot;: &quot;Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;,
+      &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+    ],
+    &quot;check_quotes&quot;: [],
+    &quot;check_reasons&quot;: [],
+    &quot;proposed_disqualifier_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;,
+      &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+    ]
+  },
+  &quot;replay_fine_tuned&quot;: {
+    &quot;verdict&quot;: &quot;NOT_ELIGIBLE&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;citizenship_or_residency&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations)&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;citizenship_or_residency&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;citizenship_or_residency&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Foreign components&quot;,
+        &quot;quote&quot;: &quot;Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+    ],
+    &quot;check_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;,
+      &quot;Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.&quot;
+    ],
+    &quot;check_reasons&quot;: [
+      &quot;The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice.&quot;,
+      &quot;The rule concerns components, people, or project geography; organizational U.S.-based status does not establish that fact.&quot;
+    ],
+    &quot;proposed_disqualifier_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+    ]
+  },
+  &quot;replay_prompted&quot;: {
+    &quot;verdict&quot;: &quot;NOT_ELIGIBLE&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;location&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations)&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;location&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations&quot;,
+        &quot;quote&quot;: &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;
+      },
+      {
+        &quot;type&quot;: &quot;location&quot;,
+        &quot;polarity&quot;: &quot;excluded&quot;,
+        &quot;value&quot;: &quot;Foreign components&quot;,
+        &quot;quote&quot;: &quot;Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+    ],
+    &quot;check_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.&quot;,
+      &quot;Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.&quot;
+    ],
+    &quot;check_reasons&quot;: [
+      &quot;The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice.&quot;,
+      &quot;The rule concerns components, people, or project geography; organizational U.S.-based status does not establish that fact.&quot;
+    ],
+    &quot;proposed_disqualifier_quotes&quot;: [
+      &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+    ]
+  }
+}</pre></details>
+<details><summary>Original label and full-source hash pointers</summary>
+<pre>{
+  &quot;label&quot;: {
+    &quot;true_verdict&quot;: &quot;NOT_ELIGIBLE&quot;,
+    &quot;disqualifying_sentence&quot;: &quot;Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.&quot;
+  },
+  &quot;source&quot;: {
+    &quot;path&quot;: &quot;results/evidence/data/source_text.json&quot;,
+    &quot;key&quot;: &quot;359701&quot;,
+    &quot;full_source_sha256&quot;: &quot;101b33228d33ee01e9ccd9f446e50e91c5b34036c25b316d10f104e51d4e9dfd&quot;,
+    &quot;normalized_source_sha256&quot;: &quot;f243c5d7fb8cc00f23e27c0ae7323e64f773fa6a65dace1bde8e44a1c5525ea5&quot;,
+    &quot;file_sha256&quot;: &quot;7abbec5d0b37306f903b448db0dcfc1ef56315fa2e99a88e60134310ad3c3f60&quot;,
+    &quot;full_source_semantically_adjudicated_by_software&quot;: false
+  },
+  &quot;label_pointer&quot;: {
+    &quot;path&quot;: &quot;results/evidence/data/labels.csv&quot;,
+    &quot;pair&quot;: [
+      &quot;359701&quot;,
+      &quot;p_nonus&quot;
+    ],
+    &quot;sha256&quot;: &quot;8e98cc6f24c4c5edcf9d0b2d616409681eac28d22946599fa63ed21157190757&quot;
+  },
+  &quot;profile_pointer&quot;: {
+    &quot;path&quot;: &quot;results/evidence/data/profiles/p_nonus.json&quot;,
+    &quot;sha256&quot;: &quot;2df5a51fccf9e07696176cdacd253ac7c5f10925a41bf50a90855871a101a9e8&quot;
+  },
+  &quot;prediction_pointers&quot;: {
+    &quot;code_only&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/code_only.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;359701&quot;,
+        &quot;p_nonus&quot;
+      ],
+      &quot;sha256&quot;: &quot;98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2&quot;
+    },
+    &quot;original_fine_tuned&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/original_fine_tuned.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;359701&quot;,
+        &quot;p_nonus&quot;
+      ],
+      &quot;sha256&quot;: &quot;3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e&quot;
+    },
+    &quot;original_prompted&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/original_prompted.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;359701&quot;,
+        &quot;p_nonus&quot;
+      ],
+      &quot;sha256&quot;: &quot;a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753&quot;
+    },
+    &quot;replay_fine_tuned&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/replay_fine_tuned.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;359701&quot;,
+        &quot;p_nonus&quot;
+      ],
+      &quot;sha256&quot;: &quot;0ca5472bc797fa7849062381c17dd1a03a73c0697c76d6370442cbc5bba6ad45&quot;
+    },
+    &quot;replay_prompted&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/replay_prompted.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;359701&quot;,
+        &quot;p_nonus&quot;
+      ],
+      &quot;sha256&quot;: &quot;3d93648a42d7989b704006588a213408de14a27e013e2edbee00ef8ff0827b27&quot;
+    }
+  }
+}</pre>
+</details></section>
+<section><h2>honest_CHECK: 328026 / p_forprofit</h2>
+<p>Blue Ridge Analytics LLC · for_profit · U.S.-based: True</p>
+<div class="scroll"><table><thead><tr><th>Original label</th><th>Code-only baseline</th><th>Original fine-tuned</th><th>CURRENT FINAL fine-tuned</th></tr></thead><tbody><tr>
+<td><strong>CHECK</strong></td>
+<td><strong>CHECK</strong></td>
+<td><strong>ELIGIBLE</strong></td>
+<td><strong>CHECK</strong></td>
+</tr></tbody></table></div>
+<h3>Why CHECK</h3><ul>
+<li>The source quote lists multiple organization types; review how the listed applicants are grouped.</li>
+</ul>
+<p>One nonempty mixed applicant-list condition was extracted. The actual CHECK reason concerns applicant grouping. The separate not-accepting-applications text is present in full source but omitted from extraction; it is context, not the recorded CHECK reason.</p>
+<blockquote>This is a notice of intent and no applications are being accepted at this time.</blockquote>
+<blockquote>We are not accepting applications at this time.</blockquote>
+<details><summary>Prediction conditions and relevant quotes</summary>
+<pre>{
+  &quot;code_only&quot;: {
+    &quot;verdict&quot;: &quot;CHECK&quot;,
+    &quot;conditions&quot;: [],
+    &quot;disqualifying_quotes&quot;: [],
+    &quot;check_quotes&quot;: [],
+    &quot;check_reasons&quot;: [],
+    &quot;proposed_disqualifier_quotes&quot;: []
+  },
+  &quot;original_fine_tuned&quot;: {
+    &quot;verdict&quot;: &quot;ELIGIBLE&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;org_type&quot;,
+        &quot;polarity&quot;: &quot;required&quot;,
+        &quot;value&quot;: &quot;U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations&quot;,
+        &quot;quote&quot;: &quot;Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [],
+    &quot;check_quotes&quot;: [],
+    &quot;check_reasons&quot;: [],
+    &quot;proposed_disqualifier_quotes&quot;: []
+  },
+  &quot;original_prompted&quot;: {
+    &quot;verdict&quot;: &quot;ELIGIBLE&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;org_type&quot;,
+        &quot;polarity&quot;: &quot;required&quot;,
+        &quot;value&quot;: &quot;U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations&quot;,
+        &quot;quote&quot;: &quot;Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [],
+    &quot;check_quotes&quot;: [],
+    &quot;check_reasons&quot;: [],
+    &quot;proposed_disqualifier_quotes&quot;: []
+  },
+  &quot;replay_fine_tuned&quot;: {
+    &quot;verdict&quot;: &quot;CHECK&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;org_type&quot;,
+        &quot;polarity&quot;: &quot;required&quot;,
+        &quot;value&quot;: &quot;U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations&quot;,
+        &quot;quote&quot;: &quot;Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [],
+    &quot;check_quotes&quot;: [
+      &quot;Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations.&quot;
+    ],
+    &quot;check_reasons&quot;: [
+      &quot;The source quote lists multiple organization types; review how the listed applicants are grouped.&quot;
+    ],
+    &quot;proposed_disqualifier_quotes&quot;: []
+  },
+  &quot;replay_prompted&quot;: {
+    &quot;verdict&quot;: &quot;CHECK&quot;,
+    &quot;conditions&quot;: [
+      {
+        &quot;type&quot;: &quot;org_type&quot;,
+        &quot;polarity&quot;: &quot;required&quot;,
+        &quot;value&quot;: &quot;U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations&quot;,
+        &quot;quote&quot;: &quot;Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations.&quot;
+      }
+    ],
+    &quot;disqualifying_quotes&quot;: [],
+    &quot;check_quotes&quot;: [
+      &quot;Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations.&quot;
+    ],
+    &quot;check_reasons&quot;: [
+      &quot;The source quote lists multiple organization types; review how the listed applicants are grouped.&quot;
+    ],
+    &quot;proposed_disqualifier_quotes&quot;: []
+  }
+}</pre></details>
+<details><summary>Original label and full-source hash pointers</summary>
+<pre>{
+  &quot;label&quot;: {
+    &quot;true_verdict&quot;: &quot;CHECK&quot;,
+    &quot;disqualifying_sentence&quot;: &quot;&quot;
+  },
+  &quot;source&quot;: {
+    &quot;path&quot;: &quot;results/evidence/data/source_text.json&quot;,
+    &quot;key&quot;: &quot;328026&quot;,
+    &quot;full_source_sha256&quot;: &quot;8661b622460b6e840c179b2097486f358463737b8e85d162a815a2be21afbcb4&quot;,
+    &quot;normalized_source_sha256&quot;: &quot;2fc7083c5a41262de16907398d043ee5ff702763148bcf4fa3ad25bb39e5c621&quot;,
+    &quot;file_sha256&quot;: &quot;7abbec5d0b37306f903b448db0dcfc1ef56315fa2e99a88e60134310ad3c3f60&quot;,
+    &quot;full_source_semantically_adjudicated_by_software&quot;: false
+  },
+  &quot;label_pointer&quot;: {
+    &quot;path&quot;: &quot;results/evidence/data/labels.csv&quot;,
+    &quot;pair&quot;: [
+      &quot;328026&quot;,
+      &quot;p_forprofit&quot;
+    ],
+    &quot;sha256&quot;: &quot;8e98cc6f24c4c5edcf9d0b2d616409681eac28d22946599fa63ed21157190757&quot;
+  },
+  &quot;profile_pointer&quot;: {
+    &quot;path&quot;: &quot;results/evidence/data/profiles/p_forprofit.json&quot;,
+    &quot;sha256&quot;: &quot;cf92e3f9cd0f566b8d78791c00049bdde24c00405ce8e2f2160772cfa16b891f&quot;
+  },
+  &quot;prediction_pointers&quot;: {
+    &quot;code_only&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/code_only.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;328026&quot;,
+        &quot;p_forprofit&quot;
+      ],
+      &quot;sha256&quot;: &quot;98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2&quot;
+    },
+    &quot;original_fine_tuned&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/original_fine_tuned.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;328026&quot;,
+        &quot;p_forprofit&quot;
+      ],
+      &quot;sha256&quot;: &quot;3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e&quot;
+    },
+    &quot;original_prompted&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/original_prompted.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;328026&quot;,
+        &quot;p_forprofit&quot;
+      ],
+      &quot;sha256&quot;: &quot;a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753&quot;
+    },
+    &quot;replay_fine_tuned&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/replay_fine_tuned.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;328026&quot;,
+        &quot;p_forprofit&quot;
+      ],
+      &quot;sha256&quot;: &quot;0ca5472bc797fa7849062381c17dd1a03a73c0697c76d6370442cbc5bba6ad45&quot;
+    },
+    &quot;replay_prompted&quot;: {
+      &quot;path&quot;: &quot;results/source_semantics/predictions/replay_prompted.jsonl&quot;,
+      &quot;pair&quot;: [
+        &quot;328026&quot;,
+        &quot;p_forprofit&quot;
+      ],
+      &quot;sha256&quot;: &quot;3d93648a42d7989b704006588a213408de14a27e013e2edbee00ef8ff0827b27&quot;
+    }
+  }
+}</pre>
+</details></section>
+<section><h2>All qualifying catches</h2>
+<p>ALL original code_only ELIGIBLE -&gt; CURRENT FINAL replay_fine_tuned NOT_ELIGIBLE pairs labelled NOT_ELIGIBLE; lexical pair order. Every candidate must have a verified actual disqualifier interpreted as conflict.</p>
+<p>All 3 catches share profile p_nonus and rule family organizational geography / excluded. They do not demonstrate broad rule coverage.</p><ul>
+<li>359701 / p_nonus: ELIGIBLE → NOT_ELIGIBLE; label NOT_ELIGIBLE; interpreter conflict.</li>
+<li>360446 / p_nonus: ELIGIBLE → NOT_ELIGIBLE; label NOT_ELIGIBLE; interpreter conflict.</li>
+<li>360541 / p_nonus: ELIGIBLE → NOT_ELIGIBLE; label NOT_ELIGIBLE; interpreter conflict.</li>
+</ul></section><section><h2>Evidence boundaries and reproduction</h2>
+<p>Reused development set; single-author labels; constructed profiles. Pairs share notices and profiles and are not independent observations. No generalization claim or causal fine-tuning improvement estimate is supported. Cached backend names do not authenticate model/checkpoint identity. No inference was rerun. Software re-checks quote presence against the full bundled source and interprets only the chosen restriction; the full source is NOT semantically adjudicated by software. Hashes establish consistency, not external authenticity.</p><p>Hero selected by --hero-id with p_nonus; second selected by --second-id or first other lexical candidate; honest CHECK fixed at 328026/p_forprofit. Illustrative, not a random sample.</p>
+<pre>python -B -m src.proof_pack --bundle results/evidence --replay results/source_semantics --output reports/proof_pack --hero-id 360446</pre>
+<p>Run from the project root using a fresh output directory. No external dependencies, scripts, remote assets, or live inference are used by this preview.</p></section></main></body></html>

@@ -1,0 +1,252 @@
+[
+  {
+    "category": "baseline_missed_restriction",
+    "opportunity_id": "356309",
+    "profile_id": "p_university",
+    "candidate_count": 14,
+    "label": {
+      "true_verdict": "NOT_ELIGIBLE",
+      "disqualifying_sentence": "fund federally recognized American Indian/Alaska Native (AI/AN) Tribes, tribal colleges or universities, Tribal health programs, or Tribal organizations",
+      "source_text": "Other Eligible Applicants include the following: Indian/Native American Tribal Governments (Other than Federally Recognized); Tribally Controlled Colleges and Universities (TCCUs) ; See Funding Announcement for Eligibility Details Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply. Foreign components, as defined in the NIH Grants Policy Statement, are not allowed.\n\nThe purpose of the Tribal Undergraduate to Graduate Research Training and Leadership Experiences (TURTLE) program is to fund federally recognized American Indian/Alaska Native (AI/AN) Tribes, tribal colleges or universities, Tribal health programs, or Tribal organizations (collectively termed, eligible Tribal Entities) to identify and develop a pool of scientists to conduct research on AI/AN health and health disparities. Through this Notice of Funding Opportunity (NOFO), NIGMS will provide support for a phased award to eligible AI/AN Tribal Entities to develop (UE5) and implement (T32) effective training and mentoring activities for research-oriented individuals earning a doctoral degree in a biomedical research field at a variety of institutions across the United States and territories. The overall purpose is to support the development of individuals who have the technical, operational, and professional skills required to conduct AI/AN health research in a culturally appropriate, ethically responsible and rigorous manner, to complete Ph.D.s in a biomedical field, and to transition into careers in the biomedical research workforce."
+    },
+    "is_fine_tuned_error": true,
+    "predictions": {
+      "code_only": {
+        "opportunity_id": "356309",
+        "profile_id": "p_university",
+        "verdict": "ELIGIBLE",
+        "disqualifying_quotes": [],
+        "check_quotes": [],
+        "conditions": [],
+        "override": null,
+        "proposed_disqualifier_quotes": [],
+        "latency_ms": null
+      },
+      "fine_tuned": {
+        "opportunity_id": "356309",
+        "profile_id": "p_university",
+        "verdict": "CHECK",
+        "disqualifying_quotes": [],
+        "check_quotes": [
+          "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply",
+          "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply",
+          "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+        ],
+        "conditions": [
+          {
+            "type": "citizenship_or_residency",
+            "polarity": "excluded",
+            "value": "Non-domestic (non-U.S.) Entities (Foreign Institutions)",
+            "quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply"
+          },
+          {
+            "type": "citizenship_or_residency",
+            "polarity": "excluded",
+            "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+            "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply"
+          },
+          {
+            "type": "citizenship_or_residency",
+            "polarity": "excluded",
+            "value": "Foreign components",
+            "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          }
+        ],
+        "override": null,
+        "proposed_disqualifier_quotes": [],
+        "latency_ms": 7246.706
+      },
+      "prompted": {
+        "opportunity_id": "356309",
+        "profile_id": "p_university",
+        "verdict": "NOT_ELIGIBLE",
+        "disqualifying_quotes": [
+          "The purpose of the Tribal Undergraduate to Graduate Research Training and Leadership Experiences (TURTLE) program is to fund federally recognized American Indian/Alaska Native (AI/AN) Tribes, tribal colleges or universities, Tribal health programs, or Tribal organizations (collectively termed, eligible Tribal Entities) to identify and develop a pool of scientists to conduct research on AI/AN health and health disparities.",
+          "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply",
+          "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+        ],
+        "check_quotes": [
+          "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+        ],
+        "conditions": [
+          {
+            "type": "org_type",
+            "polarity": "required",
+            "value": "federally recognized American Indian/Alaska Native (AI/AN) Tribes, tribal colleges or universities, Tribal health programs, or Tribal organizations",
+            "quote": "The purpose of the Tribal Undergraduate to Graduate Research Training and Leadership Experiences (TURTLE) program is to fund federally recognized American Indian/Alaska Native (AI/AN) Tribes, tribal colleges or universities, Tribal health programs, or Tribal organizations (collectively termed, eligible Tribal Entities) to identify and develop a pool of scientists to conduct research on AI/AN health and health disparities."
+          },
+          {
+            "type": "location",
+            "polarity": "excluded",
+            "value": "Non-domestic (non-U.S.) Entities (Foreign Institutions)",
+            "quote": "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply"
+          },
+          {
+            "type": "location",
+            "polarity": "excluded",
+            "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+            "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          },
+          {
+            "type": "other",
+            "polarity": "excluded",
+            "value": "Foreign components",
+            "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          }
+        ],
+        "override": null,
+        "proposed_disqualifier_quotes": [
+          "The purpose of the Tribal Undergraduate to Graduate Research Training and Leadership Experiences (TURTLE) program is to fund federally recognized American Indian/Alaska Native (AI/AN) Tribes, tribal colleges or universities, Tribal health programs, or Tribal organizations (collectively termed, eligible Tribal Entities) to identify and develop a pool of scientists to conduct research on AI/AN health and health disparities.",
+          "Non-domestic (non-U.S.) Entities (Foreign Institutions) are not eligible to apply",
+          "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+        ],
+        "latency_ms": 4.699
+      }
+    }
+  },
+  {
+    "category": "fine_tuned_correct_reject",
+    "opportunity_id": "362480",
+    "profile_id": "p_forprofit",
+    "candidate_count": 5,
+    "label": {
+      "true_verdict": "NOT_ELIGIBLE",
+      "disqualifying_sentence": "Only the Lead State Agency (or Agencies) as determined by the Governor of each Highlands State may be the applicant for funding under the Highlands Conservation Act Grant Program.",
+      "source_text": "Only the Lead State Agency (or Agencies) as determined by the Governor of each Highlands State may be the applicant for funding under the Highlands Conservation Act Grant Program. If the Governor assigns multiple Lead Agencies, those Agencies must coordinate on funding requests prior to submission and ensure no more than the maximum allowable amount is requested through this funding opportunity. All or part of the funds received by the Lead State Agency may be subawarded to a County or Municipality within the Highlands Region, or to another State Conservation Agency.The current Lead State Agencies are:Connecticut Department of Energy and Environmental Protection. Contact Matt Starr: matthew.starr@ct.govNew York State Office of Parks, Recreation, and Historic Preservation. Contact Lynn Kovach: lynn.kovach@parks.ny.govNew Jersey Highlands Water Protection and Planning Council. Contact Liz Ward: elizabeth.ward@highlands.nj.govPennsylvania Department of Conservation and Natural Resources. Contact Dan Pierce: danipierce@pa.govIn FY 2026, $9,173,450 in Base funding is available for grants to Connecticut, New Jersey, New York, and Pennsylvania. Each State may request up to $2,293,362 in Base funding. The earliest anticipated project start date is January 1, 2026. Project periods will be no longer than 4 years from the date the grantee is notified of an award. Period of performance extensions may be considered under extenuating circumstances. If the funds are unspent when a grant closes and the HCA grant program is still actively funded, unspent funds will be returned to the program to be redistributed through the next Competitive Grant Notice of Funding Opportunity. If each of the four eligible States does not request the full $2,293,362 available, remaining funds will be distributed through either the concurrent or the next Competitive Grant Round Notice of Funding Opportunity.\n\nThe Highlands Conservation Act Program (HCA) is administered by the US Fish and Wildlife Service (Service) to assist Connecticut, New Jersey, New York, and Pennsylvania in the protection of land and natural resources in the Highlands Region. HCA grants support land conservation projects in which a State, County, or Municipal entity acquires land or an interest in land from a willing seller to conserve resources of high conservation value.Governors of the four Highlands States may submit proposals for up to 50% of the total cost of land conservation projects in the Highlands Region.Funding appropriated under the HCA is typically divided into two separate categories – Base and Competitive. Eligible applicants may submit requests for the Base Funding Round in response to this Notice of Funding Opportunity. A separate Notice of Funding Opportunity will be posted for Competitive Funds. A project may not be proposed for funding in both funding opportunities.More information on the HCA program is available at www.fws.gov/program/highlands-conservation-act-grant"
+    },
+    "is_fine_tuned_error": false,
+    "predictions": {
+      "code_only": {
+        "opportunity_id": "362480",
+        "profile_id": "p_forprofit",
+        "verdict": "NOT_ELIGIBLE",
+        "disqualifying_quotes": [],
+        "check_quotes": [],
+        "conditions": [],
+        "override": null,
+        "proposed_disqualifier_quotes": [],
+        "latency_ms": null
+      },
+      "fine_tuned": {
+        "opportunity_id": "362480",
+        "profile_id": "p_forprofit",
+        "verdict": "NOT_ELIGIBLE",
+        "disqualifying_quotes": [
+          "Only the Lead State Agency (or Agencies) as determined by the Governor of each Highlands State may be the applicant for funding under the Highlands Conservation Act Grant Program."
+        ],
+        "check_quotes": [],
+        "conditions": [
+          {
+            "type": "org_type",
+            "polarity": "required",
+            "value": "Lead State Agency as determined by the Governor of each Highlands State",
+            "quote": "Only the Lead State Agency (or Agencies) as determined by the Governor of each Highlands State may be the applicant for funding under the Highlands Conservation Act Grant Program."
+          }
+        ],
+        "override": null,
+        "proposed_disqualifier_quotes": [
+          "Only the Lead State Agency (or Agencies) as determined by the Governor of each Highlands State may be the applicant for funding under the Highlands Conservation Act Grant Program."
+        ],
+        "latency_ms": 1991.845
+      },
+      "prompted": {
+        "opportunity_id": "362480",
+        "profile_id": "p_forprofit",
+        "verdict": "NOT_ELIGIBLE",
+        "disqualifying_quotes": [
+          "Only the Lead State Agency (or Agencies) as determined by the Governor of each Highlands State may be the applicant for funding under the Highlands Conservation Act Grant Program."
+        ],
+        "check_quotes": [
+          "In FY 2026, $9,173,450 in Base funding is available for grants to Connecticut, New Jersey, New York, and Pennsylvania.",
+          "All or part of the funds received by the Lead State Agency may be subawarded to a County or Municipality within the Highlands Region, or to another State Conservation Agency."
+        ],
+        "conditions": [
+          {
+            "type": "org_type",
+            "polarity": "required",
+            "value": "Lead State Agency (or Agencies) as determined by the Governor of each Highlands State",
+            "quote": "Only the Lead State Agency (or Agencies) as determined by the Governor of each Highlands State may be the applicant for funding under the Highlands Conservation Act Grant Program."
+          },
+          {
+            "type": "location",
+            "polarity": "required",
+            "value": "Connecticut, New Jersey, New York, and Pennsylvania",
+            "quote": "In FY 2026, $9,173,450 in Base funding is available for grants to Connecticut, New Jersey, New York, and Pennsylvania."
+          },
+          {
+            "type": "location",
+            "polarity": "required",
+            "value": "Highlands Region",
+            "quote": "All or part of the funds received by the Lead State Agency may be subawarded to a County or Municipality within the Highlands Region, or to another State Conservation Agency."
+          }
+        ],
+        "override": null,
+        "proposed_disqualifier_quotes": [
+          "Only the Lead State Agency (or Agencies) as determined by the Governor of each Highlands State may be the applicant for funding under the Highlands Conservation Act Grant Program."
+        ],
+        "latency_ms": 4.747
+      }
+    }
+  },
+  {
+    "category": "fine_tuned_failure_or_CHECK",
+    "opportunity_id": "328026",
+    "profile_id": "p_forprofit",
+    "candidate_count": 96,
+    "label": {
+      "true_verdict": "CHECK",
+      "disqualifying_sentence": "",
+      "source_text": "This is a notice of intent and no applications are being accepted at this time.\n\nThe TIP Office intends to announce its 2020 Funding Opportunity for the annual awards competition process in the upcoming weeks. The TIP Office is finalizing language for the annual awards competition process that includes a number of regional and thematic priorities for funding globally. Recognizing the hard work and effort that is involved in developing applications for funding, the TIP Office is notifying organizations that may be interested in submitting applications that a funding opportunity will be posted in the upcoming weeks. Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations. The 2020 TIP Office Funding Opportunity will be posted on SAMS Domestic, grants.gov, and the TIP Office website. Organizations interested in applying for funding may consider reviewing the information on the TIP Office’s Annual Awards Competition Process in preparation for the funding opportunity. Please note, this is a notice of intent only; an announcement will be made in the upcoming weeks when the 2020 Funding Opportunity is posted. We are not accepting applications at this time."
+    },
+    "is_fine_tuned_error": true,
+    "predictions": {
+      "code_only": {
+        "opportunity_id": "328026",
+        "profile_id": "p_forprofit",
+        "verdict": "CHECK",
+        "disqualifying_quotes": [],
+        "check_quotes": [],
+        "conditions": [],
+        "override": null,
+        "proposed_disqualifier_quotes": [],
+        "latency_ms": null
+      },
+      "fine_tuned": {
+        "opportunity_id": "328026",
+        "profile_id": "p_forprofit",
+        "verdict": "ELIGIBLE",
+        "disqualifying_quotes": [],
+        "check_quotes": [],
+        "conditions": [
+          {
+            "type": "org_type",
+            "polarity": "required",
+            "value": "U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations",
+            "quote": "Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations."
+          }
+        ],
+        "override": null,
+        "proposed_disqualifier_quotes": [],
+        "latency_ms": 4196.138
+      },
+      "prompted": {
+        "opportunity_id": "328026",
+        "profile_id": "p_forprofit",
+        "verdict": "ELIGIBLE",
+        "disqualifying_quotes": [],
+        "check_quotes": [],
+        "conditions": [
+          {
+            "type": "org_type",
+            "polarity": "required",
+            "value": "U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations",
+            "quote": "Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations."
+          }
+        ],
+        "override": null,
+        "proposed_disqualifier_quotes": [],
+        "latency_ms": 3.288
+      }
+    }
+  }
+]

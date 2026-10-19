@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="840" viewBox="0 0 1600 840" role="img" aria-labelledby="title description">
+<title id="title">Grant Fine Print — Opportunity360446 / BTOD proof card</title>
+<desc id="description">Generated proof card, not a live application screenshot. Constructed UK nonprofit; cached baseline LIKELY ELIGIBLE; offline replay NOT ELIGIBLE. Quote rechecked against bundled source. No inference rerun.</desc>
+<rect x="0" y="0" width="1600" height="840" fill="#EAE2D0" rx="0"/>
+<rect x="36" y="36" width="1536" height="776" fill="#221C14" rx="8"/>
+<rect x="28" y="28" width="1536" height="776" fill="#FAF6EE" rx="8" stroke="#221C14" stroke-width="2"/>
+<text x="68" y="82" font-family="Consolas, monospace" font-size="17" font-weight="normal" fill="#5B5246">EVIDENCE FIRST / GRANT REVIEW</text>
+<rect x="1210" y="58" width="314" height="38" fill="#F7E37A" rx="3" stroke="#221C14" stroke-width="2"/>
+<text x="1228" y="84" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#221C14">GENERATED PROOF CARD</text>
+<text x="68" y="165" font-family="Georgia, serif" font-size="76" font-weight="normal" fill="#221C14">Grant Fine Print</text>
+<text x="70" y="210" font-family="Arial, sans-serif" font-size="28" font-weight="normal" fill="#5B5246">The fine print changes the verdict.</text>
+<text x="1154" y="206" font-family="Arial, sans-serif" font-size="20" font-weight="normal" fill="#5B5246">Not a live application screenshot</text>
+<line x1="68" y1="237" x2="1524" y2="237" stroke="#221C14" stroke-width="2"/>
+<text x="68" y="279" font-family="Consolas, monospace" font-size="25" font-weight="normal" fill="#221C14">Opportunity360446 / BTOD</text>
+<text x="68" y="313" font-family="Arial, sans-serif" font-size="20" font-weight="normal" fill="#5B5246">Biomedical Technology Optimization and Dissemination Center</text>
+<text x="900" y="279" font-family="Georgia, serif" font-size="27" font-weight="normal" fill="#221C14">Meridian Health Trust</text>
+<text x="900" y="313" font-family="Arial, sans-serif" font-size="21" font-weight="normal" fill="#5B5246">Constructed UK nonprofit · p_nonus · U.S.-based: no</text>
+<rect x="74" y="350" width="650" height="150" fill="#221C14" rx="4"/>
+<rect x="68" y="344" width="650" height="150" fill="#EDF3E8" rx="4" stroke="#221C14" stroke-width="2"/>
+<text x="92" y="377" font-family="Consolas, monospace" font-size="18" font-weight="normal" fill="#5B5246">01 / CODE-ONLY BASELINE</text>
+<text x="92" y="430" font-family="Arial, sans-serif" font-size="43" font-weight="bold" fill="#3D572E">LIKELY ELIGIBLE</text>
+<text x="92" y="468" font-family="Arial, sans-serif" font-size="20" font-weight="normal" fill="#5B5246">Cached development prediction · ELIGIBLE</text>
+<line x1="751" y1="419" x2="805" y2="419" stroke="#221C14" stroke-width="3"/>
+<line x1="792" y1="406" x2="805" y2="419" stroke="#221C14" stroke-width="3"/>
+<line x1="792" y1="432" x2="805" y2="419" stroke="#221C14" stroke-width="3"/>
+<rect x="842" y="350" width="688" height="150" fill="#221C14" rx="4"/>
+<rect x="836" y="344" width="688" height="150" fill="#FAECE9" rx="4" stroke="#221C14" stroke-width="2"/>
+<text x="860" y="377" font-family="Consolas, monospace" font-size="18" font-weight="normal" fill="#5B5246">02 / SOURCE-RULE REPLAY</text>
+<text x="860" y="430" font-family="Arial, sans-serif" font-size="43" font-weight="bold" fill="#8A2C1F">NOT ELIGIBLE</text>
+<text x="860" y="468" font-family="Arial, sans-serif" font-size="20" font-weight="normal" fill="#5B5246">Cached fine-tuned conditions · interpreter conflict</text>
+<text x="68" y="541" font-family="Consolas, monospace" font-size="18" font-weight="normal" fill="#5B5246">VERBATIM RESTRICTION / VERIFIED AGAINST BUNDLED FULL SOURCE</text>
+<rect x="84" y="561" width="1102" height="39" fill="#F7E37A" rx="2"/>
+<text x="96" y="591" font-family="Georgia, serif" font-size="31" font-weight="normal" fill="#221C14">Non-domestic (non-U.S.) Entities (Foreign Organizations) are</text>
+<rect x="84" y="606" width="418" height="39" fill="#F7E37A" rx="2"/>
+<text x="96" y="636" font-family="Georgia, serif" font-size="31" font-weight="normal" fill="#221C14">not eligible to apply.</text>
+<text x="68" y="688" font-family="Arial, sans-serif" font-size="22" font-weight="normal" fill="#5B5246">Organizational geography conflicts with this profile. Confirm in the original notice.</text>
+<line x1="68" y1="720" x2="1524" y2="720" stroke="#BDB39E" stroke-width="1"/>
+<text x="68" y="758" font-family="Arial, sans-serif" font-size="23" font-weight="normal" fill="#5B5246">Offline development replay · 3 pairs / one rule family · 120/125 CHECK</text>
+<text x="68" y="790" font-family="Arial, sans-serif" font-size="18" font-weight="normal" fill="#5B5246">No inference rerun · Reused development set · Illustrative pairs, not independent observations</text>
+</svg>

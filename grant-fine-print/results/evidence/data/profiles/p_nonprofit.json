@@ -1,0 +1,10 @@
+{
+  "id": "p_nonprofit",
+  "name": "Rural Health Alliance",
+  "org_type": "nonprofit",
+  "us_based": true,
+  "state": "KY",
+  "size_band": "small",
+  "focus_keywords": ["rural health", "community health", "outreach"],
+  "notes": "Constructed profile: 501(c)(3) rural-health organisation in Kentucky."
+}

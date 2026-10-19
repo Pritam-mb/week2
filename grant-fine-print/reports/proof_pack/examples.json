@@ -1,0 +1,1423 @@
+{
+  "schema_version": 1,
+  "banner": "Offline development evidence preview—not live inference",
+  "limits": "Reused development set; single-author labels; constructed profiles. Pairs share notices and profiles and are not independent observations. No generalization claim or causal fine-tuning improvement estimate is supported. Cached backend names do not authenticate model/checkpoint identity. No inference was rerun. Software re-checks quote presence against the full bundled source and interprets only the chosen restriction; the full source is NOT semantically adjudicated by software. Hashes establish consistency, not external authenticity.",
+  "final_replay": "results/source_semantics",
+  "dimensions": {
+    "notices": 25,
+    "profiles": 5,
+    "pairs": 125
+  },
+  "summary": {
+    "code_only": {
+      "pairs": 125,
+      "automatic": 77,
+      "check": 48,
+      "automatic_label_agreement": {
+        "k": 53,
+        "n": 77,
+        "rate": 0.6883116883116883
+      }
+    },
+    "replay_fine_tuned": {
+      "pairs": 125,
+      "automatic": 5,
+      "check": 120,
+      "automatic_label_agreement": {
+        "k": 5,
+        "n": 5,
+        "rate": 1.0
+      }
+    },
+    "replay_prompted": {
+      "pairs": 125,
+      "automatic": 5,
+      "check": 120,
+      "automatic_label_agreement": {
+        "k": 5,
+        "n": 5,
+        "rate": 1.0
+      }
+    }
+  },
+  "candidate_count": 3,
+  "candidate_selection": "ALL original code_only ELIGIBLE -> CURRENT FINAL replay_fine_tuned NOT_ELIGIBLE pairs labelled NOT_ELIGIBLE; lexical pair order. Every candidate must have a verified actual disqualifier interpreted as conflict.",
+  "candidate_profile_count": 1,
+  "candidate_rule_family_count": 1,
+  "candidates": [
+    {
+      "category": "restriction_catch",
+      "opportunity_id": "359701",
+      "profile_id": "p_nonus",
+      "profile": {
+        "id": "p_nonus",
+        "name": "Meridian Health Trust",
+        "org_type": "nonprofit",
+        "us_based": false,
+        "state": "",
+        "size_band": "medium",
+        "focus_keywords": [
+          "global health",
+          "public health"
+        ],
+        "notes": "Constructed profile: non-US (United Kingdom) non-profit."
+      },
+      "label": {
+        "true_verdict": "NOT_ELIGIBLE",
+        "disqualifying_sentence": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+      },
+      "source": {
+        "path": "results/evidence/data/source_text.json",
+        "key": "359701",
+        "full_source_sha256": "101b33228d33ee01e9ccd9f446e50e91c5b34036c25b316d10f104e51d4e9dfd",
+        "normalized_source_sha256": "f243c5d7fb8cc00f23e27c0ae7323e64f773fa6a65dace1bde8e44a1c5525ea5",
+        "file_sha256": "7abbec5d0b37306f903b448db0dcfc1ef56315fa2e99a88e60134310ad3c3f60",
+        "full_source_semantically_adjudicated_by_software": false
+      },
+      "label_pointer": {
+        "path": "results/evidence/data/labels.csv",
+        "pair": [
+          "359701",
+          "p_nonus"
+        ],
+        "sha256": "8e98cc6f24c4c5edcf9d0b2d616409681eac28d22946599fa63ed21157190757"
+      },
+      "profile_pointer": {
+        "path": "results/evidence/data/profiles/p_nonus.json",
+        "sha256": "2df5a51fccf9e07696176cdacd253ac7c5f10925a41bf50a90855871a101a9e8"
+      },
+      "predictions": {
+        "code_only": {
+          "verdict": "ELIGIBLE",
+          "conditions": [],
+          "disqualifying_quotes": [],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_fine_tuned": {
+          "verdict": "CHECK",
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+            "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          ],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_prompted": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ]
+        },
+        "replay_fine_tuned": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+            "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          ],
+          "check_reasons": [
+            "The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice.",
+            "The rule concerns components, people, or project geography; organizational U.S.-based status does not establish that fact."
+          ],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ]
+        },
+        "replay_prompted": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+            "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          ],
+          "check_reasons": [
+            "The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice.",
+            "The rule concerns components, people, or project geography; organizational U.S.-based status does not establish that fact."
+          ],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ]
+        }
+      },
+      "prediction_pointers": {
+        "code_only": {
+          "path": "results/source_semantics/predictions/code_only.jsonl",
+          "pair": [
+            "359701",
+            "p_nonus"
+          ],
+          "sha256": "98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2"
+        },
+        "original_fine_tuned": {
+          "path": "results/source_semantics/predictions/original_fine_tuned.jsonl",
+          "pair": [
+            "359701",
+            "p_nonus"
+          ],
+          "sha256": "3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e"
+        },
+        "original_prompted": {
+          "path": "results/source_semantics/predictions/original_prompted.jsonl",
+          "pair": [
+            "359701",
+            "p_nonus"
+          ],
+          "sha256": "a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753"
+        },
+        "replay_fine_tuned": {
+          "path": "results/source_semantics/predictions/replay_fine_tuned.jsonl",
+          "pair": [
+            "359701",
+            "p_nonus"
+          ],
+          "sha256": "0ca5472bc797fa7849062381c17dd1a03a73c0697c76d6370442cbc5bba6ad45"
+        },
+        "replay_prompted": {
+          "path": "results/source_semantics/predictions/replay_prompted.jsonl",
+          "pair": [
+            "359701",
+            "p_nonus"
+          ],
+          "sha256": "3d93648a42d7989b704006588a213408de14a27e013e2edbee00ef8ff0827b27"
+        }
+      },
+      "chosen_restriction": {
+        "condition": {
+          "type": "citizenship_or_residency",
+          "polarity": "excluded",
+          "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+          "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+        },
+        "quote_verified_against_full_source": true,
+        "interpreter": "src.source_rules.interpret_source_rule",
+        "interpretation": "conflict",
+        "membership": {
+          "in_quoted_group": true,
+          "derived_from": "interpreter conflict result and condition polarity"
+        },
+        "rule_family": "organizational geography / excluded",
+        "family_basis": "interpreter contrast with only us_based flipped",
+        "opposite_geography_interpretation": "satisfied"
+      }
+    },
+    {
+      "category": "restriction_catch",
+      "opportunity_id": "360446",
+      "profile_id": "p_nonus",
+      "profile": {
+        "id": "p_nonus",
+        "name": "Meridian Health Trust",
+        "org_type": "nonprofit",
+        "us_based": false,
+        "state": "",
+        "size_band": "medium",
+        "focus_keywords": [
+          "global health",
+          "public health"
+        ],
+        "notes": "Constructed profile: non-US (United Kingdom) non-profit."
+      },
+      "label": {
+        "true_verdict": "NOT_ELIGIBLE",
+        "disqualifying_sentence": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+      },
+      "source": {
+        "path": "results/evidence/data/source_text.json",
+        "key": "360446",
+        "full_source_sha256": "5e960b317bc0403943e405668cf00b9d285a278960dc1c9819e6a80c62a25efb",
+        "normalized_source_sha256": "8de2bbc53dce540034616d3a4fc5901b94cb60626c9d99b5857123115e114155",
+        "file_sha256": "7abbec5d0b37306f903b448db0dcfc1ef56315fa2e99a88e60134310ad3c3f60",
+        "full_source_semantically_adjudicated_by_software": false
+      },
+      "label_pointer": {
+        "path": "results/evidence/data/labels.csv",
+        "pair": [
+          "360446",
+          "p_nonus"
+        ],
+        "sha256": "8e98cc6f24c4c5edcf9d0b2d616409681eac28d22946599fa63ed21157190757"
+      },
+      "profile_pointer": {
+        "path": "results/evidence/data/profiles/p_nonus.json",
+        "sha256": "2df5a51fccf9e07696176cdacd253ac7c5f10925a41bf50a90855871a101a9e8"
+      },
+      "predictions": {
+        "code_only": {
+          "verdict": "ELIGIBLE",
+          "conditions": [],
+          "disqualifying_quotes": [],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_fine_tuned": {
+          "verdict": "CHECK",
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "disqualifying_quotes": [],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_prompted": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ]
+        },
+        "replay_fine_tuned": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_reasons": [
+            "The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice."
+          ],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ]
+        },
+        "replay_prompted": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_reasons": [
+            "The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice."
+          ],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ]
+        }
+      },
+      "prediction_pointers": {
+        "code_only": {
+          "path": "results/source_semantics/predictions/code_only.jsonl",
+          "pair": [
+            "360446",
+            "p_nonus"
+          ],
+          "sha256": "98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2"
+        },
+        "original_fine_tuned": {
+          "path": "results/source_semantics/predictions/original_fine_tuned.jsonl",
+          "pair": [
+            "360446",
+            "p_nonus"
+          ],
+          "sha256": "3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e"
+        },
+        "original_prompted": {
+          "path": "results/source_semantics/predictions/original_prompted.jsonl",
+          "pair": [
+            "360446",
+            "p_nonus"
+          ],
+          "sha256": "a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753"
+        },
+        "replay_fine_tuned": {
+          "path": "results/source_semantics/predictions/replay_fine_tuned.jsonl",
+          "pair": [
+            "360446",
+            "p_nonus"
+          ],
+          "sha256": "0ca5472bc797fa7849062381c17dd1a03a73c0697c76d6370442cbc5bba6ad45"
+        },
+        "replay_prompted": {
+          "path": "results/source_semantics/predictions/replay_prompted.jsonl",
+          "pair": [
+            "360446",
+            "p_nonus"
+          ],
+          "sha256": "3d93648a42d7989b704006588a213408de14a27e013e2edbee00ef8ff0827b27"
+        }
+      },
+      "chosen_restriction": {
+        "condition": {
+          "type": "citizenship_or_residency",
+          "polarity": "excluded",
+          "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+          "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+        },
+        "quote_verified_against_full_source": true,
+        "interpreter": "src.source_rules.interpret_source_rule",
+        "interpretation": "conflict",
+        "membership": {
+          "in_quoted_group": true,
+          "derived_from": "interpreter conflict result and condition polarity"
+        },
+        "rule_family": "organizational geography / excluded",
+        "family_basis": "interpreter contrast with only us_based flipped",
+        "opposite_geography_interpretation": "satisfied"
+      }
+    },
+    {
+      "category": "restriction_catch",
+      "opportunity_id": "360541",
+      "profile_id": "p_nonus",
+      "profile": {
+        "id": "p_nonus",
+        "name": "Meridian Health Trust",
+        "org_type": "nonprofit",
+        "us_based": false,
+        "state": "",
+        "size_band": "medium",
+        "focus_keywords": [
+          "global health",
+          "public health"
+        ],
+        "notes": "Constructed profile: non-US (United Kingdom) non-profit."
+      },
+      "label": {
+        "true_verdict": "NOT_ELIGIBLE",
+        "disqualifying_sentence": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+      },
+      "source": {
+        "path": "results/evidence/data/source_text.json",
+        "key": "360541",
+        "full_source_sha256": "cb6aa586049c0ee96a774682e031869e32a1ceaa527898414607e29a233cb615",
+        "normalized_source_sha256": "ef93e83b02faffd49c75e488f82063b7b624c9bc661f4e561e27f40f6bba44c5",
+        "file_sha256": "7abbec5d0b37306f903b448db0dcfc1ef56315fa2e99a88e60134310ad3c3f60",
+        "full_source_semantically_adjudicated_by_software": false
+      },
+      "label_pointer": {
+        "path": "results/evidence/data/labels.csv",
+        "pair": [
+          "360541",
+          "p_nonus"
+        ],
+        "sha256": "8e98cc6f24c4c5edcf9d0b2d616409681eac28d22946599fa63ed21157190757"
+      },
+      "profile_pointer": {
+        "path": "results/evidence/data/profiles/p_nonus.json",
+        "sha256": "2df5a51fccf9e07696176cdacd253ac7c5f10925a41bf50a90855871a101a9e8"
+      },
+      "predictions": {
+        "code_only": {
+          "verdict": "ELIGIBLE",
+          "conditions": [],
+          "disqualifying_quotes": [],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_fine_tuned": {
+          "verdict": "CHECK",
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organization)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+            "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          ],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_prompted": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organization)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ]
+        },
+        "replay_fine_tuned": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organization)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+          ],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+            "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          ],
+          "check_reasons": [
+            "The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice.",
+            "The rule concerns components, people, or project geography; organizational U.S.-based status does not establish that fact."
+          ],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+          ]
+        },
+        "replay_prompted": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organization)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+          ],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+            "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          ],
+          "check_reasons": [
+            "The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice.",
+            "The rule concerns components, people, or project geography; organizational U.S.-based status does not establish that fact."
+          ],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+          ]
+        }
+      },
+      "prediction_pointers": {
+        "code_only": {
+          "path": "results/source_semantics/predictions/code_only.jsonl",
+          "pair": [
+            "360541",
+            "p_nonus"
+          ],
+          "sha256": "98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2"
+        },
+        "original_fine_tuned": {
+          "path": "results/source_semantics/predictions/original_fine_tuned.jsonl",
+          "pair": [
+            "360541",
+            "p_nonus"
+          ],
+          "sha256": "3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e"
+        },
+        "original_prompted": {
+          "path": "results/source_semantics/predictions/original_prompted.jsonl",
+          "pair": [
+            "360541",
+            "p_nonus"
+          ],
+          "sha256": "a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753"
+        },
+        "replay_fine_tuned": {
+          "path": "results/source_semantics/predictions/replay_fine_tuned.jsonl",
+          "pair": [
+            "360541",
+            "p_nonus"
+          ],
+          "sha256": "0ca5472bc797fa7849062381c17dd1a03a73c0697c76d6370442cbc5bba6ad45"
+        },
+        "replay_prompted": {
+          "path": "results/source_semantics/predictions/replay_prompted.jsonl",
+          "pair": [
+            "360541",
+            "p_nonus"
+          ],
+          "sha256": "3d93648a42d7989b704006588a213408de14a27e013e2edbee00ef8ff0827b27"
+        }
+      },
+      "chosen_restriction": {
+        "condition": {
+          "type": "citizenship_or_residency",
+          "polarity": "excluded",
+          "value": "Non-domestic (non-U.S.) Entities (Foreign Organization)",
+          "quote": "Non-domestic (non-U.S.) Entities (Foreign Organization) are not eligible to apply."
+        },
+        "quote_verified_against_full_source": true,
+        "interpreter": "src.source_rules.interpret_source_rule",
+        "interpretation": "conflict",
+        "membership": {
+          "in_quoted_group": true,
+          "derived_from": "interpreter conflict result and condition polarity"
+        },
+        "rule_family": "organizational geography / excluded",
+        "family_basis": "interpreter contrast with only us_based flipped",
+        "opposite_geography_interpretation": "satisfied"
+      }
+    }
+  ],
+  "example_selection": "Hero selected by --hero-id with p_nonus; second selected by --second-id or first other lexical candidate; honest CHECK fixed at 328026/p_forprofit. Illustrative, not a random sample.",
+  "examples": [
+    {
+      "category": "hero",
+      "opportunity_id": "360446",
+      "profile_id": "p_nonus",
+      "profile": {
+        "id": "p_nonus",
+        "name": "Meridian Health Trust",
+        "org_type": "nonprofit",
+        "us_based": false,
+        "state": "",
+        "size_band": "medium",
+        "focus_keywords": [
+          "global health",
+          "public health"
+        ],
+        "notes": "Constructed profile: non-US (United Kingdom) non-profit."
+      },
+      "label": {
+        "true_verdict": "NOT_ELIGIBLE",
+        "disqualifying_sentence": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+      },
+      "source": {
+        "path": "results/evidence/data/source_text.json",
+        "key": "360446",
+        "full_source_sha256": "5e960b317bc0403943e405668cf00b9d285a278960dc1c9819e6a80c62a25efb",
+        "normalized_source_sha256": "8de2bbc53dce540034616d3a4fc5901b94cb60626c9d99b5857123115e114155",
+        "file_sha256": "7abbec5d0b37306f903b448db0dcfc1ef56315fa2e99a88e60134310ad3c3f60",
+        "full_source_semantically_adjudicated_by_software": false
+      },
+      "label_pointer": {
+        "path": "results/evidence/data/labels.csv",
+        "pair": [
+          "360446",
+          "p_nonus"
+        ],
+        "sha256": "8e98cc6f24c4c5edcf9d0b2d616409681eac28d22946599fa63ed21157190757"
+      },
+      "profile_pointer": {
+        "path": "results/evidence/data/profiles/p_nonus.json",
+        "sha256": "2df5a51fccf9e07696176cdacd253ac7c5f10925a41bf50a90855871a101a9e8"
+      },
+      "predictions": {
+        "code_only": {
+          "verdict": "ELIGIBLE",
+          "conditions": [],
+          "disqualifying_quotes": [],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_fine_tuned": {
+          "verdict": "CHECK",
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "disqualifying_quotes": [],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_prompted": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ]
+        },
+        "replay_fine_tuned": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_reasons": [
+            "The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice."
+          ],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ]
+        },
+        "replay_prompted": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_reasons": [
+            "The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice."
+          ],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ]
+        }
+      },
+      "prediction_pointers": {
+        "code_only": {
+          "path": "results/source_semantics/predictions/code_only.jsonl",
+          "pair": [
+            "360446",
+            "p_nonus"
+          ],
+          "sha256": "98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2"
+        },
+        "original_fine_tuned": {
+          "path": "results/source_semantics/predictions/original_fine_tuned.jsonl",
+          "pair": [
+            "360446",
+            "p_nonus"
+          ],
+          "sha256": "3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e"
+        },
+        "original_prompted": {
+          "path": "results/source_semantics/predictions/original_prompted.jsonl",
+          "pair": [
+            "360446",
+            "p_nonus"
+          ],
+          "sha256": "a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753"
+        },
+        "replay_fine_tuned": {
+          "path": "results/source_semantics/predictions/replay_fine_tuned.jsonl",
+          "pair": [
+            "360446",
+            "p_nonus"
+          ],
+          "sha256": "0ca5472bc797fa7849062381c17dd1a03a73c0697c76d6370442cbc5bba6ad45"
+        },
+        "replay_prompted": {
+          "path": "results/source_semantics/predictions/replay_prompted.jsonl",
+          "pair": [
+            "360446",
+            "p_nonus"
+          ],
+          "sha256": "3d93648a42d7989b704006588a213408de14a27e013e2edbee00ef8ff0827b27"
+        }
+      },
+      "chosen_restriction": {
+        "condition": {
+          "type": "citizenship_or_residency",
+          "polarity": "excluded",
+          "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+          "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+        },
+        "quote_verified_against_full_source": true,
+        "interpreter": "src.source_rules.interpret_source_rule",
+        "interpretation": "conflict",
+        "membership": {
+          "in_quoted_group": true,
+          "derived_from": "interpreter conflict result and condition polarity"
+        },
+        "rule_family": "organizational geography / excluded",
+        "family_basis": "interpreter contrast with only us_based flipped",
+        "opposite_geography_interpretation": "satisfied"
+      }
+    },
+    {
+      "category": "another_catch",
+      "opportunity_id": "359701",
+      "profile_id": "p_nonus",
+      "profile": {
+        "id": "p_nonus",
+        "name": "Meridian Health Trust",
+        "org_type": "nonprofit",
+        "us_based": false,
+        "state": "",
+        "size_band": "medium",
+        "focus_keywords": [
+          "global health",
+          "public health"
+        ],
+        "notes": "Constructed profile: non-US (United Kingdom) non-profit."
+      },
+      "label": {
+        "true_verdict": "NOT_ELIGIBLE",
+        "disqualifying_sentence": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+      },
+      "source": {
+        "path": "results/evidence/data/source_text.json",
+        "key": "359701",
+        "full_source_sha256": "101b33228d33ee01e9ccd9f446e50e91c5b34036c25b316d10f104e51d4e9dfd",
+        "normalized_source_sha256": "f243c5d7fb8cc00f23e27c0ae7323e64f773fa6a65dace1bde8e44a1c5525ea5",
+        "file_sha256": "7abbec5d0b37306f903b448db0dcfc1ef56315fa2e99a88e60134310ad3c3f60",
+        "full_source_semantically_adjudicated_by_software": false
+      },
+      "label_pointer": {
+        "path": "results/evidence/data/labels.csv",
+        "pair": [
+          "359701",
+          "p_nonus"
+        ],
+        "sha256": "8e98cc6f24c4c5edcf9d0b2d616409681eac28d22946599fa63ed21157190757"
+      },
+      "profile_pointer": {
+        "path": "results/evidence/data/profiles/p_nonus.json",
+        "sha256": "2df5a51fccf9e07696176cdacd253ac7c5f10925a41bf50a90855871a101a9e8"
+      },
+      "predictions": {
+        "code_only": {
+          "verdict": "ELIGIBLE",
+          "conditions": [],
+          "disqualifying_quotes": [],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_fine_tuned": {
+          "verdict": "CHECK",
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+            "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          ],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_prompted": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply.",
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+          ]
+        },
+        "replay_fine_tuned": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "citizenship_or_residency",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+            "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          ],
+          "check_reasons": [
+            "The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice.",
+            "The rule concerns components, people, or project geography; organizational U.S.-based status does not establish that fact."
+          ],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ]
+        },
+        "replay_prompted": {
+          "verdict": "NOT_ELIGIBLE",
+          "conditions": [
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+              "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Non-domestic (non-U.S.) components of U.S. Organizations",
+              "quote": "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply."
+            },
+            {
+              "type": "location",
+              "polarity": "excluded",
+              "value": "Foreign components",
+              "quote": "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+            }
+          ],
+          "disqualifying_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ],
+          "check_quotes": [
+            "Non-domestic (non-U.S.) components of U.S. Organizations are not eligible to apply.",
+            "Foreign components, as defined in the NIH Grants Policy Statement, are not allowed."
+          ],
+          "check_reasons": [
+            "The quoted rule and extracted fields or profile facts do not establish a supported match; review the original notice.",
+            "The rule concerns components, people, or project geography; organizational U.S.-based status does not establish that fact."
+          ],
+          "proposed_disqualifier_quotes": [
+            "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+          ]
+        }
+      },
+      "prediction_pointers": {
+        "code_only": {
+          "path": "results/source_semantics/predictions/code_only.jsonl",
+          "pair": [
+            "359701",
+            "p_nonus"
+          ],
+          "sha256": "98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2"
+        },
+        "original_fine_tuned": {
+          "path": "results/source_semantics/predictions/original_fine_tuned.jsonl",
+          "pair": [
+            "359701",
+            "p_nonus"
+          ],
+          "sha256": "3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e"
+        },
+        "original_prompted": {
+          "path": "results/source_semantics/predictions/original_prompted.jsonl",
+          "pair": [
+            "359701",
+            "p_nonus"
+          ],
+          "sha256": "a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753"
+        },
+        "replay_fine_tuned": {
+          "path": "results/source_semantics/predictions/replay_fine_tuned.jsonl",
+          "pair": [
+            "359701",
+            "p_nonus"
+          ],
+          "sha256": "0ca5472bc797fa7849062381c17dd1a03a73c0697c76d6370442cbc5bba6ad45"
+        },
+        "replay_prompted": {
+          "path": "results/source_semantics/predictions/replay_prompted.jsonl",
+          "pair": [
+            "359701",
+            "p_nonus"
+          ],
+          "sha256": "3d93648a42d7989b704006588a213408de14a27e013e2edbee00ef8ff0827b27"
+        }
+      },
+      "chosen_restriction": {
+        "condition": {
+          "type": "citizenship_or_residency",
+          "polarity": "excluded",
+          "value": "Non-domestic (non-U.S.) Entities (Foreign Organizations)",
+          "quote": "Non-domestic (non-U.S.) Entities (Foreign Organizations) are not eligible to apply."
+        },
+        "quote_verified_against_full_source": true,
+        "interpreter": "src.source_rules.interpret_source_rule",
+        "interpretation": "conflict",
+        "membership": {
+          "in_quoted_group": true,
+          "derived_from": "interpreter conflict result and condition polarity"
+        },
+        "rule_family": "organizational geography / excluded",
+        "family_basis": "interpreter contrast with only us_based flipped",
+        "opposite_geography_interpretation": "satisfied"
+      }
+    },
+    {
+      "category": "honest_CHECK",
+      "opportunity_id": "328026",
+      "profile_id": "p_forprofit",
+      "profile": {
+        "id": "p_forprofit",
+        "name": "Blue Ridge Analytics LLC",
+        "org_type": "for_profit",
+        "us_based": true,
+        "state": "NC",
+        "size_band": "small",
+        "focus_keywords": [
+          "small business",
+          "innovation",
+          "workforce"
+        ],
+        "notes": "Constructed profile: small for-profit in North Carolina."
+      },
+      "label": {
+        "true_verdict": "CHECK",
+        "disqualifying_sentence": ""
+      },
+      "source": {
+        "path": "results/evidence/data/source_text.json",
+        "key": "328026",
+        "full_source_sha256": "8661b622460b6e840c179b2097486f358463737b8e85d162a815a2be21afbcb4",
+        "normalized_source_sha256": "2fc7083c5a41262de16907398d043ee5ff702763148bcf4fa3ad25bb39e5c621",
+        "file_sha256": "7abbec5d0b37306f903b448db0dcfc1ef56315fa2e99a88e60134310ad3c3f60",
+        "full_source_semantically_adjudicated_by_software": false
+      },
+      "label_pointer": {
+        "path": "results/evidence/data/labels.csv",
+        "pair": [
+          "328026",
+          "p_forprofit"
+        ],
+        "sha256": "8e98cc6f24c4c5edcf9d0b2d616409681eac28d22946599fa63ed21157190757"
+      },
+      "profile_pointer": {
+        "path": "results/evidence/data/profiles/p_forprofit.json",
+        "sha256": "cf92e3f9cd0f566b8d78791c00049bdde24c00405ce8e2f2160772cfa16b891f"
+      },
+      "predictions": {
+        "code_only": {
+          "verdict": "CHECK",
+          "conditions": [],
+          "disqualifying_quotes": [],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_fine_tuned": {
+          "verdict": "ELIGIBLE",
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations",
+              "quote": "Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations."
+            }
+          ],
+          "disqualifying_quotes": [],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "original_prompted": {
+          "verdict": "ELIGIBLE",
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations",
+              "quote": "Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations."
+            }
+          ],
+          "disqualifying_quotes": [],
+          "check_quotes": [],
+          "check_reasons": [],
+          "proposed_disqualifier_quotes": []
+        },
+        "replay_fine_tuned": {
+          "verdict": "CHECK",
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations",
+              "quote": "Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations."
+            }
+          ],
+          "disqualifying_quotes": [],
+          "check_quotes": [
+            "Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations."
+          ],
+          "check_reasons": [
+            "The source quote lists multiple organization types; review how the listed applicants are grouped."
+          ],
+          "proposed_disqualifier_quotes": []
+        },
+        "replay_prompted": {
+          "verdict": "CHECK",
+          "conditions": [
+            {
+              "type": "org_type",
+              "polarity": "required",
+              "value": "U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations",
+              "quote": "Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations."
+            }
+          ],
+          "disqualifying_quotes": [],
+          "check_quotes": [
+            "Organizations eligible to apply for this funding opportunity include U.S.-based and foreign non-profits, public international organizations, institutions of higher learning, and for-profit organizations."
+          ],
+          "check_reasons": [
+            "The source quote lists multiple organization types; review how the listed applicants are grouped."
+          ],
+          "proposed_disqualifier_quotes": []
+        }
+      },
+      "prediction_pointers": {
+        "code_only": {
+          "path": "results/source_semantics/predictions/code_only.jsonl",
+          "pair": [
+            "328026",
+            "p_forprofit"
+          ],
+          "sha256": "98932e6e1588b9f86fcb5b863b5ba167fb53f1809b31c694d446ba2f6436d0f2"
+        },
+        "original_fine_tuned": {
+          "path": "results/source_semantics/predictions/original_fine_tuned.jsonl",
+          "pair": [
+            "328026",
+            "p_forprofit"
+          ],
+          "sha256": "3210db30be2fa6e466f72d61c6631dd8a9647d35ec466a40940206870b78489e"
+        },
+        "original_prompted": {
+          "path": "results/source_semantics/predictions/original_prompted.jsonl",
+          "pair": [
+            "328026",
+            "p_forprofit"
+          ],
+          "sha256": "a9cc2741853ecfab0db0be0a6177aa0d53851f4ca53646985acc0705a6f55753"
+        },
+        "replay_fine_tuned": {
+          "path": "results/source_semantics/predictions/replay_fine_tuned.jsonl",
+          "pair": [
+            "328026",
+            "p_forprofit"
+          ],
+          "sha256": "0ca5472bc797fa7849062381c17dd1a03a73c0697c76d6370442cbc5bba6ad45"
+        },
+        "replay_prompted": {
+          "path": "results/source_semantics/predictions/replay_prompted.jsonl",
+          "pair": [
+            "328026",
+            "p_forprofit"
+          ],
+          "sha256": "3d93648a42d7989b704006588a213408de14a27e013e2edbee00ef8ff0827b27"
+        }
+      },
+      "why_check": [
+        "The source quote lists multiple organization types; review how the listed applicants are grouped."
+      ],
+      "extraction_review": {
+        "raw_condition_count": 1,
+        "raw_conditions_sha256": "d1bb14ecb04861b9fc354ce997e50ca100d89602420e62bafd2df59101ee9ba0",
+        "condition_interpretations": [
+          null
+        ],
+        "omitted_application_status_quotes": [
+          "This is a notice of intent and no applications are being accepted at this time.",
+          "We are not accepting applications at this time."
+        ],
+        "context_note": "One nonempty mixed applicant-list condition was extracted. The actual CHECK reason concerns applicant grouping. The separate not-accepting-applications text is present in full source but omitted from extraction; it is context, not the recorded CHECK reason."
+      }
+    }
+  ],
+  "generation_command": "python -B -m src.proof_pack --bundle results/evidence --replay results/source_semantics --output reports/proof_pack --hero-id 360446"
+}

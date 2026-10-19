@@ -160,6 +160,10 @@ def test_sys_a_metrics(fixtures):
     assert m["soft_miss"] == _kn(1, 1)
     assert m["human_read_share"] == _kn(0, 3)
     assert m["accuracy"] == _kn(2, 3)
+    assert m["automatic_decision_coverage"] == _kn(3, 3)
+    assert m["automatic_decision_accuracy"] == _kn(2, 3)
+    assert m["disqualified_to_eligible_error"] == _kn(0, 1)
+    assert m["negative_to_eligible_error"] == _kn(0, 2)
     assert m["confusion_matrix"] == {
         "ELIGIBLE": {"ELIGIBLE": 1, "NOT_ELIGIBLE": 0, "CHECK": 0},
         "NOT_ELIGIBLE": {"ELIGIBLE": 0, "NOT_ELIGIBLE": 1, "CHECK": 0},
@@ -188,6 +192,10 @@ def test_sys_b_metrics(fixtures):
     assert m["soft_miss"] == _kn(0, 1)
     assert m["human_read_share"] == _kn(1, 4)
     assert m["accuracy"] == _kn(3, 4)
+    assert m["automatic_decision_coverage"] == _kn(3, 4)
+    assert m["automatic_decision_accuracy"] == _kn(2, 3)
+    assert m["disqualified_to_eligible_error"] == _kn(0, 1)
+    assert m["negative_to_eligible_error"] == _kn(0, 2)
     assert m["confusion_matrix"] == {
         "ELIGIBLE": {"ELIGIBLE": 1, "NOT_ELIGIBLE": 1, "CHECK": 0},
         "NOT_ELIGIBLE": {"ELIGIBLE": 0, "NOT_ELIGIBLE": 1, "CHECK": 0},
@@ -213,6 +221,33 @@ def test_compare_systems(fixtures):
     # Tradeoff score = missed + human_read: sys_a 0.0 + 0.0 = 0.0.
     assert comp["best_tradeoff"]["system"] == "sys_a"
     assert comp["best_tradeoff"]["tradeoff_score"] == pytest.approx(0.0)
+
+
+def test_selective_metrics_do_not_reward_always_abstaining(fixtures):
+    labels = load_labels(LABELS_CSV)
+    rows = [_row(opp, profile, "CHECK") for opp, profile in labels]
+    metrics = evaluate_system(rows, labels, config={})
+    assert metrics["automatic_decision_coverage"] == _kn(0, 4)
+    assert metrics["automatic_decision_accuracy"] == _kn(0, 0)
+    assert metrics["disqualified_to_eligible_error"] == _kn(0, 1)
+    assert metrics["negative_to_eligible_error"] == _kn(0, 2)
+
+
+def test_selective_metrics_include_ambiguous_eligibility_errors(fixtures):
+    labels = load_labels(LABELS_CSV)
+    rows = [_row(opp, profile, "ELIGIBLE") for opp, profile in labels]
+    metrics = evaluate_system(rows, labels, config={})
+    assert metrics["automatic_decision_coverage"] == _kn(4, 4)
+    assert metrics["automatic_decision_accuracy"] == _kn(2, 4)
+    assert metrics["disqualified_to_eligible_error"] == _kn(1, 1)
+    assert metrics["negative_to_eligible_error"] == _kn(2, 2)
+
+
+def test_selective_metrics_with_no_scored_pairs():
+    metrics = evaluate_system([], {}, config={})
+    for name in ("automatic_decision_coverage", "automatic_decision_accuracy",
+                 "disqualified_to_eligible_error", "negative_to_eligible_error"):
+        assert metrics[name] == _kn(0, 0)
 
 
 def test_quote_validity_without_source_text(fixtures, tmp_path):

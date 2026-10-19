@@ -1,0 +1,520 @@
+{
+  "prompted": {
+    "original": "original_prompted",
+    "replay": "replay_prompted",
+    "rate_deltas_replay_minus_original": {
+      "missed_grant_rate": -0.5454545454545454,
+      "soft_miss": -0.1111111111111111,
+      "human_read_share": 0.352,
+      "accuracy": -0.055999999999999994,
+      "automatic_decision_coverage": -0.352,
+      "automatic_decision_accuracy": 0.33172613307618126,
+      "disqualified_to_eligible_error": -0.015384615384615385,
+      "negative_to_eligible_error": -0.07608695652173914,
+      "quote_validity": 0.010526315789473717,
+      "quote_correctness": 0.11220043572984753
+    },
+    "verdict_changes": [
+      {
+        "opportunity_id": "328026",
+        "profile_id": "p_forprofit",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "328026",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "328026",
+        "profile_id": "p_nonus",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "328026",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "328026",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "342747",
+        "profile_id": "p_nonus",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "347680",
+        "profile_id": "p_forprofit",
+        "original": "CHECK",
+        "replay": "NOT_ELIGIBLE"
+      },
+      {
+        "opportunity_id": "347680",
+        "profile_id": "p_nonprofit",
+        "original": "CHECK",
+        "replay": "NOT_ELIGIBLE"
+      },
+      {
+        "opportunity_id": "347680",
+        "profile_id": "p_tribal",
+        "original": "CHECK",
+        "replay": "NOT_ELIGIBLE"
+      },
+      {
+        "opportunity_id": "351947",
+        "profile_id": "p_tribal",
+        "original": "CHECK",
+        "replay": "NOT_ELIGIBLE"
+      },
+      {
+        "opportunity_id": "351947",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "356309",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "356309",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "356309",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "356309",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "359701",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "359701",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "359701",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "359701",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360446",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360446",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360446",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360446",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360541",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360541",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360541",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360541",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360753",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360753",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360753",
+        "profile_id": "p_nonus",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360753",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "360753",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "362480",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "362480",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "362480",
+        "profile_id": "p_nonus",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "362480",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "362480",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363906",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363906",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363906",
+        "profile_id": "p_nonus",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363906",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363912",
+        "profile_id": "p_forprofit",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363912",
+        "profile_id": "p_nonprofit",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363912",
+        "profile_id": "p_nonus",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363912",
+        "profile_id": "p_tribal",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363912",
+        "profile_id": "p_university",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363985",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363985",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363985",
+        "profile_id": "p_nonus",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363985",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363985",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "58617",
+        "profile_id": "p_tribal",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      }
+    ],
+    "changed_pairs": 52
+  },
+  "fine_tuned": {
+    "original": "original_fine_tuned",
+    "replay": "replay_fine_tuned",
+    "rate_deltas_replay_minus_original": {
+      "missed_grant_rate": 0.0,
+      "soft_miss": -0.1111111111111111,
+      "human_read_share": 0.128,
+      "accuracy": 0.015999999999999986,
+      "automatic_decision_coverage": -0.128,
+      "automatic_decision_accuracy": 0.125,
+      "disqualified_to_eligible_error": 0.0,
+      "negative_to_eligible_error": -0.06521739130434782,
+      "quote_validity": 0.0,
+      "quote_correctness": -0.2777777777777778
+    },
+    "verdict_changes": [
+      {
+        "opportunity_id": "328026",
+        "profile_id": "p_forprofit",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "328026",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "328026",
+        "profile_id": "p_nonus",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "328026",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "328026",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "347680",
+        "profile_id": "p_forprofit",
+        "original": "CHECK",
+        "replay": "NOT_ELIGIBLE"
+      },
+      {
+        "opportunity_id": "347680",
+        "profile_id": "p_nonprofit",
+        "original": "CHECK",
+        "replay": "NOT_ELIGIBLE"
+      },
+      {
+        "opportunity_id": "347680",
+        "profile_id": "p_tribal",
+        "original": "CHECK",
+        "replay": "NOT_ELIGIBLE"
+      },
+      {
+        "opportunity_id": "351947",
+        "profile_id": "p_forprofit",
+        "original": "CHECK",
+        "replay": "NOT_ELIGIBLE"
+      },
+      {
+        "opportunity_id": "351947",
+        "profile_id": "p_nonprofit",
+        "original": "CHECK",
+        "replay": "NOT_ELIGIBLE"
+      },
+      {
+        "opportunity_id": "351947",
+        "profile_id": "p_tribal",
+        "original": "CHECK",
+        "replay": "NOT_ELIGIBLE"
+      },
+      {
+        "opportunity_id": "362480",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "362480",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "362480",
+        "profile_id": "p_nonus",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "362480",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "362480",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363906",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363906",
+        "profile_id": "p_nonprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363906",
+        "profile_id": "p_nonus",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363906",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363912",
+        "profile_id": "p_forprofit",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363912",
+        "profile_id": "p_nonprofit",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363912",
+        "profile_id": "p_nonus",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363912",
+        "profile_id": "p_tribal",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363912",
+        "profile_id": "p_university",
+        "original": "ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363985",
+        "profile_id": "p_forprofit",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363985",
+        "profile_id": "p_tribal",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      },
+      {
+        "opportunity_id": "363985",
+        "profile_id": "p_university",
+        "original": "NOT_ELIGIBLE",
+        "replay": "CHECK"
+      }
+    ],
+    "changed_pairs": 28
+  }
+}

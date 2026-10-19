@@ -95,6 +95,18 @@ def test_evidence_handles_corrupt_result_files(client, monkeypatch, tmp_path):
     assert "Data Not Generated Yet" in resp.get_data(as_text=True)
 
 
+def test_evidence_distinguishes_historical_benchmark_from_current_matcher(client):
+    response = client.get("/evidence")
+    assert response.status_code == 200
+    body = response.get_data(as_text=True)
+    assert "Historical results, not a live-model score" in body
+    assert "25 unique notices" in body
+    assert "101/125" in body
+    assert "results/source_semantics/REPLAY.md" in body
+    assert "five rejections and 120 CHECKs" in body
+    assert "Not a fair model-speed comparison" in body
+
+
 def test_layout_has_mobile_metadata_favicon_footer_and_menu(client, seeded):
     resp = client.get("/")
     body = resp.get_data(as_text=True)

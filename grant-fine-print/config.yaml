@@ -53,9 +53,9 @@ storage:
   backend: "filesystem"
 
 extract:
-  # Base model for stage 1. Replace with a Tinker-supported model name after
-  # checking Tinker's docs.
-  base_model: "Qwen/Qwen2.5-3B-Instruct"
+  # Match the recorded Qwen3.5 training/deployment choice; GFP_BASE_MODEL can
+  # explicitly override this for a separately identified experiment.
+  base_model: "Qwen/Qwen3.5-4B"
   fine_tuned_model: null   # e.g. "tinker:grant-fine-print-v1"
   provider: "tinker"       # tinker | openai-compatible | mock
   provider_base_url: null
@@ -67,13 +67,15 @@ extract:
   separate_reasoning: false
   max_output_tokens: 1024
   timeout_seconds: 120
-  # Stage 1 runs once per opportunity; results cached by text hash.
+  # Full source/prompt/model/settings fingerprint; legacy caches are not reused.
   cache_dir: "data/extract_cache"
 
 training:
   # Tinker cookbook settings. Training requires a separately reviewed JSONL;
   # src.train prepare only creates candidates and never marks them reviewed.
-  renderer: "qwen3_5"
+  # Future runs align the renderer with reasoning-disabled extraction serving.
+  # This does not change the historical checkpoint or its recorded results.
+  renderer: "qwen3_5_disable_thinking"
   max_length: 4096
   batch_size: 4
   checkpoint_name: "grant-fine-print-sft"

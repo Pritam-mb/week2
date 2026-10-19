@@ -10,7 +10,10 @@
     <span class="brand-tag">Empirical Proof Sheet</span>
     <h1 style="font-size: var(--fs-h1); margin: var(--space-2) 0 var(--space-1); text-wrap: balance;">The Evidence</h1>
     <p class="muted" style="max-width: 72ch; margin: 0; font-size: 15px;">
-      Empirical findings from 528 official Grants.gov opportunities and comparative benchmark of extraction systems against ground truth hand-labelled by the author before any model was run (commit <code class="meta-mono">2f90797</code>).
+      Historical catalog audit and saved extraction-system predictions scored against single-author labels. The benchmark covers 25 unique notices and five constructed profiles, not 125 independent notices.
+    </p>
+    <p class="muted" style="max-width: 72ch; margin-top: 12px; font-size: 14px;">
+      <strong>Historical results, not a live-model score:</strong> the original fine-tuned run sent 101/125 pairs to CHECK. The current bounded-rule replay makes five rejections and 120 CHECKs; three rejections correct code-only misses in one organizational-geography rule family. See <code>results/source_semantics/REPLAY.md</code> and <code>reports/proof_pack/PROOF.md</code>. This is not new inference or an untouched holdout. Source-valid quotes do not guarantee correct interpretation.
     </p>
   </div>
 
@@ -370,31 +373,31 @@
   {% if eval_data and eval_data.systems.fine_tuned.latency_ms.median_ms is not none and eval_data.systems.fine_tuned.latency_ms.p95_ms is not none %}
   {% call dc.data_card(
     id="card-latency",
-    eyebrow="Section 4 · Inference Latency",
-    title="Inference Latency Profile",
-    takeaway_html="Fine-tuned LoRA provides predictable GPU execution with a median latency of <strong>" ~ eval_data.systems.fine_tuned.latency_ms.median_ms|round(0)|int ~ "ms (" ~ ((eval_data.systems.fine_tuned.latency_ms.median_ms / 1000)|round(2)) ~ "s)</strong> and 95th percentile of <strong>" ~ eval_data.systems.fine_tuned.latency_ms.p95_ms|round(0)|int ~ "ms (" ~ ((eval_data.systems.fine_tuned.latency_ms.p95_ms / 1000)|round(2)) ~ "s)</strong>, executing full substring boundary checking with zero token drift.",
+    eyebrow="Section 4 · Historical Timings",
+    title="Historical extraction timings (mixed cache states)",
+    takeaway_html="<strong>Not a fair model-speed comparison.</strong> Historical timings include cache lookups and possible provider calls. One notice's extraction time is repeated across five profile rows; 125 rows do not mean 125 independent inferences. Cold-cache and warm-cache measurements must be reported separately before making latency claims.",
     download_id="chart-latency",
     download_filename="system-inference-latency",
     source_path="results/eval.json",
      pull_date=study.pull_date if study else "not recorded",
-    evaluated_count=eval_data.systems.fine_tuned.latency_ms.n ~ " inferences",
+    evaluated_count=eval_data.systems.fine_tuned.latency_ms.n ~ " profile rows (shared notice timings)",
     generated_at=eval_generated_at
   ) %}
     <div class="chart-container">
       <svg id="chart-latency" class="chart-svg" viewBox="0 0 860 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="latency-chart-title latency-chart-desc">
-        <title id="latency-chart-title">Inference Latency Profile</title>
-        <desc id="latency-chart-desc">Median and 95th percentile latency comparing prompted API forward passes against fine-tuned LoRA GPU runs.</desc>
+        <title id="latency-chart-title">Historical mixed-cache extraction timings</title>
+        <desc id="latency-chart-desc">Historical timing labels only. Cache states differ; these are not comparable provider inference measurements.</desc>
 
         <rect width="860" height="200" fill="var(--paper, #F4EFE3)" rx="4" stroke="var(--ink, #221C14)" stroke-width="1.5"/>
 
         <text x="28" y="32" font-family="var(--font-ui)" font-size="14" font-weight="600" fill="var(--ink, #221C14)">
-          Per-Opportunity Execution Time: Median vs. 95th Percentile
+          Historical timing labels — cache states differ; bars are not to scale
         </text>
 
         <!-- Prompted Latency -->
         <g transform="translate(48, 65)">
           <text x="0" y="0" font-family="var(--font-ui)" font-size="13" font-weight="600" fill="var(--ink, #221C14)">
-            Zero-Shot Prompted (Base API)
+            Prompted (historical, includes cache)
           </text>
           
           <rect x="0" y="15" width="220" height="24" fill="var(--stone, #8C8577)" stroke="var(--ink, #221C14)" stroke-width="1.5"/>
@@ -411,7 +414,7 @@
         <!-- Fine-Tuned Latency -->
         <g transform="translate(450, 65)">
           <text x="0" y="0" font-family="var(--font-ui)" font-size="13" font-weight="600" fill="var(--ink, #221C14)">
-            Fine-Tuned LoRA (Tinker Cloud GPU)
+            Fine-Tuned (historical extraction)
           </text>
           
           {% if eval_data.systems.fine_tuned.latency_ms.median_ms %}

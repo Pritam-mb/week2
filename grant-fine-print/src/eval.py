@@ -336,6 +336,22 @@ def evaluate_system(rows: list[dict], labels: dict, config: dict) -> dict:
             "note": f"list price {price} per opportunity from config",
         }
 
+    # Selective prediction metrics make the abstention trade-off explicit.
+    # A CHECK is not counted as an automatic decision, even when the label is
+    # also CHECK: the product promise is that CHECK goes to a human.
+    auto_decisions = n - n_human
+    auto_correct = sum(
+        confusion[truth][truth]
+        for truth in VERDICTS
+        if truth != "CHECK"
+    )
+    n_not_eligible = sum(confusion["NOT_ELIGIBLE"].values())
+    negative_truth = n_not_eligible + n_check
+    eligible_prediction_on_negative = (
+        confusion["NOT_ELIGIBLE"]["ELIGIBLE"]
+        + confusion["CHECK"]["ELIGIBLE"]
+    )
+
     return {
         "n_pairs": n,
         "n_labels": len(labels),
@@ -344,6 +360,14 @@ def evaluate_system(rows: list[dict], labels: dict, config: dict) -> dict:
         "soft_miss": _kn(n_soft, n_check),
         "human_read_share": _kn(n_human, n),
         "accuracy": _kn(n_correct, n),
+        "automatic_decision_coverage": _kn(auto_decisions, n),
+        "automatic_decision_accuracy": _kn(auto_correct, auto_decisions),
+        "disqualified_to_eligible_error": _kn(
+            confusion["NOT_ELIGIBLE"]["ELIGIBLE"], n_not_eligible
+        ),
+        "negative_to_eligible_error": _kn(
+            eligible_prediction_on_negative, negative_truth
+        ),
         "confusion_matrix": confusion,
         "quote_validity": quote_validity,
         "quote_correctness": _kn(ne_correct, ne_total),
@@ -500,6 +524,10 @@ def render_report(results: dict) -> str:
             _fmt_kn(m["soft_miss"]),
             _fmt_kn(m["human_read_share"]),
             _fmt_kn(m["accuracy"]),
+            _fmt_kn(m["automatic_decision_coverage"]),
+            _fmt_kn(m["automatic_decision_accuracy"]),
+            _fmt_kn(m["disqualified_to_eligible_error"]),
+            _fmt_kn(m["negative_to_eligible_error"]),
             _fmt_kn(m["quote_validity"]),
             _fmt_kn(m["quote_correctness"]),
             _fmt_latency(m["latency_ms"]),
@@ -559,6 +587,8 @@ share): {html.escape(best_tradeoff["system"])} — score {html.escape(score_text
 <table>
 <tr><th>system</th><th>n_pairs</th><th>n_labels</th><th>missed_grant_rate</th>
 <th>soft_miss</th><th>human_read_share</th><th>accuracy</th>
+<th>auto coverage</th><th>auto accuracy</th><th>disqualified → eligible</th>
+<th>negative → eligible</th>
 <th>quote_validity</th><th>quote_correctness</th><th>latency</th>
 <th>cost/1k opps</th></tr>
 {''.join(table_rows)}
@@ -572,6 +602,10 @@ NOT_ELIGIBLE, k of N_eligible.</li>
 k of N_check.</li>
 <li><strong>human_read_share</strong> — pairs predicted CHECK, k of N.</li>
 <li><strong>accuracy</strong> — three-way agreement, k of N.</li>
+<li><strong>automatic_decision_coverage</strong> — pairs not sent to CHECK, k of N.</li>
+<li><strong>automatic_decision_accuracy</strong> — correct non-CHECK decisions among automatic decisions, k of N.</li>
+<li><strong>disqualified_to_eligible_error</strong> — true NOT_ELIGIBLE pairs predicted ELIGIBLE, k of N_NOT_ELIGIBLE.</li>
+<li><strong>negative_to_eligible_error</strong> — true NOT_ELIGIBLE or CHECK pairs predicted ELIGIBLE, k of N_negative.</li>
 <li><strong>quote_validity</strong> — proposed disqualifier quotes that are
 verbatim substrings of the opportunity source_text, k of N_quotes.</li>
 <li><strong>quote_correctness</strong> — NOT_ELIGIBLE predictions whose
