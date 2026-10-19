@@ -51,7 +51,7 @@ from src.io_utils import (  # noqa: E402
     write_json,
 )
 from src.models import Profile  # noqa: E402
-from src.pipeline import run as run_pipeline  # noqa: E402
+from src.pipeline import _has_remote, run as run_pipeline  # noqa: E402
 from src.pull import pull as pull_grants  # noqa: E402
 from src.stats import compute_share_cell, format_wilson_ci, wilson_ci  # noqa: E402
 
@@ -136,6 +136,18 @@ def _opportunities(config: dict[str, Any]) -> list[Any]:
 def _default_backend(config: dict[str, Any]) -> str:
     backend = str(get(config, "app.backend") or "prompted")
     return backend if backend in BACKENDS else "prompted"
+
+
+def _backend_ready(config: dict[str, Any], backend: str) -> bool:
+    """Whether a backend has the configuration required to run."""
+    if backend == "mock":
+        return True
+    return _has_remote(config, backend)
+
+
+def _backend_status(config: dict[str, Any]) -> dict[str, bool]:
+    """Expose readiness so the UI does not present dead remote choices."""
+    return {backend: _backend_ready(config, backend) for backend in BACKENDS}
 
 
 def _contact_settings(config: dict[str, Any]) -> dict[str, str]:
@@ -272,6 +284,7 @@ def dashboard():
         pull_stats=manifest,
         backends=BACKENDS,
         default_backend=_default_backend(config),
+        backend_status=_backend_status(config),
     )
 
 
@@ -715,6 +728,7 @@ def profiles():
         profiles=profile_list,
         backends=BACKENDS,
         default_backend=_default_backend(config),
+        backend_status=_backend_status(config),
     )
 
 

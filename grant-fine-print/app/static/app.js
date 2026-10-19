@@ -52,6 +52,31 @@
     });
   }
 
+  // Extraction can take time, especially for a fine-tuned run over a fresh
+  // cache. Make the submitted state visible and prevent duplicate requests.
+  function initRunForms() {
+    document.querySelectorAll('form[action="/run"]').forEach(function (form) {
+      form.addEventListener("submit", function () {
+        if (form.dataset.submitted === "true") return;
+        form.dataset.submitted = "true";
+        var select = form.querySelector('select[name="backend"]');
+        var button = form.querySelector('button[type="submit"]');
+        if (button) {
+          var backend = select ? select.value : "screening";
+          button.disabled = true;
+          button.textContent = backend === "fine_tuned"
+            ? "Running fine-tuned screening..."
+            : "Running screening...";
+        }
+        var status = document.createElement("small");
+        status.className = "muted run-status";
+        status.setAttribute("role", "status");
+        status.textContent = "The page will update when the run completes. Do not refresh.";
+        form.appendChild(status);
+      });
+    });
+  }
+
   // 3. Count-up Animation for Hero Strip
   function initCountUp() {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -207,11 +232,13 @@
     document.addEventListener("DOMContentLoaded", function () {
       initTheme();
       initMobileNav();
+      initRunForms();
       initCountUp();
     });
   } else {
     initTheme();
     initMobileNav();
+    initRunForms();
     initCountUp();
   }
 })();

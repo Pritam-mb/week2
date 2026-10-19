@@ -118,7 +118,10 @@ def run_model_system(
 
     def _extract_worker(opp: Opportunity) -> tuple[str, list[Condition], Any, float]:
         t0 = time.perf_counter()
-        raw = extract_conditions(opp, backend, config)
+        try:
+            raw = extract_conditions(opp, backend, config)
+        except Exception:
+            raw = []
         lat = round((time.perf_counter() - t0) * 1000, 3)
         res = verify_conditions(raw, opp.source_text)
         return opp.id, raw, res, lat

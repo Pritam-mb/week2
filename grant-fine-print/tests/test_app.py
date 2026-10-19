@@ -68,7 +68,29 @@ def test_dashboard_lists_profiles(client, seeded):
 
 def test_dashboard_selects_configured_default_backend(client, app_config, seeded):
     body = client.get("/").get_data(as_text=True)
-    assert '<option value="prompted" selected>prompted</option>' in body
+    prompted_option = body.split('<option value="prompted"', 1)[1].split("</option>", 1)[0]
+    assert "selected" in prompted_option
+
+
+def test_dashboard_marks_unconfigured_remote_backends(client, seeded):
+    response = client.get("/")
+    assert response.status_code == 200
+    body = response.get_data(as_text=True)
+    assert 'value="fine_tuned"' in body
+    assert "fine_tuned (not configured)" in body
+    fine_tuned_option = body.split('<option value="fine_tuned"', 1)[1].split("</option>", 1)[0]
+    assert "disabled" in fine_tuned_option
+
+
+def test_unconfigured_fine_tuned_run_explains_configuration_error(client, seeded):
+    response = client.post(
+        "/run", data={"profile_id": "seed-org", "backend": "fine_tuned"}
+    )
+    assert response.status_code == 302
+    follow = client.get(response.location)
+    body = follow.get_data(as_text=True)
+    assert "Real fine_tuned inference is not configured" in body
+    assert "GFP_PROVIDER_BASE_URL" in body
 
 
 def test_evidence_has_empty_states_when_result_files_are_missing(client, monkeypatch, tmp_path):

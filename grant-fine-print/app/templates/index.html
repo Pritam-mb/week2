@@ -99,11 +99,14 @@
         <div style="margin-bottom:16px;">
           <label for="run-backend" class="paper-label">Backend</label>
           <select id="run-backend" name="backend" class="paper-select" style="width:100%;">
-            {% for b in backends %}<option value="{{ b }}" {% if b == default_backend %}selected{% endif %}>{{ b }}</option>{% endfor %}
+            {% for b in backends %}<option value="{{ b }}" {% if b == default_backend %}selected{% endif %} {% if not backend_status[b] %}disabled{% endif %}>{{ b }}{% if not backend_status[b] %} (not configured){% endif %}</option>{% endfor %}
           </select>
         </div>
         <div style="margin-top:auto; padding-top:14px; border-top:1px solid var(--rule);">
-          <button class="btn btn-primary" type="submit">Run now</button>
+           <button class="btn btn-primary" type="submit">Run now</button>
+           {% if not backend_status[default_backend] %}
+           <small class="muted" style="display:block; margin-top:8px;">{{ default_backend }} is not configured. Choose offline <code>mock</code>, or configure its provider first.</small>
+           {% endif %}
         </div>
       </form>
     </div>
